@@ -1,7 +1,7 @@
 package com.project.suitcase.data.model
 
 
-data class RegisterResponse(
+data class UserResponse(
     val data: UserDetailResponse
 )
 data class UserDetailResponse(

@@ -2,8 +2,8 @@ package com.project.suitcase.data.datasource
 
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
-import com.project.suitcase.data.model.RegisterResponse
 import com.project.suitcase.data.model.UserDetailResponse
+import com.project.suitcase.data.model.UserResponse
 import kotlinx.coroutines.tasks.await
 
 class AuthRemoteDatasource(
@@ -21,7 +21,7 @@ class AuthRemoteDatasource(
             val authResult = firebaseAuth.createUserWithEmailAndPassword(email, password).await()
             val user = authResult.user ?: throw Exception("User registration failed")
 
-            val userInfo = RegisterResponse(
+            val userInfo = UserResponse(
                 data = UserDetailResponse(
                     email = email,
                     password = password,
