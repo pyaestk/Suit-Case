@@ -1,6 +1,6 @@
 package com.project.suitcase.domain.model
 
-data class UserDetail(
+data class UserDetailModel(
     val name: String,
     val email: String,
     val phoneNumber: String,

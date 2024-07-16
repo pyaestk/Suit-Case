@@ -24,9 +24,9 @@ class RegisterActivity : AppCompatActivity() {
         binding?.btnRegister?.setOnClickListener{
             viewModel.register(
                 userName = binding?.edtUserName?.text.toString(),
-                password = binding?.edtPassword?.text.toString(),
-                phoneNumber = binding?.edtPhoneNum?.text.toString(),
-                email = binding?.edtEmail?.text.toString()
+                password = binding?.edtPassword?.text.toString().trim(),
+                phoneNumber = binding?.edtPhoneNum?.text.toString().trim(),
+                email = binding?.edtEmail?.text.toString().trim()
             )
         }
 
