@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/homeFragment"
+        android:icon="@drawable/baseline_home"
+        android:title="Home" />
+    <item
+        android:id="@+id/finishedFragment"
+        android:icon="@drawable/baseline_checklist"
+        android:title="Finished" />
+    <item android:id="@+id/placeholder"
+        tools:ignore="MenuTitle" />
+    <item
+        android:id="@+id/searchFragment"
+        android:icon="@drawable/baseline_search"
+        android:title="Search" />
+    <item
+        android:id="@+id/settingFragment"
+        android:icon="@drawable/baseline_settings"
+        android:title="Setting" />
+</menu>

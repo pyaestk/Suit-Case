@@ -19,20 +19,22 @@ class AuthRemoteDatasource(
     ): Result<String> {
         return try {
             val authResult = firebaseAuth.createUserWithEmailAndPassword(email, password).await()
-            val user = authResult.user ?: throw Exception("User registration failed")
-
-            val userInfo = UserResponse(
-                data = UserDetailResponse(
-                    email = email,
-                    password = password,
-                    phoneNumber = phoneNumber,
-                    name = userName
+            val user = authResult.user
+            if (user != null) {
+                val userInfo = UserResponse(
+                    data = UserDetailResponse(
+                        email = email,
+                        password = password,
+                        phoneNumber = phoneNumber,
+                        name = userName
+                    )
                 )
-            )
-            firestore.collection("users").document(user.uid).set(userInfo).await()
+                firestore.collection("users").document(user.uid).set(userInfo).await()
 
-            Result.success(user.uid)
-
+                Result.success(user.uid)
+            } else {
+                Result.failure(Exception("User not authenticated"))
+            }
         } catch (e: Exception){
             Result.failure(e)
         }

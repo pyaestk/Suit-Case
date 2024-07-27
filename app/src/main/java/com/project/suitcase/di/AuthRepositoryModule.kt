@@ -1,4 +1,4 @@
-package com.project.suitcase.di.auth
+package com.project.suitcase.di
 
 import com.project.suitcase.data.repository.AuthRepository
 import org.koin.dsl.module

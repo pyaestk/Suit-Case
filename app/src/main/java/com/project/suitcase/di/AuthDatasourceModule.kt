@@ -1,4 +1,4 @@
-package com.project.suitcase.di.auth
+package com.project.suitcase.di
 
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore

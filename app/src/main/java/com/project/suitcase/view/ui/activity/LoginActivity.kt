@@ -1,4 +1,4 @@
-package com.project.suitcase.view.ui
+package com.project.suitcase.view.ui.activity
 
 import android.content.Intent
 import android.os.Bundle
@@ -34,6 +34,11 @@ class LoginActivity : AppCompatActivity() {
                 LoginUiState.Loading -> Toast.makeText(
                     this, "Loading", Toast.LENGTH_SHORT
                 ).show()
+
+                LoginUiState.NavigateToMainScreen -> {
+                    startActivity(Intent(this@LoginActivity, MainActivity::class.java))
+                    finish()
+                }
             }
         }
 

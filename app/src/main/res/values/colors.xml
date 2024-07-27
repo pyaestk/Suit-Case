@@ -8,4 +8,7 @@
 
     <color name="white_glass">#ABFFFFFF</color>
     <color name="white_variant">#E6E6E6</color>
+
+    <color name="bluewhite">#C9E6FF</color>
+    <color name="bluewhite_variant">#EBF9FF</color>
 </resources>
