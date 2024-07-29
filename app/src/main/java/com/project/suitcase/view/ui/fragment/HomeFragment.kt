@@ -2,7 +2,6 @@ package com.project.suitcase.view.ui.fragment
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,9 +11,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.project.suitcase.databinding.FragmentHomeBinding
 import com.project.suitcase.view.adapter.TripAdapter
 import com.project.suitcase.view.ui.activity.ItemListActivity
-import com.project.suitcase.view.viewmodel.GetTripViewModelEvent
-import com.project.suitcase.view.viewmodel.TripUiState
-import com.project.suitcase.view.viewmodel.TripViewModel
+import com.project.suitcase.view.viewmodel.HomeFragmentUiState
+import com.project.suitcase.view.viewmodel.HomeFragmentViewModel
+import com.project.suitcase.view.viewmodel.HomeFragmentViewModelEvent
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
@@ -22,8 +21,8 @@ class HomeFragment : Fragment() {
 
     private var binding: FragmentHomeBinding? = null
     var tripAdapter: TripAdapter? = null
-
-    private val viewModel: TripViewModel by viewModel()
+    
+    private val homeFragmentViewModel: HomeFragmentViewModel by viewModel()
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -34,7 +33,7 @@ class HomeFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        viewModel.getTripsAndItems()
+        homeFragmentViewModel.getTripsAndItems()
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -61,20 +60,20 @@ class HomeFragment : Fragment() {
     }
 
     private fun viewModelSetUp() {
-        viewModel.uiState.observe(viewLifecycleOwner){ state ->
-            when(state){
-                TripUiState.Loading -> {
+
+        homeFragmentViewModel.uiState.observe(viewLifecycleOwner) { state ->
+            when(state) {
+                HomeFragmentUiState.Loading -> {
 
                 }
             }
         }
-        viewModel.tripListUiEvent.observe(viewLifecycleOwner){ event ->
-            when(event){
-                is GetTripViewModelEvent.Error -> {
-                    Log.e("GetTrip", event.error)
+        homeFragmentViewModel.tripListUiEvent.observe(viewLifecycleOwner) { event ->
+            when(event) {
+                is HomeFragmentViewModelEvent.Error -> {
                     Toast.makeText(requireContext(), event.error, Toast.LENGTH_SHORT).show()
                 }
-                is GetTripViewModelEvent.Success -> {
+                is HomeFragmentViewModelEvent.Success -> {
                     tripAdapter?.setTripList(event.trips)
                 }
             }

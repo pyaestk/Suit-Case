@@ -26,8 +26,8 @@
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:layout_marginStart="24dp"
-                android:layout_marginTop="24dp"
-                android:layout_marginBottom="24dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp"
                 android:layout_weight="1"
                 android:tint="@color/bluewhite_variant"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -64,15 +64,55 @@
             android:layout_height="match_parent"
             android:paddingBottom="45dp">
 
-            <ImageView
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/textInputLayout9"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                android:layout_width="0dp"
+                android:layout_height="60dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
+                app:boxBackgroundColor="@color/white"
+                app:boxBackgroundMode="outline"
+                app:boxCornerRadiusBottomEnd="20dp"
+                app:boxCornerRadiusBottomStart="20dp"
+                app:boxCornerRadiusTopEnd="20dp"
+                app:boxCornerRadiusTopStart="20dp"
+                app:boxStrokeColor="#1E88E5"
+                app:hintEnabled="false"
+                app:layout_constraintEnd_toStartOf="@+id/btn_add_new_trip"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <AutoCompleteTextView
+                    android:id="@+id/edt_trip"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawableStart="@drawable/marker_18"
+                    android:drawablePadding="15dp"
+                    android:drawableTint="@color/black"
+                    android:ellipsize="end"
+                    android:hint="Choose Trip"
+                    android:inputType="none"
+                    android:lines="1"
+                    android:textColor="@color/black"
+                    android:textColorHint="@color/grayText"
+                    app:dropDownBackgroundTint="@color/white" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.imageview.ShapeableImageView
                 android:id="@+id/imageView"
                 android:layout_width="250dp"
                 android:layout_height="250dp"
                 android:layout_marginTop="16dp"
+                android:background="@color/white"
+                android:scaleType="fitCenter"
                 android:src="@drawable/baseline_add"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/btn_new_trip" />
+                app:layout_constraintTop_toBottomOf="@+id/textInputLayout9"
+                app:shapeAppearance="@style/ShapeAppearance.Material3.Corner.Medium" />
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/textInputLayoutItemName"
@@ -190,56 +230,18 @@
                 app:layout_constraintStart_toStartOf="@+id/textInputLayoutItemDes"
                 app:layout_constraintTop_toBottomOf="@+id/textInputLayout8" />
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/textInputLayout9"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
-                android:layout_width="0dp"
-                android:layout_height="60dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="16dp"
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/btn_add_new_trip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_marginEnd="16dp"
-                app:boxBackgroundColor="@color/white"
-                app:boxBackgroundMode="outline"
-                app:boxCornerRadiusBottomEnd="20dp"
-                app:boxCornerRadiusBottomStart="20dp"
-                app:boxCornerRadiusTopEnd="20dp"
-                app:boxCornerRadiusTopStart="20dp"
-                app:boxStrokeColor="#1E88E5"
-                app:hintEnabled="false"
-                app:layout_constraintEnd_toStartOf="@+id/btn_new_trip"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
-
-                <AutoCompleteTextView
-                    android:id="@+id/edt_trip"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:drawableStart="@drawable/marker_18"
-                    android:drawablePadding="15dp"
-                    android:drawableTint="@color/black"
-                    android:ellipsize="end"
-                    android:hint="Trip"
-                    android:inputType="none"
-                    android:lines="1"
-                    android:textColor="@color/black"
-                    android:textColorHint="@color/grayText"
-                    app:dropDownBackgroundTint="@color/white" />
-
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btn_new_trip"
-                android:layout_width="0dp"
-                android:layout_height="60dp"
-                android:layout_marginEnd="16dp"
-                android:backgroundTint="#1E88E5"
-                android:text="New Trip"
-                app:cornerRadius="20dp"
-                app:icon="@drawable/baseline_add"
+                android:clickable="true"
+                app:tint="@color/white"
+                app:backgroundTint="#1E88E5"
                 app:layout_constraintBottom_toBottomOf="@+id/textInputLayout9"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/textInputLayout9"
-                app:layout_constraintVertical_bias="0.0" />
+                app:srcCompat="@drawable/baseline_add" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>

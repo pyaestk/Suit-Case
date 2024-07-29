@@ -4,12 +4,16 @@ import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Filter
+import android.widget.Filterable
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.project.suitcase.databinding.ItemItemDetailed2Binding
 import com.project.suitcase.domain.model.ItemDetailModel
+import java.util.Locale
 
-class ItemsListAdapter: RecyclerView.Adapter<ItemsListAdapter.ItemsListViewHolder>(){
+class SearchResultAdapter:
+    RecyclerView.Adapter<SearchResultAdapter.SearchResultViewHolder>(), Filterable {
 
     private var itemList: List<ItemDetailModel> = listOf()
     private var filteredItemList: List<ItemDetailModel> = listOf()
@@ -23,27 +27,21 @@ class ItemsListAdapter: RecyclerView.Adapter<ItemsListAdapter.ItemsListViewHolde
         this.itemList = itemList
         notifyDataSetChanged()
     }
-    @SuppressLint("NotifyDataSetChanged")
-    fun filterList(filteredList: List<ItemDetailModel>) {
-        this.filteredItemList = filteredList
-        notifyDataSetChanged()
-    }
+    inner class SearchResultViewHolder(val binding: ItemItemDetailed2Binding):
+            RecyclerView.ViewHolder(binding.root)
 
-    inner class ItemsListViewHolder(val binding: ItemItemDetailed2Binding):
-        RecyclerView.ViewHolder(binding.root)
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemsListViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SearchResultViewHolder {
         val inflater = LayoutInflater.from(parent.context)
         val binding = ItemItemDetailed2Binding.inflate(inflater, parent, false)
-        return ItemsListViewHolder(binding)
+        return SearchResultViewHolder(binding)
     }
 
     override fun getItemCount(): Int {
-        return itemList.size
+        return filteredItemList.size
     }
 
-    override fun onBindViewHolder(holder: ItemsListViewHolder, position: Int) {
-        val currentItem = itemList[position]
+    override fun onBindViewHolder(holder: SearchResultViewHolder, position: Int) {
+        val currentItem = filteredItemList[position]
         holder.binding.apply {
             Glide.with(holder.itemView)
                 .load(currentItem.itemImage)
@@ -56,7 +54,7 @@ class ItemsListAdapter: RecyclerView.Adapter<ItemsListAdapter.ItemsListViewHolde
             } else {
                 "Price: $${currentItem.itemPrice}"
             }
-            
+
             if (currentItem.itemDescription.isBlank()){
                 tvDescription.visibility = View.GONE
             } else {
@@ -76,8 +74,34 @@ class ItemsListAdapter: RecyclerView.Adapter<ItemsListAdapter.ItemsListViewHolde
         holder.itemView.setOnClickListener {
 //            onItemClick.invoke(currentItem)
         }
-
     }
 
+    override fun getFilter(): Filter {
+        return object : Filter(){
+            override fun performFiltering(constraint: CharSequence?): FilterResults {
+                val searchText = constraint.toString().toLowerCase(Locale.getDefault())
+                filteredItemList = if (searchText.isEmpty()) {
+                    itemList
+                } else {
+                    val filteredList = ArrayList<ItemDetailModel>()
+                    for (item in itemList) {
+                        if (item.itemName.contains(searchText) || item.itemLocation.contains(searchText)
+                            || item.itemDescription.contains(searchText)) {
+                            filteredList.add(item)
+                        }
+                    }
+                    filteredList
+                }
+                val filteredResults = FilterResults()
+                filteredResults.values = filteredItemList
+                return filteredResults
+            }
 
+            override fun publishResults(constraint: CharSequence?, results: FilterResults?) {
+                filteredItemList = results?.values as ArrayList<ItemDetailModel>
+                notifyDataSetChanged()
+            }
+
+        }
+    }
 }

@@ -30,7 +30,7 @@ class TripRemoteDataSource(
                     items = emptyList()
                 )
 
-                docRef.set(tripInfo)
+                docRef.set(tripInfo).await()
                 Result.success(tripId)
 
             } else {
@@ -45,8 +45,11 @@ class TripRemoteDataSource(
         return try {
             val user = firebaseAuth.currentUser
             if (user != null) {
-                val snapshot = fireStore.collection("users").document(user.uid)
-                    .collection("trip").orderBy("date").get().await()
+                val snapshot = fireStore.collection("users")
+                    .document(user.uid)
+                    .collection("trip")
+                    .orderBy("date")
+                    .get().await()
 
                 val trips = snapshot.documents.mapNotNull { tripDoc ->
                     val trip = tripDoc.toObject<TripResponse>()
@@ -57,6 +60,7 @@ class TripRemoteDataSource(
                         trip.copy(items = items)
                     }
                 }
+
                 Result.success(trips)
             } else {
                 Result.failure(Exception("User not authenticated"))
@@ -70,11 +74,17 @@ class TripRemoteDataSource(
         return try {
             val user = firebaseAuth.currentUser
             if (user != null) {
-                val snapshot = fireStore.collection("users").document(user.uid)
-                    .collection("trip").orderBy("date") .get().await()
+
+                val snapshot = fireStore.collection("users")
+                    .document(user.uid)
+                    .collection("trip")
+                    .orderBy("date")
+                    .get().await()
+
                 val trips = snapshot.documents.mapNotNull {
                     it.toObject<TripResponse>()
                 }
+
                 Result.success(trips)
             } else {
                 Result.failure(Exception("User not authenticated"))

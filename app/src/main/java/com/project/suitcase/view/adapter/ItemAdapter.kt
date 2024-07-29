@@ -37,7 +37,13 @@ class ItemAdapter: RecyclerView.Adapter<ItemAdapter.ItemListViewHolder>(){
                 .load(currentItem.itemImage)
                 .into(ivItem)
             tvItemName.text = currentItem.itemName
-            tvItemPrice.text = currentItem.itemPrice
+            tvItemPrice.text = if (currentItem.itemPrice.isBlank()) {
+                "Price: Unknown"
+            } else {
+                "Price: $${currentItem.itemPrice}"
+            }
+
+
         }
 
     }

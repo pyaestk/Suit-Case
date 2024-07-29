@@ -6,9 +6,9 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.project.suitcase.databinding.ActivityAddTripBinding
-import com.project.suitcase.view.viewmodel.TripUiState
-import com.project.suitcase.view.viewmodel.TripViewModel
-import com.project.suitcase.view.viewmodel.TripViewModelEvent
+import com.project.suitcase.view.viewmodel.AddTripUiState
+import com.project.suitcase.view.viewmodel.AddTripViewModel
+import com.project.suitcase.view.viewmodel.AddTripViewModelEvent
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.text.SimpleDateFormat
 import java.util.Locale
@@ -18,7 +18,7 @@ class AddTripActivity : AppCompatActivity() {
     private var binding: ActivityAddTripBinding? = null
     private val calendar = Calendar.getInstance()
 
-    private val viewModel: TripViewModel by viewModel()
+    private val addTripViewModel: AddTripViewModel by viewModel()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityAddTripBinding.inflate(layoutInflater)
@@ -43,7 +43,7 @@ class AddTripActivity : AppCompatActivity() {
         }
 
         binding?.btnSaveTrip?.setOnClickListener {
-            viewModel.addTrip(
+            addTripViewModel.addTrip(
                 tripName = binding?.edtTripName?.text.toString(),
                 date = binding?.edtTripDate?.text.toString()
             )
@@ -53,34 +53,30 @@ class AddTripActivity : AppCompatActivity() {
         }
 
 
-        tirpViewModelSetup()
+        tripViewModelSetup()
 
     }
 
-    private fun tirpViewModelSetup() {
-        viewModel.addTripUiEvent.observe(this) { event ->
-            when(event){
-                is TripViewModelEvent.Error -> {
-                    Toast.makeText(
-                        this, event.error, Toast.LENGTH_SHORT
-                    ).show()
-                }
-                is TripViewModelEvent.Success -> {
-                    Toast.makeText(
-                        this, "Success", Toast.LENGTH_SHORT
-                    ).show()
-                    finish()
+    private fun tripViewModelSetup() {
+        addTripViewModel.uiState.observe(this) {
+            when(it) {
+                AddTripUiState.Loading -> {
+
                 }
             }
         }
-
-        viewModel.uiState.observe(this) { event ->
-            when(event) {
-                TripUiState.Loading -> {
+        addTripViewModel.addTripUiEvent.observe(this) {
+            when(it){
+                is AddTripViewModelEvent.Error -> {
                     Toast.makeText(
-                        this, "Loading", Toast.LENGTH_SHORT
+                        this, it.error, Toast.LENGTH_SHORT
                     ).show()
-
+                }
+                is AddTripViewModelEvent.Success -> {
+                    Toast.makeText(
+                        this, "Trip Added Successfully", Toast.LENGTH_SHORT
+                    ).show()
+                    finish()
                 }
             }
         }

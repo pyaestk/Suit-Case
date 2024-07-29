@@ -18,7 +18,7 @@ materialVersion = "1.11.0"
 firebaseStorage = "21.0.0"
 
 [libraries]
-google-material = { module = "com.google.android.material:material", version.ref = "materialVersion" }
+
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }

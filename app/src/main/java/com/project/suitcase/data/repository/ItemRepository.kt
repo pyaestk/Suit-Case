@@ -14,9 +14,9 @@ class ItemRepository(
         itemName: String,
         itemDescription: String,
         itemLocation: String,
-        itemImage: String,
+        itemImage: Uri,
         itemPrice: String,
-        finished: Boolean
+        finished: Boolean,
     ): Result<String> {
         val result = itemRemoteDatasource.addItem(
             tripId = tripId,
@@ -25,15 +25,15 @@ class ItemRepository(
             itemLocation = itemLocation,
             itemImage = itemImage,
             itemName = itemName,
-            finished = finished
+            finished = finished,
         )
         return result
     }
 
-    suspend fun getItems(
+    suspend fun getItemsByTrip(
         tripId: String
     ): Result<List<ItemDetailModel>> {
-        val result = itemRemoteDatasource.getItems(
+        val result = itemRemoteDatasource.getItemsByTrip(
             tripId = tripId
         ).map {
             it.toModels()
@@ -53,9 +53,29 @@ class ItemRepository(
         )
     }
 
-    suspend fun uploadImage(imageUri: Uri): Result<String> {
-        val result = itemRemoteDatasource.uploadImage(imageUri)
+    suspend fun deleteAllItems(tripId: String): Result<Unit> {
+        val result = itemRemoteDatasource.deleteAllItemsInTrip(tripId)
         return result
+    }
+
+    suspend fun getAllItems(): Result<List<ItemDetailModel>> {
+        val result = itemRemoteDatasource.getAllItems().map {
+            it.toModels()
+        }
+        return result
+    }
+
+    suspend fun moveToFinished(tripId: String, itemId: String): Result<Unit> {
+        return itemRemoteDatasource.moveToFinished(tripId = tripId, itemId = itemId)
+    }
+    suspend fun removeFromFinished(itemId: String): Result<Unit> {
+        return itemRemoteDatasource.removeFromFinished(itemId = itemId)
+    }
+
+    suspend fun getFinishedItemList(): Result<List<ItemDetailModel>>{
+        return itemRemoteDatasource.getFinishedItemList().map {
+            it.toModels()
+        }
     }
 
 
