@@ -16,58 +16,27 @@ class FinishedListViewModel(
     private val _uiState = MutableLiveData<FinishedListUiState>()
     val uiState: LiveData<FinishedListUiState> = _uiState
 
-    private var _itemListUiEvent = SingleLiveEvent<FinishedListViewModelEvent>()
-    val itemListUiEvent: LiveData<FinishedListViewModelEvent> = _itemListUiEvent
+    private var _finishedItemListUiEvent = SingleLiveEvent<FinishedListViewModelEvent>()
+    val finishedItemListUiEvent: LiveData<FinishedListViewModelEvent> = _finishedItemListUiEvent
 
-    private var _removedFromFinishedUiEvent = SingleLiveEvent<RemoveFromFinishedViewModelEvent>()
-    val removeFromFinishedViewModelEvent: LiveData<RemoveFromFinishedViewModelEvent> = _removedFromFinishedUiEvent
-
-    fun getFinishedItems(){
+    fun getAllFinishedItemList(){
         _uiState.value = FinishedListUiState.Loading
         viewModelScope.launch {
-            itemRepository.getFinishedItemList().fold(
+            itemRepository.getAllFinishedItems().fold(
                 onSuccess = {
-                    _itemListUiEvent.value = FinishedListViewModelEvent.Success(it)
+                    _finishedItemListUiEvent.value = FinishedListViewModelEvent.Success(it)
                 },
                 onFailure = {
-                    _itemListUiEvent.value = FinishedListViewModelEvent.Error(it.message?:
-                    "Something went wrong")
+                    _finishedItemListUiEvent.value = FinishedListViewModelEvent.Error(
+                        it.message?:"Something went wrong"
+                    )
                 }
-            )
-        }
-    }
-    fun updateItemStatus(itemId: String, finished: Boolean, tripId: String) {
-        viewModelScope.launch {
-            itemRepository.updateCheckedItemStatus(
-                itemId = itemId,
-                finished = finished,
-                tripId = tripId
-            )
-        }
-    }
-    fun moveToFinished(tripId: String, itemId: String) {
-        viewModelScope.launch {
-            itemRepository.moveToFinished(
-                tripId = tripId,
-                itemId = itemId
+
             )
         }
     }
 
-    fun removeFromFinished(itemId: String){
-        viewModelScope.launch {
-            itemRepository.removeFromFinished(itemId).fold(
-                onSuccess = {
-                    _removedFromFinishedUiEvent.value = RemoveFromFinishedViewModelEvent.Success
-                },
-                onFailure = {
-                    _removedFromFinishedUiEvent.value = RemoveFromFinishedViewModelEvent.Error(
-                        it.message?: "Something went wrong"
-                    )
-                }
-            )
-        }
-    }
+
 }
 sealed class FinishedListUiState {
     data object Loading : FinishedListUiState()
@@ -75,8 +44,4 @@ sealed class FinishedListUiState {
 sealed class FinishedListViewModelEvent {
     data class Success(val itemList: List<ItemDetailModel>) : FinishedListViewModelEvent()
     data class Error(val error: String) :FinishedListViewModelEvent()
-}
-sealed class RemoveFromFinishedViewModelEvent {
-    data object Success : RemoveFromFinishedViewModelEvent()
-    data class Error(val error: String) :RemoveFromFinishedViewModelEvent()
 }

@@ -20,7 +20,7 @@ class AddItemViewModel(
     private val _uiState = MutableLiveData<AddItemUiState>()
     val uiState: LiveData<AddItemUiState> = _uiState
 
-    private val _addItemUiEvent = MutableLiveData<AddItemViewModelEvent>()
+    private val _addItemUiEvent = SingleLiveEvent<AddItemViewModelEvent>()
     val addItemUiEvent: LiveData<AddItemViewModelEvent> = _addItemUiEvent
 
     private var _tripListUiEvent = SingleLiveEvent<AddItemGetTripsViewModelEvent>()
@@ -31,7 +31,7 @@ class AddItemViewModel(
         itemName: String,
         itemDescription: String,
         itemLocation: String,
-        itemImage: Uri,
+        itemImage: Uri?,
         itemPrice: String,
     ) {
         _uiState.value = AddItemUiState.Loading

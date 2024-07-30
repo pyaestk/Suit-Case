@@ -20,8 +20,8 @@ class TripRepository(
         return result
     }
 
-    suspend fun getTripsAndItems(): Result<List<TripDetailModel>>{
-        val result = tripRemoteDataSource.getTripsAndItems().map { tripResponseList ->
+    suspend fun getTripsIncludingItems(): Result<List<TripDetailModel>>{
+        val result = tripRemoteDataSource.getTripsIncludingItems().map { tripResponseList ->
             tripResponseList.toModels()
         }
         Log.i("TripRepo", result.toString())
@@ -29,5 +29,8 @@ class TripRepository(
     }
     suspend fun getTrips(): Result<List<TripDetailModel>>{
         return tripRemoteDataSource.getTrips().map { it.toModels() }
+    }
+    suspend fun deleteAllTrip(): Result<Unit> {
+        return tripRemoteDataSource.deleteAllTrip()
     }
 }

@@ -13,6 +13,7 @@ import com.project.suitcase.view.adapter.SearchResultAdapter
 import com.project.suitcase.view.viewmodel.ItemListViewModel
 import com.project.suitcase.view.viewmodel.SearchListViewModelEvent
 import com.project.suitcase.view.viewmodel.SearchViewModel
+import com.project.suitcase.view.viewmodel.UpdateItemCheckedStatusViewModelEvent
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
@@ -43,17 +44,12 @@ class SearchFragment : Fragment() {
 
         searchResultAdapter?.onCheckBoxClick = { itemId, tripId, isChecked ->
 
-            itemListViewModel.updateItemStatus(
+            itemListViewModel.updateItemCheckedStatus(
                 finished = isChecked,
                 tripId = tripId,
                 itemId = itemId
             )
 
-            if(isChecked) {
-                itemListViewModel.moveToFinished(tripId = tripId, itemId = itemId)
-            } else {
-                itemListViewModel.removeFromFinished(itemId = itemId)
-            }
         }
 
         binding?.searchbar?.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
@@ -79,6 +75,16 @@ class SearchFragment : Fragment() {
                 }
                 is SearchListViewModelEvent.Success -> {
                     searchResultAdapter?.setItemList(event.itemList)
+                }
+            }
+        }
+        itemListViewModel.updateItemCheckedStatusUiEvent.observe(viewLifecycleOwner) { event ->
+            when(event){
+                is UpdateItemCheckedStatusViewModelEvent.Error -> {
+                    Toast.makeText(requireContext(), event.error, Toast.LENGTH_SHORT).show()
+                }
+                UpdateItemCheckedStatusViewModelEvent.Success -> {
+                    Toast.makeText(requireContext(), "Item has been updated", Toast.LENGTH_SHORT).show()
                 }
             }
         }

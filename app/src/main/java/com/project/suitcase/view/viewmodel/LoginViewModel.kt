@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.auth.FirebaseAuth
 import com.project.suitcase.data.repository.AuthRepository
+import com.project.suitcase.view.utils.SingleLiveEvent
 import kotlinx.coroutines.launch
 
 class LoginViewModel(
@@ -15,7 +16,7 @@ class LoginViewModel(
     private val _uiState = MutableLiveData<LoginUiState>()
     val uiState: LiveData<LoginUiState> = _uiState
 
-    private val _uiEvent = MutableLiveData<LoginViewModelEvent>()
+    private val _uiEvent = SingleLiveEvent<LoginViewModelEvent>()
     val uiEvent: LiveData<LoginViewModelEvent> = _uiEvent
 
     init {

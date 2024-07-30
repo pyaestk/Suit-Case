@@ -1,6 +1,5 @@
 package com.project.suitcase.view.viewmodel
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -22,8 +21,15 @@ class ItemListViewModel(
     private var _itemListUiEvent = SingleLiveEvent<ItemListViewModelEvent>()
     val itemListUiEvent: LiveData<ItemListViewModelEvent> = _itemListUiEvent
 
-    private var _itemListDeleteUiEvent = SingleLiveEvent<ItemListDeleteViewModelEvent>()
-    val itemListDeleteUiEvent: LiveData<ItemListDeleteViewModelEvent> = _itemListDeleteUiEvent
+    private var _deleteAllItemListDeleteUiEvent = SingleLiveEvent<ItemListDeleteViewModelEvent>()
+    val deleteAllItemListDeleteUiEvent: LiveData<ItemListDeleteViewModelEvent> = _deleteAllItemListDeleteUiEvent
+
+    private var _updateItemCheckedStatusUiEvent = SingleLiveEvent<UpdateItemCheckedStatusViewModelEvent>()
+    val updateItemCheckedStatusUiEvent: LiveData<UpdateItemCheckedStatusViewModelEvent> = _updateItemCheckedStatusUiEvent
+
+    private var _deleteItemListDeleteUiEvent = SingleLiveEvent<ItemDeleteViewModelEvent>()
+    val deleteItemListDeleteUiEvent: LiveData<ItemDeleteViewModelEvent> = _deleteItemListDeleteUiEvent
+
 
     fun getItemsByTrip(tripId: String) {
         _uiState.value = ItemListUiState.Loading
@@ -42,14 +48,22 @@ class ItemListViewModel(
         }
     }
 
-    fun updateItemStatus(itemId: String, finished: Boolean, tripId: String) {
+    fun updateItemCheckedStatus(itemId: String, finished: Boolean, tripId: String) {
         viewModelScope.launch {
             itemRepository.updateCheckedItemStatus(
                 itemId = itemId,
                 finished = finished,
                 tripId = tripId
+            ).fold(
+                onSuccess = {
+                    _updateItemCheckedStatusUiEvent.value = UpdateItemCheckedStatusViewModelEvent.Success
+                },
+                onFailure = {
+                    _updateItemCheckedStatusUiEvent.value = UpdateItemCheckedStatusViewModelEvent.Error(
+                        it.message?:"Something went wrong"
+                    )
+                }
             )
-            Log.d("ItemListViewModel", "updateItemStatus: itemId=$itemId, finished=$finished, tripId=$tripId")
         }
     }
 
@@ -58,40 +72,36 @@ class ItemListViewModel(
         viewModelScope.launch {
             itemRepository.deleteAllItems(tripId).fold(
                 onFailure = {
-                    _itemListDeleteUiEvent.value = ItemListDeleteViewModelEvent.Error(
+                    _deleteAllItemListDeleteUiEvent.value = ItemListDeleteViewModelEvent.Error(
                         it.message ?: "Something went wrong"
                     )
                 },
                 onSuccess = {
-                    _itemListDeleteUiEvent.value = ItemListDeleteViewModelEvent.Success
+                    _deleteAllItemListDeleteUiEvent.value = ItemListDeleteViewModelEvent.Success
                     getItemsByTrip(tripId)
                 }
             )
         }
     }
 
-
-
-    fun moveToFinished(tripId: String, itemId: String) {
+    fun deleteItem(tripId: String, itemId: String) {
+        _uiState.value = ItemListUiState.Loading
         viewModelScope.launch {
-            itemRepository.moveToFinished(
-                tripId = tripId,
-                itemId = itemId
+            itemRepository.deleteItem(tripId = tripId, itemId = itemId).fold(
+                onSuccess = {
+                    _deleteItemListDeleteUiEvent.value = ItemDeleteViewModelEvent.Success
+                    getItemsByTrip(tripId)
+                },
+                onFailure = {
+                    _deleteItemListDeleteUiEvent.value = ItemDeleteViewModelEvent.Error(
+                        it.message ?:"Something went wrong"
+                    )
+                }
             )
         }
     }
 
-    fun removeFromFinished(itemId: String){
-        viewModelScope.launch {
-            itemRepository.removeFromFinished(itemId)
-        }
-    }
 
-    fun  getFinishedItemList(){
-        viewModelScope.launch {
-            itemRepository.getFinishedItemList()
-        }
-    }
 
 }
 
@@ -106,4 +116,13 @@ sealed class ItemListViewModelEvent {
 sealed class ItemListDeleteViewModelEvent{
     data object Success: ItemListDeleteViewModelEvent()
     data class Error(val error: String): ItemListDeleteViewModelEvent()
+}
+sealed class ItemDeleteViewModelEvent{
+    data object Success: ItemDeleteViewModelEvent()
+    data class Error(val error: String): ItemDeleteViewModelEvent()
+}
+
+sealed class UpdateItemCheckedStatusViewModelEvent{
+    data object Success: UpdateItemCheckedStatusViewModelEvent()
+    data class Error(val error: String): UpdateItemCheckedStatusViewModelEvent()
 }

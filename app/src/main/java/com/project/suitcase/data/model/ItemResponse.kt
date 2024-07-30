@@ -5,7 +5,7 @@ data class ItemResponse(
     val itemName: String = "",
     val itemDescription: String= "",
     val itemLocation: String= "",
-    val itemImage: String= "",
+    val itemImage: String? = null,
     val itemPrice: String= "",
     val tripId: String= "",
     val finished: Boolean? = false

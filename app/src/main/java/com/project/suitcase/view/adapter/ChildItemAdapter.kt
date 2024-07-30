@@ -5,10 +5,11 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.project.suitcase.R
 import com.project.suitcase.databinding.ItemItemsBinding
 import com.project.suitcase.domain.model.ItemDetailModel
 
-class ItemAdapter: RecyclerView.Adapter<ItemAdapter.ItemListViewHolder>(){
+class ChildItemAdapter: RecyclerView.Adapter<ChildItemAdapter.ItemListViewHolder>(){
 
     private var itemList: List<ItemDetailModel> = listOf()
 
@@ -33,9 +34,14 @@ class ItemAdapter: RecyclerView.Adapter<ItemAdapter.ItemListViewHolder>(){
     override fun onBindViewHolder(holder: ItemListViewHolder, position: Int) {
         val currentItem = itemList[position]
         holder.binding.apply {
-            Glide.with(holder.itemView)
-                .load(currentItem.itemImage)
-                .into(ivItem)
+            if (currentItem.itemImage == null) {
+                ivItem.setImageResource(R.drawable.image_icon)
+            } else {
+                Glide.with(holder.itemView)
+                    .load(currentItem.itemImage)
+                    .into(ivItem)
+                ivItem.setBackgroundResource(R.color.white)
+            }
             tvItemName.text = currentItem.itemName
             tvItemPrice.text = if (currentItem.itemPrice.isBlank()) {
                 "Price: Unknown"

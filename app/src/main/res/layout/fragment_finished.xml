@@ -52,4 +52,12 @@
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         tools:listitem="@layout/item_item_detailed_2" />
 
+    <ProgressBar
+        android:id="@+id/progressBar_finished"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:indeterminateTint="#1E88E5"/>
+
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

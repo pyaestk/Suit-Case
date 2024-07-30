@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.project.suitcase.data.repository.TripRepository
+import com.project.suitcase.view.utils.SingleLiveEvent
 import kotlinx.coroutines.launch
 
 class AddTripViewModel(
@@ -13,7 +14,7 @@ class AddTripViewModel(
     private val _uiState = MutableLiveData<AddTripUiState>()
     val uiState: LiveData<AddTripUiState> = _uiState
 
-    private val _addTripUiEvent = MutableLiveData<AddTripViewModelEvent>()
+    private val _addTripUiEvent = SingleLiveEvent<AddTripViewModelEvent>()
     val addTripUiEvent: LiveData<AddTripViewModelEvent> = _addTripUiEvent
 
     fun addTrip(
@@ -35,6 +36,8 @@ class AddTripViewModel(
             )
         }
     }
+
+
 
 }
 sealed class AddTripUiState {

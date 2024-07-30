@@ -8,6 +8,7 @@ import android.widget.Filter
 import android.widget.Filterable
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.project.suitcase.R
 import com.project.suitcase.databinding.ItemItemDetailed2Binding
 import com.project.suitcase.domain.model.ItemDetailModel
 import java.util.Locale
@@ -43,9 +44,14 @@ class SearchResultAdapter:
     override fun onBindViewHolder(holder: SearchResultViewHolder, position: Int) {
         val currentItem = filteredItemList[position]
         holder.binding.apply {
-            Glide.with(holder.itemView)
-                .load(currentItem.itemImage)
-                .into(ivItem)
+            if (currentItem.itemImage == null) {
+                ivItem.setImageResource(R.drawable.image_icon)
+            } else {
+                Glide.with(holder.itemView)
+                    .load(currentItem.itemImage)
+                    .into(ivItem)
+                ivItem.setBackgroundResource(R.color.white)
+            }
 
             tvItemName.text = currentItem.itemName
 

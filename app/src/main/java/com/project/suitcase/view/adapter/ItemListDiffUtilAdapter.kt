@@ -1,50 +1,50 @@
 package com.project.suitcase.view.adapter
 
-import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.AsyncListDiffer
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.project.suitcase.R
 import com.project.suitcase.databinding.ItemItemDetailed2Binding
 import com.project.suitcase.domain.model.ItemDetailModel
 
-class ItemsListAdapter: RecyclerView.Adapter<ItemsListAdapter.ItemsListViewHolder>(){
+class ItemListDiffUtilAdapter: RecyclerView.Adapter<ItemListDiffUtilAdapter.ItemListDIffUtilViewHolder>() {
 
-    private var itemList: MutableList<ItemDetailModel> = mutableListOf()
     lateinit var onCheckBoxClick: ((String, String, Boolean) -> Unit)
     lateinit var onItemClick: ((ItemDetailModel) -> Unit)
-    lateinit var onItemDelete: ((ItemDetailModel) -> Unit)
+    inner class ItemListDIffUtilViewHolder(val binding: ItemItemDetailed2Binding):
+            RecyclerView.ViewHolder(binding.root)
 
-    @SuppressLint("NotifyDataSetChanged")
-    fun setItemList(itemList: List<ItemDetailModel>){
-        this.itemList = itemList.toMutableList()
-        notifyDataSetChanged()
+    private val diffUtil = object : DiffUtil.ItemCallback<ItemDetailModel>() {
+        override fun areItemsTheSame(oldItem: ItemDetailModel, newItem: ItemDetailModel): Boolean {
+            return oldItem.itemId == newItem.itemImage
+        }
+
+        override fun areContentsTheSame(
+            oldItem: ItemDetailModel,
+            newItem: ItemDetailModel
+        ): Boolean {
+            return oldItem == newItem
+        }
     }
-    @SuppressLint("NotifyDataSetChanged")
-    fun removeItem(position: Int) {
-        val item = itemList[position]
-        onItemDelete(item)
-        itemList.removeAt(position)
-        notifyItemRemoved(position)
-    }
 
-    inner class ItemsListViewHolder(val binding: ItemItemDetailed2Binding):
-        RecyclerView.ViewHolder(binding.root)
+    val differ = AsyncListDiffer(this, diffUtil)
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemsListViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemListDIffUtilViewHolder {
         val inflater = LayoutInflater.from(parent.context)
         val binding = ItemItemDetailed2Binding.inflate(inflater, parent, false)
-        return ItemsListViewHolder(binding)
+        return ItemListDIffUtilViewHolder(binding)
     }
 
     override fun getItemCount(): Int {
-        return itemList.size
+        return differ.currentList.size
     }
 
-    override fun onBindViewHolder(holder: ItemsListViewHolder, position: Int) {
-        val currentItem = itemList[position]
+    override fun onBindViewHolder(holder: ItemListDIffUtilViewHolder, position: Int) {
+        val currentItem = differ.currentList[position]
         holder.binding.apply {
             if (currentItem.itemImage == null) {
                 ivItem.setImageResource(R.drawable.image_icon)
@@ -62,7 +62,7 @@ class ItemsListAdapter: RecyclerView.Adapter<ItemsListAdapter.ItemsListViewHolde
             } else {
                 "Price: $${currentItem.itemPrice}"
             }
-            
+
             if (currentItem.itemDescription.isBlank()){
                 tvDescription.visibility = View.GONE
             } else {
@@ -84,6 +84,5 @@ class ItemsListAdapter: RecyclerView.Adapter<ItemsListAdapter.ItemsListViewHolde
         }
 
     }
-
-
+    
 }

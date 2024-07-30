@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.project.suitcase.data.repository.AuthRepository
+import com.project.suitcase.view.utils.SingleLiveEvent
 import kotlinx.coroutines.launch
 
 class RegisterViewModel(
@@ -14,7 +15,7 @@ class RegisterViewModel(
     private val _uiState = MutableLiveData<RegisterUiState>()
     val uiState: LiveData<RegisterUiState> = _uiState
 
-    private val _uiEvent = MutableLiveData<RegisterViewModelEvent>()
+    private val _uiEvent = SingleLiveEvent<RegisterViewModelEvent>()
     val uiEvent: LiveData<RegisterViewModelEvent> = _uiEvent
 
     fun register(

@@ -11,13 +11,12 @@ class TripRemoteDataSource(
     private val firebaseAuth: FirebaseAuth,
     private val fireStore: FirebaseFirestore
 ) {
-
+    val user = firebaseAuth.currentUser
     suspend fun addTrip(
         tripName: String,
         date: String
     ): Result<String> {
         return try {
-            val user = firebaseAuth.currentUser
             if (user != null) {
                 val docRef = fireStore.collection("users").document(user.uid)
                     .collection("trip").document()
@@ -41,9 +40,8 @@ class TripRemoteDataSource(
         }
     }
 
-    suspend fun getTripsAndItems(): Result<List<TripResponse>> {
+    suspend fun getTripsIncludingItems(): Result<List<TripResponse>> {
         return try {
-            val user = firebaseAuth.currentUser
             if (user != null) {
                 val snapshot = fireStore.collection("users")
                     .document(user.uid)
@@ -72,7 +70,6 @@ class TripRemoteDataSource(
 
     suspend fun getTrips(): Result<List<TripResponse>> {
         return try {
-            val user = firebaseAuth.currentUser
             if (user != null) {
 
                 val snapshot = fireStore.collection("users")
@@ -91,6 +88,29 @@ class TripRemoteDataSource(
             }
         } catch (e: Exception) {
             Result.failure(e)
+        }
+    }
+
+    suspend fun deleteAllTrip(): Result<Unit>{
+        return try{
+            if (user != null) {
+                val snapshot = fireStore.collection("users")
+                    .document(user.uid)
+                    .collection("trip").get().await()
+
+                val batch = fireStore.batch()
+
+                snapshot.documents.forEach{
+                    batch.delete(it.reference)
+                }
+                batch.commit().await()
+                Result.success(Unit)
+            } else {
+                Result.failure(Exception("User not authenticated"))
+            }
+        } catch (e: Exception) {
+            Result.failure(e)
+
         }
     }
 }

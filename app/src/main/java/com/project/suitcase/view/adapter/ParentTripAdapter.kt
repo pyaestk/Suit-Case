@@ -9,9 +9,9 @@ import com.project.suitcase.R
 import com.project.suitcase.databinding.ItemTripBinding
 import com.project.suitcase.domain.model.TripDetailModel
 
-class TripAdapter(
+class ParentTripAdapter(
 
-): RecyclerView.Adapter<TripAdapter.TripListViewHolder>() {
+): RecyclerView.Adapter<ParentTripAdapter.TripListViewHolder>() {
 
     private var tripList: List<TripDetailModel> = listOf()
             
@@ -44,11 +44,11 @@ class TripAdapter(
                 currentTrip.items.size)
         }
 
-        val itemAdapter = ItemAdapter()
+        val childItemAdapter = ChildItemAdapter()
         holder.binding.rvItemList.layoutManager = LinearLayoutManager(holder.itemView.context, LinearLayoutManager.HORIZONTAL, false)
-        holder.binding.rvItemList.adapter = itemAdapter
+        holder.binding.rvItemList.adapter = childItemAdapter
 
-        itemAdapter.setItemList(currentTrip.items)
+        childItemAdapter.setItemList(currentTrip.items)
 
         holder.itemView.setOnClickListener {
             onItemClick.invoke(currentTrip)
