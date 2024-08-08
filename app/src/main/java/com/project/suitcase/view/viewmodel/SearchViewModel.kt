@@ -15,6 +15,7 @@ class SearchViewModel(
     private var _itemListUiEvent = SingleLiveEvent<SearchListViewModelEvent>()
     val itemListUiEvent: LiveData<SearchListViewModelEvent> = _itemListUiEvent
 
+
     fun getAllItems(){
         viewModelScope.launch {
             itemRepository.getAllItems().fold(

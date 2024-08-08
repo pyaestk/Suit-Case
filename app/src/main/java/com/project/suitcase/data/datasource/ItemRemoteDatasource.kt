@@ -14,9 +14,6 @@ class ItemRemoteDatasource(
     private val fireStore: FirebaseFirestore,
     private val fStorage: FirebaseStorage
 ) {
-    val user = firebaseAuth.currentUser
-    val userRef = fireStore.collection("users").document(user!!.uid)
-
     //item adding
     suspend fun addItem(
         tripId: String,
@@ -27,21 +24,25 @@ class ItemRemoteDatasource(
         itemPrice: String,
         finished: Boolean,
     ): Result<String> {
+
         return try {
+            val user = firebaseAuth.currentUser
+            val userRef = fireStore.collection("users").document(user!!.uid)
             if (user != null) {
+
                 val docRef = userRef.collection("trip").document(tripId)
                     .collection("items").document()
 
                 val itemId = docRef.id
 
-                val imageUrl = if (itemImage != null) {
+                val itemImageUrl = if (itemImage != null) {
                     val imageId = UUID.randomUUID().toString()
                     val imageRef = fStorage.reference.child("items/$imageId")
                     val uploadTask = imageRef.putFile(itemImage).await()
                     if (uploadTask.task.isSuccessful) {
                         imageRef.downloadUrl.await().toString()
                     } else {
-                        throw uploadTask.task.exception ?: Exception("Unknown error")
+                        null
                     }
                 } else {
                     null
@@ -52,12 +53,11 @@ class ItemRemoteDatasource(
                     itemPrice = itemPrice,
                     itemDescription = itemDescription,
                     itemLocation = itemLocation,
-                    itemImage = imageUrl,
+                    itemImage = itemImageUrl,
                     itemName = itemName,
                     tripId = tripId,
                     finished = finished
                 )
-
                 docRef.set(itemInfo).await()
                 Result.success(itemId)
 
@@ -69,9 +69,67 @@ class ItemRemoteDatasource(
         }
     }
 
+    // Update item details
+    suspend fun editItemDetail(
+        tripId: String,
+        itemId: String,
+        itemName: String?,
+        itemDescription: String?,
+        itemLocation: String?,
+        itemImage: Uri?,
+        itemPrice: String?,
+        finished: Boolean?
+    ): Result<Unit> {
+        return try {
+            val user = firebaseAuth.currentUser
+            if (user != null) {
+                val itemRef = fireStore.collection("users")
+                    .document(user.uid)
+                    .collection("trip").document(tripId)
+                    .collection("items").document(itemId)
+
+                val updates = mutableMapOf<String, Any?>()
+
+                // Add fields to be updated
+                itemName?.let { updates["itemName"] = it }
+                itemDescription?.let { updates["itemDescription"] = it }
+                itemLocation?.let { updates["itemLocation"] = it }
+                itemPrice?.let { updates["itemPrice"] = it }
+                finished?.let { updates["finished"] = it }
+
+                // Update item image if provided
+                if (itemImage != null) {
+                    val imageId = UUID.randomUUID().toString()
+                    val imageRef = fStorage.reference.child("items/$imageId")
+                    val uploadTask = imageRef.putFile(itemImage).await()
+                    if (uploadTask.task.isSuccessful) {
+                        val itemImageUrl = imageRef.downloadUrl.await().toString()
+                        updates["itemImage"] = itemImageUrl
+                    } else {
+                        return Result.failure(Exception("Failed to upload image"))
+                    }
+                }
+
+                // Perform the update
+                if (updates.isNotEmpty()) {
+                    itemRef.update(updates).await()
+                }
+
+                Result.success(Unit)
+            } else {
+                Result.failure(Exception("User not authenticated"))
+            }
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
+
     //getting items by trip
     suspend fun getItemsByTrip(tripId: String): Result<List<ItemResponse>>{
         return try {
+            val user = firebaseAuth.currentUser
+            val userRef = fireStore.collection("users").document(user!!.uid)
             if (user != null){
                 val snapshot = userRef
                     .collection("trip").document(tripId)
@@ -92,6 +150,7 @@ class ItemRemoteDatasource(
     suspend fun getAllItems(): Result<List<ItemResponse>> {
         return try {
             val user = firebaseAuth.currentUser
+
             if (user != null) {
                 val tripsSnapshot = fireStore.collection("users")
                     .document(user.uid)
@@ -119,7 +178,64 @@ class ItemRemoteDatasource(
         }
     }
 
+    //get item's details
+    suspend fun getItemDetails(tripId: String, itemId: String): Result<ItemResponse> {
+        return try {
+            val user = firebaseAuth.currentUser
+            if (user != null) {
+                val itemSnapshot = fireStore.collection("users")
+                    .document(user.uid)
+                    .collection("trip").document(tripId)
+                    .collection("items").document(itemId)
+                    .get()
+                    .await()
+
+                val item = itemSnapshot.toObject<ItemResponse>()
+                if (item != null) {
+                    Result.success(item)
+                } else {
+                    Result.failure(Exception("Item not found"))
+                }
+            } else {
+                Result.failure(Exception("User not authenticated"))
+            }
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
+
     //get all finished items under every trip
+    suspend fun deleteAllFinishedItems(): Result<Unit> {
+        return try {
+            val user = firebaseAuth.currentUser
+            if (user != null) {
+                val tripsSnapshot = fireStore.collection("users")
+                    .document(user.uid)
+                    .collection("trip")
+                    .get().await()
+
+                for (tripDoc in tripsSnapshot.documents) {
+                    val itemsSnapshot = tripDoc.reference.collection("items")
+                        .whereEqualTo("finished", true)
+                        .get()
+                        .await()
+
+                    for (itemDoc in itemsSnapshot.documents) {
+                        itemDoc.reference.delete().await()
+                    }
+                }
+
+                Result.success(Unit)
+            } else {
+                Result.failure(Exception("User not authenticated"))
+            }
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
+    //delete all finished items under every trip
     suspend fun getAllFinishedItems(): Result<List<ItemResponse>> {
         return try {
             val user = firebaseAuth.currentUser
@@ -153,6 +269,8 @@ class ItemRemoteDatasource(
     //delete item by itemId, tripId
     suspend fun deleteItem(tripId: String, itemId: String): Result<Unit> {
         return try {
+            val user = firebaseAuth.currentUser
+            val userRef = fireStore.collection("users").document(user!!.uid)
             if (user != null) {
                 val itemRef = userRef
                     .collection("trip").document(tripId)
@@ -170,8 +288,10 @@ class ItemRemoteDatasource(
     }
 
     //item updating under trip
-    suspend fun updateItemCheckedStatus(tripId: String,itemId: String, finished: Boolean): Result<Unit>{
+    suspend fun updateItemCheckedStatus(tripId: String, itemId: String, finished: Boolean): Result<Unit>{
         return try {
+            val user = firebaseAuth.currentUser
+            val userRef = fireStore.collection("users").document(user!!.uid)
             if (user != null) {
                 val itemRef = userRef
                     .collection("trip").document(tripId)
@@ -190,6 +310,8 @@ class ItemRemoteDatasource(
     //delete all items in specific trip
     suspend fun deleteAllItemsInTrip(tripId: String): Result<Unit> {
         return try {
+            val user = firebaseAuth.currentUser
+            val userRef = fireStore.collection("users").document(user!!.uid)
             if (user != null) {
                 val itemsRef = userRef
                     .collection("trip").document(tripId)
@@ -211,6 +333,7 @@ class ItemRemoteDatasource(
             Result.failure(e)
         }
     }
+
 
 
 }

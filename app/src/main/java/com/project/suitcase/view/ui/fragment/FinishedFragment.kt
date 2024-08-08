@@ -1,14 +1,20 @@
 package com.project.suitcase.view.ui.fragment
 
+import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.project.suitcase.R
 import com.project.suitcase.databinding.FragmentFinishedBinding
 import com.project.suitcase.view.adapter.ItemsListAdapter
+import com.project.suitcase.view.ui.activity.ItemDetailActivity
+import com.project.suitcase.view.viewmodel.DeleteFinishedListViewModelEvent
 import com.project.suitcase.view.viewmodel.FinishedListUiState
 import com.project.suitcase.view.viewmodel.FinishedListViewModel
 import com.project.suitcase.view.viewmodel.FinishedListViewModelEvent
@@ -38,10 +44,25 @@ class FinishedFragment : Fragment() {
         finishedListViewModel.getAllFinishedItemList()
     }
 
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         adapterSetUp()
+        
+        binding?.btnDeleteAllTrips?.setOnClickListener {
+            MaterialAlertDialogBuilder(requireContext(),
+                R.style.ThemeOverlay_App_MaterialAlertDialog)
+                .setTitle("Delete all finished items?")
+                .setMessage("All finished items will be from the list.")
+                .setNegativeButton("NO") { dialog, which ->
+                    //nothing
+                }
+                .setPositiveButton("YES") { dialog, which ->
+                    finishedListViewModel.deleteAllFinishedItemList()
+                }
+                .show()
+        }
 
         finishedListAdapter?.onCheckBoxClick = { itemId, tripId, isChecked ->
             itemListViewModel.updateItemCheckedStatus(
@@ -51,6 +72,19 @@ class FinishedFragment : Fragment() {
             )
         }
 
+        finishedListAdapter?.onItemClick = {
+            val intent = Intent(requireContext(), ItemDetailActivity::class.java).apply {
+                putExtra("itemID", it.itemId)
+                putExtra("tripID", it.tripId)
+                putExtra("itemImage", it.itemImage)
+            }
+            startActivity(intent)
+        }
+        viewModelSetup()
+
+    }
+
+    private fun viewModelSetup() {
         finishedListViewModel.uiState.observe(viewLifecycleOwner) {state ->
             when(state){
                 FinishedListUiState.Loading -> {
@@ -68,20 +102,34 @@ class FinishedFragment : Fragment() {
                     binding?.rvFinishedList?.visibility = View.VISIBLE
                     binding?.progressBarFinished?.visibility = View.INVISIBLE
                     finishedListAdapter?.setItemList(event.itemList)
+                    Log.e("Finished", event.itemList.toString())
                 }
             }
         }
+        finishedListViewModel.deleteFinishedItemListUiEvent.observe(viewLifecycleOwner) {event ->
+            when(event) {
+                is DeleteFinishedListViewModelEvent.Error -> {
+                    Toast.makeText(requireContext(), event.error, Toast.LENGTH_SHORT).show()
+                }
+                DeleteFinishedListViewModelEvent.Success -> {
+                    binding?.rvFinishedList?.visibility = View.VISIBLE
+                    binding?.progressBarFinished?.visibility = View.INVISIBLE
+                    Toast.makeText(requireContext(), "All finished items has been deleted", Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
+
+        //for item list viewModel
         itemListViewModel.updateItemCheckedStatusUiEvent.observe(viewLifecycleOwner) { event ->
             when(event){
                 is UpdateItemCheckedStatusViewModelEvent.Error -> {
                     Toast.makeText(requireContext(), event.error, Toast.LENGTH_SHORT).show()
                 }
                 UpdateItemCheckedStatusViewModelEvent.Success -> {
-//                    Toast.makeText(requireContext(), "Item has been updated", Toast.LENGTH_SHORT).show()
+                    finishedListViewModel.getAllFinishedItemList()
                 }
             }
         }
-
     }
 
     private fun adapterSetUp() {

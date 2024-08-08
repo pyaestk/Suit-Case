@@ -4,6 +4,7 @@ import com.project.suitcase.view.viewmodel.AddItemViewModel
 import com.project.suitcase.view.viewmodel.AddTripViewModel
 import com.project.suitcase.view.viewmodel.FinishedListViewModel
 import com.project.suitcase.view.viewmodel.HomeFragmentViewModel
+import com.project.suitcase.view.viewmodel.ItemDetailViewModel
 import com.project.suitcase.view.viewmodel.ItemListViewModel
 import com.project.suitcase.view.viewmodel.SearchViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
@@ -43,6 +44,12 @@ val viewModelModule = module {
     viewModel {
         SearchViewModel(
             get()
+        )
+    }
+    viewModel {
+        ItemDetailViewModel(
+            itemRepository = get(),
+            tripRepository = get()
         )
     }
 }

@@ -44,13 +44,12 @@ class SearchResultAdapter:
     override fun onBindViewHolder(holder: SearchResultViewHolder, position: Int) {
         val currentItem = filteredItemList[position]
         holder.binding.apply {
-            if (currentItem.itemImage == null) {
-                ivItem.setImageResource(R.drawable.image_icon)
+            if (currentItem.itemImage.isNullOrEmpty()) {
+                ivItem.setImageResource(R.drawable.photo)
             } else {
                 Glide.with(holder.itemView)
                     .load(currentItem.itemImage)
                     .into(ivItem)
-                ivItem.setBackgroundResource(R.color.white)
             }
 
             tvItemName.text = currentItem.itemName
@@ -91,8 +90,9 @@ class SearchResultAdapter:
                 } else {
                     val filteredList = ArrayList<ItemDetailModel>()
                     for (item in itemList) {
-                        if (item.itemName.contains(searchText) || item.itemLocation.contains(searchText)
-                            || item.itemDescription.contains(searchText)) {
+                        if (item.itemName.toLowerCase().contains(searchText) ||
+                            item.itemLocation.toLowerCase().contains(searchText) ||
+                            item.itemDescription.toLowerCase().contains(searchText)) {
                             filteredList.add(item)
                         }
                     }
@@ -104,7 +104,7 @@ class SearchResultAdapter:
             }
 
             override fun publishResults(constraint: CharSequence?, results: FilterResults?) {
-                filteredItemList = results?.values as ArrayList<ItemDetailModel>
+                filteredItemList = results?.values as? List<ItemDetailModel> ?: listOf()
                 notifyDataSetChanged()
             }
 

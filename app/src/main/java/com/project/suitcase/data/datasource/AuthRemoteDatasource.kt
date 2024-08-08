@@ -10,7 +10,6 @@ class AuthRemoteDatasource(
     private val firebaseAuth: FirebaseAuth,
     private val firestore: FirebaseFirestore
 ) {
-
     suspend fun registerAccount(
         userName: String,
         password: String,
@@ -26,7 +25,7 @@ class AuthRemoteDatasource(
                         email = email,
                         password = password,
                         phoneNumber = phoneNumber,
-                        name = userName
+                        name = userName,
                     )
                 )
                 firestore.collection("users").document(user.uid).set(userInfo).await()

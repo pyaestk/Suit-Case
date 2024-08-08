@@ -11,13 +11,17 @@ import kotlinx.coroutines.launch
 
 class FinishedListViewModel(
     private var itemRepository: ItemRepository
-):ViewModel() {
+) : ViewModel() {
 
     private val _uiState = MutableLiveData<FinishedListUiState>()
     val uiState: LiveData<FinishedListUiState> = _uiState
 
     private var _finishedItemListUiEvent = SingleLiveEvent<FinishedListViewModelEvent>()
     val finishedItemListUiEvent: LiveData<FinishedListViewModelEvent> = _finishedItemListUiEvent
+
+    private var _deleteFinishedItemListUiEvent = SingleLiveEvent<DeleteFinishedListViewModelEvent>()
+    val deleteFinishedItemListUiEvent:
+            LiveData<DeleteFinishedListViewModelEvent> = _deleteFinishedItemListUiEvent
 
     fun getAllFinishedItemList(){
         _uiState.value = FinishedListUiState.Loading
@@ -36,6 +40,23 @@ class FinishedListViewModel(
         }
     }
 
+    fun deleteAllFinishedItemList(){
+        _uiState.value = FinishedListUiState.Loading
+        viewModelScope.launch {
+            itemRepository.deleteAllFinishedItems().fold(
+                onSuccess = {
+                    _deleteFinishedItemListUiEvent.value = DeleteFinishedListViewModelEvent.Success
+                    getAllFinishedItemList()
+                },
+                onFailure = {
+                    _deleteFinishedItemListUiEvent.value = DeleteFinishedListViewModelEvent.Error(
+                        it.message ?: "Something went wrong"
+                    )
+                }
+            )
+        }
+    }
+
 
 }
 sealed class FinishedListUiState {
@@ -44,4 +65,8 @@ sealed class FinishedListUiState {
 sealed class FinishedListViewModelEvent {
     data class Success(val itemList: List<ItemDetailModel>) : FinishedListViewModelEvent()
     data class Error(val error: String) :FinishedListViewModelEvent()
+}
+sealed class DeleteFinishedListViewModelEvent {
+    data object Success: DeleteFinishedListViewModelEvent()
+    data class Error(val error: String) : DeleteFinishedListViewModelEvent()
 }

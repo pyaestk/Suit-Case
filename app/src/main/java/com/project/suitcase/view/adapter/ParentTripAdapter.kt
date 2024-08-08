@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.project.suitcase.R
 import com.project.suitcase.databinding.ItemTripBinding
+import com.project.suitcase.domain.model.ItemDetailModel
 import com.project.suitcase.domain.model.TripDetailModel
 
 class ParentTripAdapter(
@@ -22,6 +23,8 @@ class ParentTripAdapter(
     }
 
     lateinit var onItemClick: ((TripDetailModel) -> Unit)
+
+    lateinit var onChildItemClick : ((ItemDetailModel) -> Unit)
 
     inner class TripListViewHolder(val binding: ItemTripBinding): RecyclerView.ViewHolder(binding.root)
 
@@ -44,7 +47,11 @@ class ParentTripAdapter(
                 currentTrip.items.size)
         }
 
-        val childItemAdapter = ChildItemAdapter()
+        val childItemAdapter = ChildItemAdapter().apply {
+            onItemClick = {
+                onChildItemClick.invoke(it)
+            }
+        }
         holder.binding.rvItemList.layoutManager = LinearLayoutManager(holder.itemView.context, LinearLayoutManager.HORIZONTAL, false)
         holder.binding.rvItemList.adapter = childItemAdapter
 

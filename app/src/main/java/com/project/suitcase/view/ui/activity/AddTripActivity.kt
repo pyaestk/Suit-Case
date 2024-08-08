@@ -1,10 +1,13 @@
 package com.project.suitcase.view.ui.activity
 
-import android.app.DatePickerDialog
 import android.icu.util.Calendar
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.google.android.material.datepicker.CalendarConstraints
+import com.google.android.material.datepicker.DateValidatorPointForward
+import com.google.android.material.datepicker.MaterialDatePicker
+import com.project.suitcase.R
 import com.project.suitcase.databinding.ActivityAddTripBinding
 import com.project.suitcase.view.viewmodel.AddTripUiState
 import com.project.suitcase.view.viewmodel.AddTripViewModel
@@ -26,20 +29,41 @@ class AddTripActivity : AppCompatActivity() {
 
 
         binding?.edtTripDate?.setOnClickListener {
-            val datePickerDialog = DatePickerDialog(
-                this, { DatePicker, year: Int, monthOfYear:Int, dayOfMonth: Int ->
-                    val selectedDate = Calendar.getInstance()
-                    selectedDate.set(year, monthOfYear, dayOfMonth)
-                    val dateFormat = SimpleDateFormat("dd/MM/yyyy",
-                        Locale.getDefault())
-                    val formattedDate = dateFormat.format(selectedDate.time)
-                    binding?.edtTripDate?.setText(formattedDate)
-                },
-                calendar.get(Calendar.YEAR),
-                calendar.get(Calendar.MONTH),
-                calendar.get(Calendar.DATE)
-            )
-            datePickerDialog.show()
+//            val datePickerDialog = DatePickerDialog(
+//                this, { DatePicker, year: Int, monthOfYear:Int, dayOfMonth: Int ->
+//                    val selectedDate = Calendar.getInstance()
+//                    selectedDate.set(year, monthOfYear, dayOfMonth)
+//                    val dateFormat = SimpleDateFormat("dd/MM/yyyy",
+//                        Locale.getDefault())
+//                    val formattedDate = dateFormat.format(selectedDate.time)
+//                    binding?.edtTripDate?.setText(formattedDate)
+//                },
+//                calendar.get(Calendar.YEAR),
+//                calendar.get(Calendar.MONTH),
+//                calendar.get(Calendar.DATE)
+//            )
+//            datePickerDialog.show()
+
+            //Material design
+            // Set constraints for the date picker (optional)
+            val constraintsBuilder = CalendarConstraints.Builder()
+                // Ensures that only future dates are selectable
+                .setValidator(DateValidatorPointForward.now())
+
+            val datePicker = MaterialDatePicker.Builder.datePicker()
+                .setTitleText("Select Trip Date")
+                .setTheme(R.style.ThemeOverlay_App_DatePicker)
+                .setCalendarConstraints(constraintsBuilder.build())
+                .build()
+
+            datePicker.addOnPositiveButtonClickListener { selection ->
+                // Format the selected date
+                val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+                val formattedDate = dateFormat.format(selection)
+                binding?.edtTripDate?.setText(formattedDate)
+            }
+
+            datePicker.show(supportFragmentManager, "DATE_PICKER")
         }
 
         binding?.btnSaveTrip?.setOnClickListener {

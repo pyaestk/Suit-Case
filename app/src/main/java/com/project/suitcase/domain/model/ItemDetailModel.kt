@@ -5,7 +5,7 @@ data class ItemDetailModel(
     val itemName: String,
     val itemDescription: String,
     val itemLocation: String,
-    val itemImage: String,
+    val itemImage: String?,
     val itemPrice: String,
     val tripId: String,
     val finished: Boolean?,

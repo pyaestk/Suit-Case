@@ -58,11 +58,7 @@ class SearchFragment : Fragment() {
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
-                if (newText.isNullOrBlank()){
-
-                } else {
-                    searchResultAdapter?.filter?.filter(newText)
-                }
+                searchResultAdapter?.filter?.filter(newText)
                 return true
             }
 
@@ -84,7 +80,7 @@ class SearchFragment : Fragment() {
                     Toast.makeText(requireContext(), event.error, Toast.LENGTH_SHORT).show()
                 }
                 UpdateItemCheckedStatusViewModelEvent.Success -> {
-                    Toast.makeText(requireContext(), "Item has been updated", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(), "Item has been marked as finished", Toast.LENGTH_SHORT).show()
                 }
             }
         }

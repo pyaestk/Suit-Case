@@ -8,5 +8,5 @@ data class UserDetailResponse(
     val name: String?,
     val email: String?,
     val password: String?,
-    val phoneNumber: String?
+    val phoneNumber: String?,
 )

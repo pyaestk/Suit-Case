@@ -1,5 +1,6 @@
 package com.project.suitcase.data.datasource
 
+import android.util.Log
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.toObject
@@ -11,13 +12,16 @@ class TripRemoteDataSource(
     private val firebaseAuth: FirebaseAuth,
     private val fireStore: FirebaseFirestore
 ) {
-    val user = firebaseAuth.currentUser
+
     suspend fun addTrip(
         tripName: String,
         date: String
     ): Result<String> {
         return try {
+
+            val user = firebaseAuth.currentUser
             if (user != null) {
+
                 val docRef = fireStore.collection("users").document(user.uid)
                     .collection("trip").document()
                 val tripId = docRef.id
@@ -26,12 +30,11 @@ class TripRemoteDataSource(
                     tripId = tripId,
                     tripName = tripName,
                     date = date,
-                    items = emptyList()
                 )
 
                 docRef.set(tripInfo).await()
-                Result.success(tripId)
 
+                Result.success(tripId)
             } else {
                 Result.failure(Exception("User not authenticated"))
             }
@@ -42,6 +45,7 @@ class TripRemoteDataSource(
 
     suspend fun getTripsIncludingItems(): Result<List<TripResponse>> {
         return try {
+            val user = firebaseAuth.currentUser
             if (user != null) {
                 val snapshot = fireStore.collection("users")
                     .document(user.uid)
@@ -58,6 +62,7 @@ class TripRemoteDataSource(
                         trip.copy(items = items)
                     }
                 }
+                Log.e("TripRemoteData", "${user}")
 
                 Result.success(trips)
             } else {
@@ -70,6 +75,7 @@ class TripRemoteDataSource(
 
     suspend fun getTrips(): Result<List<TripResponse>> {
         return try {
+            val user = firebaseAuth.currentUser
             if (user != null) {
 
                 val snapshot = fireStore.collection("users")
@@ -93,6 +99,7 @@ class TripRemoteDataSource(
 
     suspend fun deleteAllTrip(): Result<Unit>{
         return try{
+            val user = firebaseAuth.currentUser
             if (user != null) {
                 val snapshot = fireStore.collection("users")
                     .document(user.uid)

@@ -39,7 +39,7 @@ class AddNewItemUnderTripActivity : AppCompatActivity() {
 
         tripId = intent.getStringExtra("tripId")
 
-        binding?.imageView?.setOnClickListener {
+        binding?.ivItemImage?.setOnClickListener {
             chooseImage()
         }
         binding?.btnSaveItem?.setOnClickListener {
@@ -47,7 +47,6 @@ class AddNewItemUnderTripActivity : AppCompatActivity() {
             val itemDescription = binding?.edtItemDescription?.text.toString()
             val itemPrice = binding?.edtPrice?.text.toString()
             val itemLocation = binding?.edtLocation?.text.toString()
-            val itemImage = imageUri
 
             tripId?.let {
                 addItemVieModel.addItem(
@@ -55,7 +54,7 @@ class AddNewItemUnderTripActivity : AppCompatActivity() {
                     itemPrice = itemPrice,
                     itemDescription = itemDescription,
                     itemLocation = itemLocation,
-                    itemImage = itemImage,
+                    itemImage = imageUri,
                     itemName = itemName,
                 )
             }
@@ -128,8 +127,8 @@ class AddNewItemUnderTripActivity : AppCompatActivity() {
                     imageUri?.let {
                         Glide.with(applicationContext)
                             .load(it)
-                            .into(binding?.imageView!!)
-                        binding?.imageView?.setBackgroundResource(R.color.white)
+                            .into(binding?.ivItemImage!!)
+                        binding?.ivItemImage?.setBackgroundResource(R.color.white)
                     }
                 }
             }

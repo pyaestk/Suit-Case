@@ -29,6 +29,7 @@
         app:itemRippleColor="@android:color/transparent"
         app:itemTextColor="@drawable/item_selector"
         app:labelVisibilityMode="selected"
+        app:itemTextAppearanceActiveBoldEnabled="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:menu="@menu/menu" />
 

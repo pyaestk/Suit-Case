@@ -1,5 +1,6 @@
 package com.project.suitcase.view.adapter
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -45,14 +46,14 @@ class ItemListDiffUtilAdapter: RecyclerView.Adapter<ItemListDiffUtilAdapter.Item
 
     override fun onBindViewHolder(holder: ItemListDIffUtilViewHolder, position: Int) {
         val currentItem = differ.currentList[position]
+        Log.e("ItemListAdapter", currentItem.itemImage!!)
         holder.binding.apply {
-            if (currentItem.itemImage == null) {
-                ivItem.setImageResource(R.drawable.image_icon)
+            if (currentItem.itemImage.isNullOrEmpty()) {
+                ivItem.setImageResource(R.drawable.photo)
             } else {
                 Glide.with(holder.itemView)
                     .load(currentItem.itemImage)
                     .into(ivItem)
-                ivItem.setBackgroundResource(R.color.white)
             }
 
             tvItemName.text = currentItem.itemName
@@ -80,7 +81,7 @@ class ItemListDiffUtilAdapter: RecyclerView.Adapter<ItemListDiffUtilAdapter.Item
             onCheckBoxClick(currentItem.itemId, currentItem.tripId, isChecked)
         }
         holder.itemView.setOnClickListener {
-//            onItemClick.invoke(currentItem)
+            onItemClick.invoke(currentItem)
         }
 
     }

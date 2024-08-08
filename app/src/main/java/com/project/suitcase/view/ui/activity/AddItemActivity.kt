@@ -36,6 +36,7 @@ class AddItemActivity : AppCompatActivity() {
     private lateinit var tripMap: Map<String, String>
     private var imageUri: Uri? = null
     private lateinit var activityResultLauncher: ActivityResultLauncher<Intent>
+
     override fun onResume() {
         super.onResume()
         addItemVieModel.getTrips()
@@ -52,7 +53,7 @@ class AddItemActivity : AppCompatActivity() {
             processSharedText(sharedText)
         }
 
-        binding?.imageView?.setOnClickListener {
+        binding?.ivItemImage?.setOnClickListener {
             chooseImage()
         }
         binding?.btnSaveItem?.setOnClickListener {
@@ -68,14 +69,12 @@ class AddItemActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
 
-            val itemImage = imageUri // itemImage can be null
-
             addItemVieModel.addItem(
                 tripId = tripId,
                 itemPrice = itemPrice,
                 itemDescription = itemDescription,
                 itemLocation = itemLocation,
-                itemImage = itemImage,
+                itemImage = imageUri,
                 itemName = itemName,
             )
         }
@@ -196,8 +195,8 @@ class AddItemActivity : AppCompatActivity() {
                     imageUri?.let {
                         Glide.with(applicationContext)
                             .load(it)
-                            .into(binding?.imageView!!)
-                        binding?.imageView?.setBackgroundResource(R.color.white)
+                            .into(binding?.ivItemImage!!)
+                        binding?.ivItemImage?.setBackgroundResource(R.color.white)
                     }
                 }
             }

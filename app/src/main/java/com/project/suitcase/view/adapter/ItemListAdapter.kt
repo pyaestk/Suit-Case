@@ -46,13 +46,12 @@ class ItemsListAdapter: RecyclerView.Adapter<ItemsListAdapter.ItemsListViewHolde
     override fun onBindViewHolder(holder: ItemsListViewHolder, position: Int) {
         val currentItem = itemList[position]
         holder.binding.apply {
-            if (currentItem.itemImage == null) {
-                ivItem.setImageResource(R.drawable.image_icon)
+            if (currentItem.itemImage.isNullOrEmpty()) {
+                ivItem.setImageResource(R.drawable.photo)
             } else {
                 Glide.with(holder.itemView)
                     .load(currentItem.itemImage)
                     .into(ivItem)
-                ivItem.setBackgroundResource(R.color.white)
             }
 
             tvItemName.text = currentItem.itemName
@@ -80,7 +79,7 @@ class ItemsListAdapter: RecyclerView.Adapter<ItemsListAdapter.ItemsListViewHolde
             onCheckBoxClick(currentItem.itemId, currentItem.tripId, isChecked)
         }
         holder.itemView.setOnClickListener {
-//            onItemClick.invoke(currentItem)
+            onItemClick.invoke(currentItem)
         }
 
     }

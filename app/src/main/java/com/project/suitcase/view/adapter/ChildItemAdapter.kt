@@ -13,6 +13,10 @@ class ChildItemAdapter: RecyclerView.Adapter<ChildItemAdapter.ItemListViewHolder
 
     private var itemList: List<ItemDetailModel> = listOf()
 
+    lateinit var onItemClick: ((ItemDetailModel) -> Unit)
+
+
+
     @SuppressLint("NotifyDataSetChanged")
     fun setItemList(itemList: List<ItemDetailModel>){
         this.itemList = itemList
@@ -34,13 +38,14 @@ class ChildItemAdapter: RecyclerView.Adapter<ChildItemAdapter.ItemListViewHolder
     override fun onBindViewHolder(holder: ItemListViewHolder, position: Int) {
         val currentItem = itemList[position]
         holder.binding.apply {
-            if (currentItem.itemImage == null) {
-                ivItem.setImageResource(R.drawable.image_icon)
+
+            if (currentItem.itemImage.isNullOrEmpty()) {
+                ivItem.setImageResource(R.drawable.photo)
+                ivItem.maxHeight = 20
             } else {
                 Glide.with(holder.itemView)
                     .load(currentItem.itemImage)
                     .into(ivItem)
-                ivItem.setBackgroundResource(R.color.white)
             }
             tvItemName.text = currentItem.itemName
             tvItemPrice.text = if (currentItem.itemPrice.isBlank()) {
@@ -49,7 +54,9 @@ class ChildItemAdapter: RecyclerView.Adapter<ChildItemAdapter.ItemListViewHolder
                 "Price: $${currentItem.itemPrice}"
             }
 
-
+        }
+        holder.itemView.setOnClickListener {
+            onItemClick.invoke(currentItem)
         }
 
     }

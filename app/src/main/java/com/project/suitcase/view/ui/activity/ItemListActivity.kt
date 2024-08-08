@@ -72,7 +72,7 @@ class ItemListActivity : AppCompatActivity() {
         binding?.btnDeleteAll?.setOnClickListener {
             MaterialAlertDialogBuilder(this@ItemListActivity,
                 R.style.ThemeOverlay_App_MaterialAlertDialog)
-                .setTitle("Do you want to delete all items?")
+                .setTitle("Delete all items?")
                 .setMessage("All items will be removed permanently from device.")
                 .setNegativeButton("NO") { dialog, which ->
                     //nothing
@@ -85,6 +85,15 @@ class ItemListActivity : AppCompatActivity() {
                 .show()
         }
 
+        itemAdapter?.onItemClick = {
+            val intent = Intent(this@ItemListActivity, ItemDetailActivity::class.java).apply {
+                putExtra("itemID", it.itemId)
+                putExtra("tripID", it.tripId)
+                putExtra("itemImage", it.itemImage)
+            }
+            startActivity(intent)
+        }
+        //Item left and right swipe
         val itemTouchHelper = object : ItemTouchHelper.SimpleCallback(
             0, ItemTouchHelper.RIGHT or ItemTouchHelper.LEFT) {
             override fun onMove(
