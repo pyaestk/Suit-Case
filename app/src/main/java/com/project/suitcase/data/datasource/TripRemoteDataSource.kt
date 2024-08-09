@@ -58,7 +58,9 @@ class TripRemoteDataSource(
                     trip?.let {
                         val itemsSnapshot = tripDoc.reference.collection("items")
                             .orderBy("finished").get().await()
-                        val items = itemsSnapshot.documents.mapNotNull { it.toObject<ItemResponse>() }
+                        val items = itemsSnapshot.documents.mapNotNull {
+                            it.toObject<ItemResponse>()
+                        }
                         trip.copy(items = items)
                     }
                 }
