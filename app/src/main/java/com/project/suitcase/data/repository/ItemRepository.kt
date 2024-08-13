@@ -38,7 +38,6 @@ class ItemRepository(
         itemLocation: String?,
         itemImage: Uri?,
         itemPrice: String?,
-        finished: Boolean?
     ): Result<Unit> {
 
         return itemRemoteDatasource.editItemDetail(
@@ -49,7 +48,6 @@ class ItemRepository(
             itemLocation = itemLocation,
             itemImage = itemImage,
             itemName = itemName,
-            finished = finished
         )
 
     }

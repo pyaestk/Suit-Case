@@ -55,7 +55,6 @@ class ItemDetailViewModel(
         itemLocation: String?,
         itemImage: Uri?,
         itemPrice: String?,
-        finished: Boolean?
     ) {
         _uiState.value = ItemDetailUiState.Loading
         viewModelScope.launch {
@@ -67,7 +66,6 @@ class ItemDetailViewModel(
                 itemLocation = itemLocation,
                 itemImage = itemImage,
                 itemName = itemName,
-                finished = finished
             ).fold(
                 onSuccess = {
                     _editItemDetailUiEvent.value = EditItemDetailViewModelEvent.Success

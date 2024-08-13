@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/bluewhite_variant"
-    tools:context=".view.ui.activity.AddTripActivity">
+    tools:context=".view.ui.activity.trip.AddTripActivity">
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cardView3"
@@ -26,8 +26,8 @@
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:layout_marginStart="24dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginBottom="16dp"
+                android:layout_marginTop="24dp"
+                android:layout_marginBottom="24dp"
                 android:layout_weight="1"
                 android:tint="@color/bluewhite_variant"
                 app:layout_constraintBottom_toBottomOf="parent"

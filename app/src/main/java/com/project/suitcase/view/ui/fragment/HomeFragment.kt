@@ -13,8 +13,8 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.project.suitcase.R
 import com.project.suitcase.databinding.FragmentHomeBinding
 import com.project.suitcase.view.adapter.ParentTripAdapter
-import com.project.suitcase.view.ui.activity.ItemDetailActivity
-import com.project.suitcase.view.ui.activity.ItemListActivity
+import com.project.suitcase.view.ui.activity.item.ItemDetailActivity
+import com.project.suitcase.view.ui.activity.item.ItemListActivity
 import com.project.suitcase.view.viewmodel.DeleteAllTripViewModelEvent
 import com.project.suitcase.view.viewmodel.HomeFragmentUiState
 import com.project.suitcase.view.viewmodel.HomeFragmentViewModel

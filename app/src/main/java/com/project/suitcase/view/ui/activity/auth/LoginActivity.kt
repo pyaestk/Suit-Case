@@ -1,10 +1,12 @@
-package com.project.suitcase.view.ui.activity
+package com.project.suitcase.view.ui.activity.auth
 
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
+import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import com.project.suitcase.databinding.ActivityLoginBinding
+import com.project.suitcase.view.ui.activity.MainActivity
 import com.project.suitcase.view.viewmodel.LoginUiState
 import com.project.suitcase.view.viewmodel.LoginViewModel
 import com.project.suitcase.view.viewmodel.LoginViewModelEvent
@@ -18,6 +20,7 @@ class LoginActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding?.root)
+        enableEdgeToEdge()
 
         binding?.btnLogin?.setOnClickListener {
             viewModel.login(
@@ -25,8 +28,13 @@ class LoginActivity : AppCompatActivity() {
                 email = binding?.edtEmail?.text.toString().trim()
             )
         }
-        binding?.btnCreateAccount?.setOnClickListener {
-            startActivity(Intent(this@LoginActivity, RegisterActivity::class.java))
+
+//        binding?.btnCreateAccount?.setOnClickListener {
+//            startActivity(Intent(this@LoginActivity, RegisterActivity::class.java))
+//        }
+
+        binding?.btnBack?.setOnClickListener {
+            finish()
         }
 
         viewModel.uiState.observe(this) {state ->

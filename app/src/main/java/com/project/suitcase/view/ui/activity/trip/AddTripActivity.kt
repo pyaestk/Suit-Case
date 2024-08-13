@@ -1,4 +1,4 @@
-package com.project.suitcase.view.ui.activity
+package com.project.suitcase.view.ui.activity.trip
 
 import android.icu.util.Calendar
 import android.os.Bundle

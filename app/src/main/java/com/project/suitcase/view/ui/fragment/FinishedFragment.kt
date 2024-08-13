@@ -13,7 +13,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.project.suitcase.R
 import com.project.suitcase.databinding.FragmentFinishedBinding
 import com.project.suitcase.view.adapter.ItemsListAdapter
-import com.project.suitcase.view.ui.activity.ItemDetailActivity
+import com.project.suitcase.view.ui.activity.item.ItemDetailActivity
 import com.project.suitcase.view.viewmodel.DeleteFinishedListViewModelEvent
 import com.project.suitcase.view.viewmodel.FinishedListUiState
 import com.project.suitcase.view.viewmodel.FinishedListViewModel

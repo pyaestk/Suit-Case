@@ -5,6 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/bluewhite_variant"
     tools:context=".view.ui.activity.MainActivity">
 
     <fragment
@@ -28,7 +29,7 @@
         app:itemIconTint="@drawable/item_selector"
         app:itemRippleColor="@android:color/transparent"
         app:itemTextColor="@drawable/item_selector"
-        app:labelVisibilityMode="selected"
+        app:labelVisibilityMode="unlabeled"
         app:itemTextAppearanceActiveBoldEnabled="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:menu="@menu/menu" />

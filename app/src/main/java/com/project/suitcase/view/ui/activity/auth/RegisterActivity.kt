@@ -1,10 +1,12 @@
-package com.project.suitcase.view.ui.activity
+package com.project.suitcase.view.ui.activity.auth
 
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
+import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import com.project.suitcase.databinding.ActivityRegisterBinding
+import com.project.suitcase.view.ui.activity.MainActivity
 import com.project.suitcase.view.viewmodel.RegisterUiState
 import com.project.suitcase.view.viewmodel.RegisterViewModel
 import com.project.suitcase.view.viewmodel.RegisterViewModelEvent
@@ -20,7 +22,7 @@ class RegisterActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityRegisterBinding.inflate(layoutInflater)
         setContentView(binding?.root)
-
+        enableEdgeToEdge()
         binding?.btnRegister?.setOnClickListener{
             viewModel.register(
                 userName = binding?.edtUserName?.text.toString(),
@@ -28,6 +30,14 @@ class RegisterActivity : AppCompatActivity() {
                 phoneNumber = binding?.edtPhoneNum?.text.toString().trim(),
                 email = binding?.edtEmail?.text.toString().trim()
             )
+        }
+
+        binding?.btnTvLogIn?.setOnClickListener {
+            startActivity(Intent(this, LoginActivity::class.java))
+        }
+
+        binding?.btnBack?.setOnClickListener {
+            finish()
         }
 
         viewModel.uiState.observe(this){ state ->

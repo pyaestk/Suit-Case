@@ -12,6 +12,8 @@ import androidx.navigation.ui.NavigationUI
 import com.google.firebase.auth.FirebaseAuth
 import com.project.suitcase.R
 import com.project.suitcase.databinding.ActivityMainBinding
+import com.project.suitcase.view.ui.activity.item.AddItemActivity
+import com.project.suitcase.view.ui.activity.trip.AddTripActivity
 
 class MainActivity : AppCompatActivity() {
 

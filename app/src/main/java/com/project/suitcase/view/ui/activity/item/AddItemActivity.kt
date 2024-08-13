@@ -1,4 +1,4 @@
-package com.project.suitcase.view.ui.activity
+package com.project.suitcase.view.ui.activity.item
 
 import android.Manifest
 import android.R.layout.simple_list_item_1
@@ -20,6 +20,7 @@ import androidx.core.content.ContextCompat
 import com.bumptech.glide.Glide
 import com.project.suitcase.R
 import com.project.suitcase.databinding.ActivityAddItemBinding
+import com.project.suitcase.view.ui.activity.trip.AddTripActivity
 import com.project.suitcase.view.viewmodel.AddItemGetTripsViewModelEvent
 import com.project.suitcase.view.viewmodel.AddItemUiState
 import com.project.suitcase.view.viewmodel.AddItemViewModel

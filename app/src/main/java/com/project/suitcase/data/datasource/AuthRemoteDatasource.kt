@@ -2,8 +2,8 @@ package com.project.suitcase.data.datasource
 
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.toObject
 import com.project.suitcase.data.model.UserDetailResponse
-import com.project.suitcase.data.model.UserResponse
 import kotlinx.coroutines.tasks.await
 
 class AuthRemoteDatasource(
@@ -20,13 +20,12 @@ class AuthRemoteDatasource(
             val authResult = firebaseAuth.createUserWithEmailAndPassword(email, password).await()
             val user = authResult.user
             if (user != null) {
-                val userInfo = UserResponse(
-                    data = UserDetailResponse(
-                        email = email,
-                        password = password,
-                        phoneNumber = phoneNumber,
-                        name = userName,
-                    )
+                val userInfo = UserDetailResponse(
+                    email = email,
+                    password = password,
+                    phoneNumber = phoneNumber,
+                    name = userName,
+                    userImage = null
                 )
                 firestore.collection("users").document(user.uid).set(userInfo).await()
 
@@ -48,6 +47,22 @@ class AuthRemoteDatasource(
             val user = authResult.user ?: throw Exception("Login failed")
             Result.success(user.uid)
 
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
+    suspend fun getUserInfo(): Result<UserDetailResponse> {
+        return try {
+            val uid = firebaseAuth.currentUser!!.uid
+            val documentSnapshot = firestore.collection("users").document(uid).get().await()
+            val userResponse = documentSnapshot.toObject<UserDetailResponse>()
+
+            if (userResponse != null) {
+                Result.success(userResponse)
+            } else {
+                Result.failure(Exception("User not found"))
+            }
         } catch (e: Exception) {
             Result.failure(e)
         }

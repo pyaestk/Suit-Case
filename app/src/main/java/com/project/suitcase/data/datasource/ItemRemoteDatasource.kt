@@ -78,7 +78,6 @@ class ItemRemoteDatasource(
         itemLocation: String?,
         itemImage: Uri?,
         itemPrice: String?,
-        finished: Boolean?
     ): Result<Unit> {
         return try {
             val user = firebaseAuth.currentUser
@@ -95,7 +94,6 @@ class ItemRemoteDatasource(
                 itemDescription?.let { updates["itemDescription"] = it }
                 itemLocation?.let { updates["itemLocation"] = it }
                 itemPrice?.let { updates["itemPrice"] = it }
-                finished?.let { updates["finished"] = it }
 
                 // Update item image if provided
                 if (itemImage != null) {

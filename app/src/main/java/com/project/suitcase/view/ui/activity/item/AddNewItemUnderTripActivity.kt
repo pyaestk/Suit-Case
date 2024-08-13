@@ -1,4 +1,4 @@
-package com.project.suitcase.view.ui.activity
+package com.project.suitcase.view.ui.activity.item
 
 import android.Manifest
 import android.content.Intent

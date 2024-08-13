@@ -5,15 +5,14 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/bluewhite_variant"
-    tools:context=".view.ui.activity.item.AddItemActivity">
+    android:background="@color/bluewhite_variant">
 
     <ProgressBar
         android:id="@+id/progressBar"
         style="?android:attr/progressBarStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:indeterminateTint="#1E88E5"
+        android:progressTint="#FF0000"
         android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="@+id/layout_content"
         app:layout_constraintEnd_toEndOf="parent"
@@ -41,18 +40,18 @@
                 android:layout_marginTop="24dp"
                 android:layout_marginBottom="24dp"
                 android:layout_weight="1"
-                android:tint="@color/bluewhite_variant"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/baseline_arrow_back" />
+                app:srcCompat="@drawable/baseline_arrow_back"
+                app:tint="@color/bluewhite_variant" />
 
             <TextView
                 android:id="@+id/textView2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
-                android:text="Create New Item"
+                android:text="Profile Detail"
                 android:textColor="@color/white"
                 android:textSize="20sp"
                 android:textStyle="bold"
@@ -78,12 +77,12 @@
             android:paddingBottom="45dp">
 
             <com.google.android.material.imageview.ShapeableImageView
-                android:id="@+id/iv_item_image"
-                android:layout_width="250dp"
+                android:id="@+id/iv_user_image"
+                android:layout_width="200dp"
                 android:layout_height="250dp"
                 android:layout_marginTop="16dp"
                 android:scaleType="fitCenter"
-                android:src="@drawable/image_icon"
+                android:src="@drawable/user_profile_image"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
@@ -105,13 +104,13 @@
                 app:hintEnabled="false"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/iv_item_image">
+                app:layout_constraintTop_toBottomOf="@+id/iv_user_image">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/edt_item_name"
+                    android:id="@+id/edt_user_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Item Name"
+                    android:hint="User Name"
                     android:inputType="text" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -134,10 +133,10 @@
                 app:layout_constraintTop_toBottomOf="@+id/textInputLayoutItemName">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/edt_item_description"
+                    android:id="@+id/edt_user_email"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Item Description"
+                    android:hint="User Email"
                     android:inputType="text" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -158,44 +157,19 @@
                 app:layout_constraintTop_toBottomOf="@+id/textInputLayoutItemDes">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/edt_price"
+                    android:id="@+id/edt_user_phone_number"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Item Price"
+                    android:hint="Phone number"
                     android:inputType="number|numberDecimal" />
             </com.google.android.material.textfield.TextInputLayout>
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/textInputLayout8"
-                android:layout_width="0dp"
-                android:layout_height="60dp"
-                android:layout_marginTop="16dp"
-                app:boxBackgroundColor="@color/white"
-                app:boxCornerRadiusBottomEnd="20dp"
-                app:boxCornerRadiusBottomStart="20dp"
-                app:boxCornerRadiusTopEnd="20dp"
-                app:boxCornerRadiusTopStart="20dp"
-                app:boxStrokeColor="#1E88E5"
-                app:hintAnimationEnabled="true"
-                app:hintEnabled="false"
-                app:layout_constraintEnd_toEndOf="@+id/textInputLayout7"
-                app:layout_constraintStart_toStartOf="@+id/textInputLayout7"
-                app:layout_constraintTop_toBottomOf="@+id/textInputLayout7">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/edt_location"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Location"
-                    android:inputType="text" />
-            </com.google.android.material.textfield.TextInputLayout>
-
             <com.google.android.material.button.MaterialButton
-                android:id="@+id/btn_save_item"
+                android:id="@+id/btn_save_profile"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
                 android:layout_marginStart="16dp"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="24dp"
                 android:layout_marginEnd="16dp"
                 android:backgroundTint="#1E88E5"
                 android:text="SAVE"
@@ -204,7 +178,7 @@
                 app:cornerRadius="20dp"
                 app:layout_constraintEnd_toEndOf="@+id/textInputLayoutItemDes"
                 app:layout_constraintStart_toStartOf="@+id/textInputLayoutItemDes"
-                app:layout_constraintTop_toBottomOf="@+id/textInputLayout8" />
+                app:layout_constraintTop_toBottomOf="@+id/textInputLayout7" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>

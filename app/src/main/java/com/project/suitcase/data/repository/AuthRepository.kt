@@ -1,6 +1,8 @@
 package com.project.suitcase.data.repository
 
 import com.project.suitcase.data.datasource.AuthRemoteDatasource
+import com.project.suitcase.data.utils.toModels
+import com.project.suitcase.domain.model.UserDetailModel
 
 class AuthRepository(
     private val authRemoteDatasource: AuthRemoteDatasource
@@ -37,6 +39,12 @@ class AuthRepository(
         }
 
         return result
+    }
+
+    suspend fun getUserInfo(): Result<UserDetailModel>{
+        return authRemoteDatasource.getUserInfo().map {
+            it.toModels()
+        }
     }
 
 }
