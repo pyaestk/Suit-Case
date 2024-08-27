@@ -1,6 +1,7 @@
 package com.project.suitcase.view.ui.activity
 
 import android.content.Intent
+import android.content.pm.ActivityInfo
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -36,8 +37,10 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         binding  = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding?.root)
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
 
         fAuth = FirebaseAuth.getInstance()
 

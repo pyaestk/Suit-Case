@@ -8,10 +8,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.firebase.auth.FirebaseAuth
 import com.project.suitcase.R
 import com.project.suitcase.databinding.FragmentSettingBinding
-import com.project.suitcase.view.ui.activity.auth.LoginActivity
+import com.project.suitcase.view.ui.activity.auth.WelcomeActivity
 import com.project.suitcase.view.ui.activity.profile.ProfileViewActivity
 import com.project.suitcase.view.viewmodel.UserProfileUiState
 import com.project.suitcase.view.viewmodel.UserProfileViewModel
@@ -76,12 +77,23 @@ class SettingFragment : Fragment() {
         }
 
         binding?.btnLogOut?.setOnClickListener {
-            fAuth.signOut()
+            MaterialAlertDialogBuilder(requireContext(),
+                R.style.ThemeOverlay_App_MaterialAlertDialog)
+                .setTitle("Do you want to log out?")
+//                .setMessage("All items will be removed permanently from device.")
+                .setNegativeButton("NO") { dialog, which ->
+                    //nothing
+                }
+                .setPositiveButton("YES") { dialog, which ->
+                    fAuth.signOut()
 
-            val intent = Intent(requireContext(), LoginActivity::class.java)
-            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                    val intent = Intent(requireContext(), WelcomeActivity::class.java)
+                    intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
 
-            startActivity(intent)
+                    startActivity(intent)
+                }
+                .show()
+
         }
     }
 

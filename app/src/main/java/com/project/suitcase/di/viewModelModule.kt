@@ -8,6 +8,7 @@ import com.project.suitcase.view.viewmodel.ItemDetailViewModel
 import com.project.suitcase.view.viewmodel.ItemListViewModel
 import com.project.suitcase.view.viewmodel.SearchViewModel
 import com.project.suitcase.view.viewmodel.UserProfileViewModel
+import com.project.suitcase.view.viewmodel.WelcomeScreenViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
@@ -55,6 +56,11 @@ val viewModelModule = module {
     }
     viewModel {
         UserProfileViewModel(
+            get()
+        )
+    }
+    viewModel {
+        WelcomeScreenViewModel(
             get()
         )
     }

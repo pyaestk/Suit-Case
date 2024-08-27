@@ -2,7 +2,6 @@ package com.project.suitcase.view.ui.fragment
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,12 +13,9 @@ import com.project.suitcase.R
 import com.project.suitcase.databinding.FragmentFinishedBinding
 import com.project.suitcase.view.adapter.ItemsListAdapter
 import com.project.suitcase.view.ui.activity.item.ItemDetailActivity
-import com.project.suitcase.view.viewmodel.DeleteFinishedListViewModelEvent
 import com.project.suitcase.view.viewmodel.FinishedListUiState
 import com.project.suitcase.view.viewmodel.FinishedListViewModel
 import com.project.suitcase.view.viewmodel.FinishedListViewModelEvent
-import com.project.suitcase.view.viewmodel.ItemListViewModel
-import com.project.suitcase.view.viewmodel.UpdateItemCheckedStatusViewModelEvent
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class FinishedFragment : Fragment() {
@@ -28,7 +24,6 @@ class FinishedFragment : Fragment() {
     private var finishedListAdapter: ItemsListAdapter? = null
 
     private val finishedListViewModel: FinishedListViewModel by viewModel()
-    private val itemListViewModel: ItemListViewModel by viewModel()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -65,7 +60,7 @@ class FinishedFragment : Fragment() {
         }
 
         finishedListAdapter?.onCheckBoxClick = { itemId, tripId, isChecked ->
-            itemListViewModel.updateItemCheckedStatus(
+            finishedListViewModel.updateItemCheckedStatus(
                 finished = isChecked,
                 tripId = tripId,
                 itemId = itemId
@@ -91,42 +86,31 @@ class FinishedFragment : Fragment() {
                     binding?.rvFinishedList?.visibility = View.INVISIBLE
                     binding?.progressBarFinished?.visibility = View.VISIBLE
                 }
+
+                FinishedListUiState.DeleteAllSuccess -> {
+                    binding?.rvFinishedList?.visibility = View.VISIBLE
+                    binding?.progressBarFinished?.visibility = View.INVISIBLE
+                }
+                is FinishedListUiState.Success -> {
+                    binding?.rvFinishedList?.visibility = View.VISIBLE
+                    binding?.progressBarFinished?.visibility = View.INVISIBLE
+                    finishedListAdapter?.setItemList(state.itemList)
+                    if (state.itemList.size < 1) {
+                        binding?.emptyLayout?.visibility = View.VISIBLE
+                    } else {
+                        binding?.emptyLayout?.visibility = View.INVISIBLE
+                    }
+                }
+
+                FinishedListUiState.UpdateSuccess -> {
+                    Toast.makeText(requireContext(), "Item has been removed from Finished", Toast.LENGTH_SHORT).show()
+                }
             }
         }
-        finishedListViewModel.finishedItemListUiEvent.observe(viewLifecycleOwner) {event ->
-            when(event){
+        finishedListViewModel.finishedItemListUiEvent.observe(viewLifecycleOwner) { event ->
+            when(event) {
                 is FinishedListViewModelEvent.Error -> {
                     Toast.makeText(requireContext(), event.error, Toast.LENGTH_SHORT).show()
-                }
-                is FinishedListViewModelEvent.Success -> {
-                    binding?.rvFinishedList?.visibility = View.VISIBLE
-                    binding?.progressBarFinished?.visibility = View.INVISIBLE
-                    finishedListAdapter?.setItemList(event.itemList)
-                    Log.e("Finished", event.itemList.toString())
-                }
-            }
-        }
-        finishedListViewModel.deleteFinishedItemListUiEvent.observe(viewLifecycleOwner) {event ->
-            when(event) {
-                is DeleteFinishedListViewModelEvent.Error -> {
-                    Toast.makeText(requireContext(), event.error, Toast.LENGTH_SHORT).show()
-                }
-                DeleteFinishedListViewModelEvent.Success -> {
-                    binding?.rvFinishedList?.visibility = View.VISIBLE
-                    binding?.progressBarFinished?.visibility = View.INVISIBLE
-                    Toast.makeText(requireContext(), "All finished items has been deleted", Toast.LENGTH_SHORT).show()
-                }
-            }
-        }
-
-        //for item list viewModel
-        itemListViewModel.updateItemCheckedStatusUiEvent.observe(viewLifecycleOwner) { event ->
-            when(event){
-                is UpdateItemCheckedStatusViewModelEvent.Error -> {
-                    Toast.makeText(requireContext(), event.error, Toast.LENGTH_SHORT).show()
-                }
-                UpdateItemCheckedStatusViewModelEvent.Success -> {
-                    finishedListViewModel.getAllFinishedItemList()
                 }
             }
         }

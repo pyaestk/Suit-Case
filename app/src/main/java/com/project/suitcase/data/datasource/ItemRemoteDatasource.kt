@@ -17,6 +17,7 @@ class ItemRemoteDatasource(
     //item adding
     suspend fun addItem(
         tripId: String,
+        tripName: String,
         itemName: String,
         itemDescription: String,
         itemLocation: String,
@@ -56,6 +57,7 @@ class ItemRemoteDatasource(
                     itemImage = itemImageUrl,
                     itemName = itemName,
                     tripId = tripId,
+                    tripName = tripName,
                     finished = finished
                 )
                 docRef.set(itemInfo).await()
@@ -303,6 +305,37 @@ class ItemRemoteDatasource(
             Result.failure(e)
         }
     }
+
+    // Mark all items as finished for a specific trip
+    suspend fun markAllItemsAsFinished(tripId: String): Result<Unit> {
+        return try {
+            val user = firebaseAuth.currentUser
+            if (user != null) {
+                val userRef = fireStore.collection("users").document(user.uid)
+                val itemsRef = userRef.collection("trip").document(tripId).collection("items")
+
+                // Get all items in the trip
+                val snapshot = itemsRef.get().await()
+
+                val batch = fireStore.batch()
+
+                // Mark each item as finished
+                for (document in snapshot.documents) {
+                    batch.update(document.reference, "finished", true)
+                }
+
+                // Commit the batch update
+                batch.commit().await()
+
+                Result.success(Unit)
+            } else {
+                Result.failure(Exception("User not authenticated"))
+            }
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
 
 
     //delete all items in specific trip

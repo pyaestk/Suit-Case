@@ -6,27 +6,34 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
+import android.widget.PopupMenu
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.datepicker.CalendarConstraints
+import com.google.android.material.datepicker.DateValidatorPointForward
+import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.project.suitcase.R
 import com.project.suitcase.databinding.FragmentHomeBinding
+import com.project.suitcase.domain.model.TripDetailModel
 import com.project.suitcase.view.adapter.ParentTripAdapter
 import com.project.suitcase.view.ui.activity.item.ItemDetailActivity
 import com.project.suitcase.view.ui.activity.item.ItemListActivity
-import com.project.suitcase.view.viewmodel.DeleteAllTripViewModelEvent
 import com.project.suitcase.view.viewmodel.HomeFragmentUiState
 import com.project.suitcase.view.viewmodel.HomeFragmentViewModel
 import com.project.suitcase.view.viewmodel.HomeFragmentViewModelEvent
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import java.text.SimpleDateFormat
+import java.util.Locale
 
 
-class HomeFragment : Fragment() {
+class HomeFragment : Fragment(), ParentTripAdapter.OnTripMenuClickListener {
 
     private var binding: FragmentHomeBinding? = null
     var parentTripAdapter: ParentTripAdapter? = null
-    
+
     private val homeFragmentViewModel: HomeFragmentViewModel by viewModel()
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -40,10 +47,14 @@ class HomeFragment : Fragment() {
         super.onResume()
         homeFragmentViewModel.getTripsAndItems()
     }
+
+    
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        parentTripAdapter = ParentTripAdapter()
+        parentTripAdapter = ParentTripAdapter().apply {
+            setOnTripMenuClickListener(this@HomeFragment)
+        }
 
         binding?.rvTrip?.apply {
             layoutManager = LinearLayoutManager(requireContext(),
@@ -81,45 +92,139 @@ class HomeFragment : Fragment() {
             }
             startActivity(intent)
         }
-        
+
         viewModelSetUp()
 
     }
 
     private fun viewModelSetUp() {
-
         homeFragmentViewModel.uiState.observe(viewLifecycleOwner) { state ->
             when(state) {
                 HomeFragmentUiState.Loading -> {
                     binding?.rvTrip?.visibility = View.INVISIBLE
                     binding?.progressBar?.visibility = View.VISIBLE
                 }
+                HomeFragmentUiState.AllTripDeleteSuccess -> {
+                    binding?.rvTrip?.visibility = View.VISIBLE
+                    binding?.progressBar?.visibility = View.INVISIBLE
+                    Toast.makeText(requireContext(), "All items has been deleted",
+                        Toast.LENGTH_SHORT).show()
+                }
+                is HomeFragmentUiState.TripListSuccess -> {
+                    binding?.rvTrip?.visibility = View.VISIBLE
+                    binding?.progressBar?.visibility = View.INVISIBLE
+                    parentTripAdapter?.setTripList(state.trips)
+                }
+
+                HomeFragmentUiState.TripListDeleteSuccess -> {
+                    binding?.rvTrip?.visibility = View.VISIBLE
+                    binding?.progressBar?.visibility = View.INVISIBLE
+                    homeFragmentViewModel.getTripsAndItems()
+                }
+
+                HomeFragmentUiState.TripEditSuccess -> {
+                    binding?.rvTrip?.visibility = View.VISIBLE
+                    binding?.progressBar?.visibility = View.INVISIBLE
+                    homeFragmentViewModel.getTripsAndItems()
+                }
             }
         }
-        homeFragmentViewModel.tripListUiEvent.observe(viewLifecycleOwner) { event ->
+
+        homeFragmentViewModel.uiEvent.observe(viewLifecycleOwner) { event ->
             when(event) {
                 is HomeFragmentViewModelEvent.Error -> {
                     Toast.makeText(requireContext(), event.error, Toast.LENGTH_SHORT).show()
-                    Log.e("HomeFragment", event.error)
-                }
-                is HomeFragmentViewModelEvent.Success -> {
-                    binding?.rvTrip?.visibility = View.VISIBLE
-                    binding?.progressBar?.visibility = View.INVISIBLE
-                    parentTripAdapter?.setTripList(event.trips)
-                }
-            }
-        }
-        homeFragmentViewModel.deleteAllTripViewModelEvent.observe(viewLifecycleOwner) { event ->
-            when(event){
-                is DeleteAllTripViewModelEvent.Error -> {
-                    Toast.makeText(requireContext(), event.error, Toast.LENGTH_SHORT).show()
-                }
-                is DeleteAllTripViewModelEvent.Success -> {
-                    Toast.makeText(requireContext(), "All items has been deleted",
-                        Toast.LENGTH_SHORT).show()
                 }
             }
         }
     }
+
+    override fun onTripMenuClick(trip: TripDetailModel, position: Int) {
+        val view = binding?.rvTrip?.findViewHolderForAdapterPosition(position)?.itemView?.findViewById<View>(R.id.btn_trip_menu)
+        view?.let {
+            val popupMenu = PopupMenu(requireContext(), it,
+                0, 0, R.style.CustomPopupMenu)
+            popupMenu.inflate(R.menu.trip_menu)
+
+            // Force icons to show
+            try {
+                val fields = popupMenu.javaClass.declaredFields
+                for (field in fields) {
+                    if ("mPopup" == field.name) {
+                        field.isAccessible = true
+                        val menuPopupHelper = field.get(popupMenu)
+                        val classPopupHelper = Class.forName(menuPopupHelper.javaClass.name)
+                        val setForceIcons = classPopupHelper.getMethod("setForceShowIcon", Boolean::class.java)
+                        setForceIcons.invoke(menuPopupHelper, true)
+                        break
+                    }
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+
+            popupMenu.setOnMenuItemClickListener { menuItem ->
+                when (menuItem.itemId) {
+                    R.id.editTrip -> {
+                        val inflater = LayoutInflater.from(requireContext())
+                        val dialogView = inflater.inflate(R.layout.dialog_edit_trip, null)
+
+                        val tripNameInput = dialogView.findViewById<EditText>(R.id.edt_trip_name)
+                        val tripDateInput = dialogView.findViewById<EditText>(R.id.edt_trip_date)
+
+                        tripNameInput.setText(trip.tripName)
+                        tripDateInput.setText(trip.date)
+
+                        tripDateInput.setOnClickListener{
+                            val constraintsBuilder = CalendarConstraints.Builder()
+                                .setValidator(DateValidatorPointForward.now())
+
+                            val datePicker = MaterialDatePicker.Builder.datePicker()
+                                .setTitleText("Select Trip Date")
+                                .setTheme(R.style.ThemeOverlay_App_DatePicker)
+                                .setCalendarConstraints(constraintsBuilder.build())
+                                .build()
+
+                            datePicker.addOnPositiveButtonClickListener { selection ->
+                                // Format the selected date
+                                val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+                                val formattedDate = dateFormat.format(selection)
+                                tripDateInput.setText(formattedDate)
+                            }
+
+                            datePicker.show(parentFragmentManager, "DATE_PICKER")
+                        }
+
+                        // Create and show the dialog
+                        MaterialAlertDialogBuilder(requireContext(),
+                            R.style.ThemeOverlay_App_MaterialAlertDialog)
+                            .setView(dialogView)
+                            .setTitle("Edit Trip")
+                            .setNegativeButton("Cancel", null)
+                            .setPositiveButton("Save") { dialog, which ->
+                                val newTripName = tripNameInput.text.toString()
+                                val newTripDate = tripDateInput.text.toString()
+
+                                // Update the trip in your ViewModel
+                                homeFragmentViewModel.editTrip(
+                                    tripId = trip.tripId,
+                                    tripName = newTripName,
+                                    date = newTripDate
+                                )
+                            }
+                            .show()
+                        true
+                    }
+                    R.id.deleteTrip -> {
+                        homeFragmentViewModel.deleteTrip(trip.tripId)
+                        true
+                    }
+                    else -> false
+                }
+            }
+            popupMenu.show()
+        } ?: Log.e("TripMenu", "Unable to find view for position $position")
+    }
+
 
 }

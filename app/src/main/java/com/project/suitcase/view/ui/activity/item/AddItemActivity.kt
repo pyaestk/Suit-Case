@@ -3,6 +3,7 @@ package com.project.suitcase.view.ui.activity.item
 import android.Manifest
 import android.R.layout.simple_list_item_1
 import android.content.Intent
+import android.content.pm.ActivityInfo
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
@@ -47,7 +48,7 @@ class AddItemActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityAddItemBinding.inflate(layoutInflater)
         setContentView(binding?.root)
-
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
         registerActivityForResult()
 
         intent.getStringExtra("sharedText")?.let { sharedText ->
@@ -72,6 +73,7 @@ class AddItemActivity : AppCompatActivity() {
 
             addItemVieModel.addItem(
                 tripId = tripId,
+                tripName = selectedTrip,
                 itemPrice = itemPrice,
                 itemDescription = itemDescription,
                 itemLocation = itemLocation,

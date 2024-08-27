@@ -2,10 +2,12 @@ package com.project.suitcase.view.ui.activity.item
 
 import android.Manifest
 import android.content.Intent
+import android.content.pm.ActivityInfo
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.activity.result.ActivityResultCallback
@@ -30,14 +32,18 @@ class AddNewItemUnderTripActivity : AppCompatActivity() {
     private lateinit var activityResultLauncher: ActivityResultLauncher<Intent>
 
     private var tripId: String? = null
+    private var tripName: String? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityAddNewItemUnderTripBinding.inflate(layoutInflater)
         setContentView(binding?.root)
-
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
         registerActivityForResult()
 
         tripId = intent.getStringExtra("tripId")
+        tripName = intent.getStringExtra("tripName")
+        Log.d("TripName", tripName.toString())
 
         binding?.ivItemImage?.setOnClickListener {
             chooseImage()
@@ -56,6 +62,7 @@ class AddNewItemUnderTripActivity : AppCompatActivity() {
                     itemLocation = itemLocation,
                     itemImage = imageUri,
                     itemName = itemName,
+                    tripName = tripName!!
                 )
             }
         }

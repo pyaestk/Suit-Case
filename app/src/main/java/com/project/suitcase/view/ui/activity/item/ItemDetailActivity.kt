@@ -1,8 +1,8 @@
 package com.project.suitcase.view.ui.activity.item
 
 import android.content.Intent
+import android.content.pm.ActivityInfo
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -14,7 +14,6 @@ import com.project.suitcase.view.viewmodel.ItemDetailUiState
 import com.project.suitcase.view.viewmodel.ItemDetailViewModel
 import com.project.suitcase.view.viewmodel.ItemDetailViewModelEvent
 import com.project.suitcase.view.viewmodel.ItemListViewModel
-import com.project.suitcase.view.viewmodel.UpdateItemCheckedStatusViewModelEvent
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class ItemDetailActivity : AppCompatActivity() {
@@ -43,7 +42,7 @@ class ItemDetailActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityItemDetailBinding.inflate(layoutInflater)
         setContentView(binding?.root)
-
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
         binding?.btnBack?.setOnClickListener {
             finish()
         }
@@ -95,6 +94,12 @@ class ItemDetailActivity : AppCompatActivity() {
             putExtra(Intent.EXTRA_TEXT, message)
             type = "text/plain"
         }
+
+//        val smsIntent = Intent(Intent.ACTION_VIEW).apply {
+//            data = Uri.parse("sms:")
+//            putExtra("sms_body", message)
+//        }
+
         val shareIntent = Intent.createChooser(sendIntent, null)
         startActivity(shareIntent)
     }
@@ -116,16 +121,6 @@ class ItemDetailActivity : AppCompatActivity() {
                 }
                 is ItemDetailViewModelEvent.Success -> {
                     updateUI(it.itemDetailModel)
-                }
-            }
-        }
-        itemListViewModel.updateItemCheckedStatusUiEvent.observe(this) { event ->
-            when(event){
-                is UpdateItemCheckedStatusViewModelEvent.Error -> {
-                    Toast.makeText(this, event.error, Toast.LENGTH_SHORT).show()
-                }
-                UpdateItemCheckedStatusViewModelEvent.Success -> {
-                    Log.d("CheckedStatus", "Item has been marked as finished")
                 }
             }
         }

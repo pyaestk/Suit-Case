@@ -11,7 +11,8 @@ fun ItemResponse.toModels(): ItemDetailModel = ItemDetailModel(
     itemName = this.itemName.orEmpty(),
     itemDescription = this.itemDescription.orEmpty(),
     tripId = this.tripId.orEmpty(),
-    finished = this.finished
+    finished = this.finished,
+    tripName = this.tripName.orEmpty()
 )
 
 fun List<ItemResponse>.toModels(): List<ItemDetailModel> = this.map {

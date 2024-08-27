@@ -77,7 +77,7 @@ class SearchResultAdapter:
             onCheckBoxClick(currentItem.itemId, currentItem.tripId, isChecked)
         }
         holder.itemView.setOnClickListener {
-//            onItemClick.invoke(currentItem)
+            onItemClick.invoke(currentItem)
         }
     }
 
@@ -91,8 +91,7 @@ class SearchResultAdapter:
                     val filteredList = ArrayList<ItemDetailModel>()
                     for (item in itemList) {
                         if (item.itemName.toLowerCase().contains(searchText) ||
-                            item.itemLocation.toLowerCase().contains(searchText) ||
-                            item.itemDescription.toLowerCase().contains(searchText)) {
+                            item.tripName.toLowerCase().contains(searchText)) {
                             filteredList.add(item)
                         }
                     }

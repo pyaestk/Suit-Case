@@ -4,14 +4,18 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.google.firebase.auth.FirebaseAuth
 import com.project.suitcase.data.repository.AuthRepository
 import com.project.suitcase.view.utils.SingleLiveEvent
+import com.project.suitcase.view.viewmodel.util.Validator
 import kotlinx.coroutines.launch
 
 class LoginViewModel(
-    private val authRepository: AuthRepository
+    private val authRepository: AuthRepository,
+    private val validator: Validator
 ): ViewModel() {
+
+    private val _loginFormState = MutableLiveData(LoginFormState())
+    val loginFormState: LiveData<LoginFormState> = _loginFormState
 
     private val _uiState = MutableLiveData<LoginUiState>()
     val uiState: LiveData<LoginUiState> = _uiState
@@ -19,11 +23,30 @@ class LoginViewModel(
     private val _uiEvent = SingleLiveEvent<LoginViewModelEvent>()
     val uiEvent: LiveData<LoginViewModelEvent> = _uiEvent
 
-    init {
-        val fAuth = FirebaseAuth.getInstance()
-        val user = fAuth.currentUser
-        if (user != null){
-            _uiState.value = LoginUiState.NavigateToMainScreen
+    fun onEvent(loginFormEvent: LoginFormEvent) {
+        when (loginFormEvent) {
+            is LoginFormEvent.EmailChanged -> {
+                _loginFormState.value = _loginFormState.value?.copy(email = loginFormEvent.email)
+            }
+
+            is LoginFormEvent.PasswordChange -> {
+                _loginFormState.value =
+                    _loginFormState.value?.copy(password = loginFormEvent.password)
+            }
+            is LoginFormEvent.Submit -> {
+                _loginFormState.value?.let {
+                    val emailResult = validator.emailValidator(it.email)
+                    val passwordResult = it.password.isNotBlank()
+
+                    if (emailResult.successful && passwordResult) {
+                        login(it.email, it.password)
+                    }else{
+                        _loginFormState.value = _loginFormState.value?.copy(
+                            emailError = emailResult.errorMessage,
+                        )
+                    }
+                }
+            }
         }
     }
 
@@ -50,15 +73,28 @@ class LoginViewModel(
         }
     }
 
+    fun clearEmailError() {
+        _loginFormState.value = _loginFormState.value?.copy(emailError = null)
+    }
+
 }
 
 sealed class LoginUiState {
     data object Loading : LoginUiState()
-
-    data object NavigateToMainScreen: LoginUiState()
 }
 
 sealed class LoginViewModelEvent {
     data object LoginSuccess : LoginViewModelEvent()
     data class Error(val error: String) : LoginViewModelEvent()
 }
+sealed class LoginFormEvent {
+    data class EmailChanged(val email: String) : LoginFormEvent()
+    data class PasswordChange(val password: String) : LoginFormEvent()
+    data object Submit : LoginFormEvent()
+}
+
+data class LoginFormState(
+    val email: String = "",
+    val emailError: String? = null,
+    val password: String = "",
+)

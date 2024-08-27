@@ -28,6 +28,7 @@ class AddItemViewModel(
 
     fun addItem(
         tripId: String,
+        tripName: String,
         itemName: String,
         itemDescription: String,
         itemLocation: String,
@@ -38,6 +39,7 @@ class AddItemViewModel(
         viewModelScope.launch {
             itemRepository.addItem(
                 tripId = tripId,
+                tripName = tripName,
                 itemPrice = itemPrice,
                 itemDescription = itemDescription,
                 itemLocation = itemLocation,

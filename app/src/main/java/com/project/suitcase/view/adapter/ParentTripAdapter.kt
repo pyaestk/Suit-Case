@@ -1,6 +1,7 @@
 package com.project.suitcase.view.adapter
 
 import android.annotation.SuppressLint
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -10,16 +11,19 @@ import com.project.suitcase.databinding.ItemTripBinding
 import com.project.suitcase.domain.model.ItemDetailModel
 import com.project.suitcase.domain.model.TripDetailModel
 
-class ParentTripAdapter(
-
-): RecyclerView.Adapter<ParentTripAdapter.TripListViewHolder>() {
+class ParentTripAdapter: RecyclerView.Adapter<ParentTripAdapter.TripListViewHolder>() {
 
     private var tripList: List<TripDetailModel> = listOf()
+    private var onTripMenuClickListener: OnTripMenuClickListener? = null
             
     @SuppressLint("NotifyDataSetChanged")
     fun setTripList(tripList: List<TripDetailModel>){
         this.tripList = tripList
         notifyDataSetChanged()
+    }
+
+    interface OnTripMenuClickListener {
+        fun onTripMenuClick(trip: TripDetailModel, position: Int)
     }
 
     lateinit var onItemClick: ((TripDetailModel) -> Unit)
@@ -36,6 +40,10 @@ class ParentTripAdapter(
 
     override fun getItemCount(): Int {
         return tripList.size
+    }
+
+    fun setOnTripMenuClickListener(listener: OnTripMenuClickListener) {
+        this.onTripMenuClickListener = listener
     }
 
     override fun onBindViewHolder(holder: TripListViewHolder, position: Int) {
@@ -59,6 +67,11 @@ class ParentTripAdapter(
 
         holder.itemView.setOnClickListener {
             onItemClick.invoke(currentTrip)
+        }
+
+        holder.binding.btnTripMenu.setOnClickListener {
+            Log.d("ParentTripAdapter", "Menu button clicked at position: $position")
+            onTripMenuClickListener?.onTripMenuClick(currentTrip, position)
         }
     }
 }

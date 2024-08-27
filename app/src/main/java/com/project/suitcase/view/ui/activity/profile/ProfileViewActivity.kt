@@ -1,5 +1,6 @@
 package com.project.suitcase.view.ui.activity.profile
 
+import android.content.pm.ActivityInfo
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -27,7 +28,7 @@ class ProfileViewActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityProfileViewBinding.inflate(layoutInflater)
         setContentView(binding?.root)
-
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
         binding?.btnBack?.setOnClickListener {
             finish()
         }

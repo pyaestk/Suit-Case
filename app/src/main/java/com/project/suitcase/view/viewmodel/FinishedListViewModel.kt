@@ -19,16 +19,12 @@ class FinishedListViewModel(
     private var _finishedItemListUiEvent = SingleLiveEvent<FinishedListViewModelEvent>()
     val finishedItemListUiEvent: LiveData<FinishedListViewModelEvent> = _finishedItemListUiEvent
 
-    private var _deleteFinishedItemListUiEvent = SingleLiveEvent<DeleteFinishedListViewModelEvent>()
-    val deleteFinishedItemListUiEvent:
-            LiveData<DeleteFinishedListViewModelEvent> = _deleteFinishedItemListUiEvent
-
     fun getAllFinishedItemList(){
         _uiState.value = FinishedListUiState.Loading
         viewModelScope.launch {
             itemRepository.getAllFinishedItems().fold(
                 onSuccess = {
-                    _finishedItemListUiEvent.value = FinishedListViewModelEvent.Success(it)
+                    _uiState.value = FinishedListUiState.Success(it)
                 },
                 onFailure = {
                     _finishedItemListUiEvent.value = FinishedListViewModelEvent.Error(
@@ -45,12 +41,32 @@ class FinishedListViewModel(
         viewModelScope.launch {
             itemRepository.deleteAllFinishedItems().fold(
                 onSuccess = {
-                    _deleteFinishedItemListUiEvent.value = DeleteFinishedListViewModelEvent.Success
+                    _uiState.value = FinishedListUiState.DeleteAllSuccess
                     getAllFinishedItemList()
                 },
                 onFailure = {
-                    _deleteFinishedItemListUiEvent.value = DeleteFinishedListViewModelEvent.Error(
-                        it.message ?: "Something went wrong"
+                    _finishedItemListUiEvent.value = FinishedListViewModelEvent.Error(
+                        it.message?:"Something went wrong"
+                    )
+                }
+            )
+        }
+    }
+
+    fun updateItemCheckedStatus(itemId: String, finished: Boolean, tripId: String) {
+        viewModelScope.launch {
+            itemRepository.updateCheckedItemStatus(
+                itemId = itemId,
+                finished = finished,
+                tripId = tripId
+            ).fold(
+                onSuccess = {
+                    _uiState.value = FinishedListUiState.UpdateSuccess
+                    getAllFinishedItemList()
+                },
+                onFailure = {
+                    _finishedItemListUiEvent.value = FinishedListViewModelEvent.Error(
+                        it.message?:"Something went wrong"
                     )
                 }
             )
@@ -61,12 +77,10 @@ class FinishedListViewModel(
 }
 sealed class FinishedListUiState {
     data object Loading : FinishedListUiState()
+    data class Success(val itemList: List<ItemDetailModel>): FinishedListUiState()
+    data object DeleteAllSuccess: FinishedListUiState()
+    data object UpdateSuccess: FinishedListUiState()
 }
 sealed class FinishedListViewModelEvent {
-    data class Success(val itemList: List<ItemDetailModel>) : FinishedListViewModelEvent()
     data class Error(val error: String) :FinishedListViewModelEvent()
-}
-sealed class DeleteFinishedListViewModelEvent {
-    data object Success: DeleteFinishedListViewModelEvent()
-    data class Error(val error: String) : DeleteFinishedListViewModelEvent()
 }

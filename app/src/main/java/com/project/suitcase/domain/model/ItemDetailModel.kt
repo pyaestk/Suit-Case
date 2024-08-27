@@ -8,5 +8,6 @@ data class ItemDetailModel(
     val itemImage: String?,
     val itemPrice: String,
     val tripId: String,
+    val tripName: String,
     val finished: Boolean?,
 )

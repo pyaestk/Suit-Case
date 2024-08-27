@@ -8,10 +8,12 @@ data class ItemResponse(
     val itemImage: String? = null,
     val itemPrice: String? = null,
     val tripId: String? = null,
+    val tripName: String? = null,
     val finished: Boolean? = false
 ) {
     // No-argument constructor for Firestore
     constructor() : this(null,
+        null,
         null,
         null,
         null,

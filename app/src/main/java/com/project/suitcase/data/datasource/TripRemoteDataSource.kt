@@ -122,4 +122,56 @@ class TripRemoteDataSource(
 
         }
     }
+
+    suspend fun deleteTrip(tripId: String): Result<Unit> {
+        return try {
+            val user = firebaseAuth.currentUser
+            if (user != null) {
+                val tripRef = fireStore.collection("users")
+                    .document(user.uid)
+                    .collection("trip")
+                    .document(tripId)
+
+                tripRef.delete().await()
+
+                Result.success(Unit)
+            } else {
+                Result.failure(Exception("User not authenticated"))
+            }
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
+    suspend fun editTrip(
+        tripId: String,
+        tripName: String? = null,
+        date: String? = null
+    ): Result<Unit> {
+        return try {
+            val user = firebaseAuth.currentUser
+            if (user != null) {
+                val tripRef = fireStore.collection("users")
+                    .document(user.uid)
+                    .collection("trip")
+                    .document(tripId)
+
+                val updates = mutableMapOf<String, Any>()
+                tripName?.let { updates["tripName"] = it }
+                date?.let { updates["date"] = it }
+
+                if (updates.isNotEmpty()) {
+                    tripRef.update(updates).await()
+                }
+
+                Result.success(Unit)
+            } else {
+                Result.failure(Exception("User not authenticated"))
+            }
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
+
 }

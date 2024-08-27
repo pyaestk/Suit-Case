@@ -7,7 +7,6 @@ import androidx.lifecycle.viewModelScope
 import com.project.suitcase.data.repository.ItemRepository
 import com.project.suitcase.data.repository.TripRepository
 import com.project.suitcase.domain.model.TripDetailModel
-import com.project.suitcase.view.utils.SingleLiveEvent
 import kotlinx.coroutines.launch
 
 class HomeFragmentViewModel(
@@ -18,21 +17,18 @@ class HomeFragmentViewModel(
     private val _uiState = MutableLiveData<HomeFragmentUiState>()
     val uiState: LiveData<HomeFragmentUiState> = _uiState
 
-    private val _tripListUiEvent = SingleLiveEvent<HomeFragmentViewModelEvent>()
-    val tripListUiEvent: LiveData<HomeFragmentViewModelEvent> = _tripListUiEvent
-
-    private val _deleteAllTripUiEvent = SingleLiveEvent<DeleteAllTripViewModelEvent>()
-    val deleteAllTripViewModelEvent: LiveData<DeleteAllTripViewModelEvent> = _deleteAllTripUiEvent
+    private val _uiEvent = MutableLiveData<HomeFragmentViewModelEvent>()
+    val uiEvent: LiveData<HomeFragmentViewModelEvent> = _uiEvent
 
     fun getTripsAndItems() {
         _uiState.value = HomeFragmentUiState.Loading
         viewModelScope.launch {
             tripRepository.getTripsIncludingItems().fold(
                 onSuccess = {
-                    _tripListUiEvent.value = HomeFragmentViewModelEvent.Success(it)
+                    _uiState.value = HomeFragmentUiState.TripListSuccess(it)
                 },
                 onFailure = {
-                    _tripListUiEvent.value = HomeFragmentViewModelEvent.Error(it.message?:
+                    _uiEvent.value = HomeFragmentViewModelEvent.Error(it.message?:
                     "Something went wrong")
                 }
             )
@@ -44,13 +40,49 @@ class HomeFragmentViewModel(
         viewModelScope.launch {
             tripRepository.deleteAllTrip().fold(
                 onFailure = {
-                    _deleteAllTripUiEvent.value = DeleteAllTripViewModelEvent.Error(
+                    _uiEvent.value = HomeFragmentViewModelEvent.Error(
                         it.message ?: "Something went wrong"
                     )
                 },
                 onSuccess = {
-                    _deleteAllTripUiEvent.value = DeleteAllTripViewModelEvent.Success
+                    _uiState.value = HomeFragmentUiState.AllTripDeleteSuccess
                     getTripsAndItems()
+                }
+            )
+        }
+    }
+
+    fun deleteTrip(tripId: String) {
+        _uiState.value = HomeFragmentUiState.Loading
+        viewModelScope.launch {
+            tripRepository.deleteTrip(tripId).fold(
+                onSuccess = {
+                    _uiState.value = HomeFragmentUiState.TripListDeleteSuccess
+                },
+                onFailure = {
+                    _uiEvent.value = HomeFragmentViewModelEvent.Error(
+                        it.message ?: "Something went wrong"
+                    )
+                }
+            )
+        }
+    }
+
+    fun editTrip(
+        tripId: String,
+        tripName: String? = null,
+        date: String? = null
+    ) {
+        _uiState.value = HomeFragmentUiState.Loading
+        viewModelScope.launch {
+            tripRepository.editTrip(tripId, tripName, date).fold(
+                onSuccess = {
+                    _uiState.value = HomeFragmentUiState.TripEditSuccess
+                },
+                onFailure = {
+                    _uiEvent.value = HomeFragmentViewModelEvent.Error(
+                        it.message ?: "Something went wrong"
+                    )
                 }
             )
         }
@@ -60,13 +92,12 @@ class HomeFragmentViewModel(
 
 sealed class HomeFragmentUiState {
     data object Loading : HomeFragmentUiState()
+    data class TripListSuccess(val trips: List<TripDetailModel>) : HomeFragmentUiState()
+    data object AllTripDeleteSuccess: HomeFragmentUiState()
+    data object TripListDeleteSuccess: HomeFragmentUiState()
+    data object TripEditSuccess: HomeFragmentUiState()
 }
 
 sealed class HomeFragmentViewModelEvent {
-    data class Success(val trips: List<TripDetailModel>) : HomeFragmentViewModelEvent()
     data class Error(val error: String) : HomeFragmentViewModelEvent()
-}
-sealed class DeleteAllTripViewModelEvent {
-    data object Success: DeleteAllTripViewModelEvent()
-    data class Error(val error: String) : DeleteAllTripViewModelEvent()
 }

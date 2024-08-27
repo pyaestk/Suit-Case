@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/bluewhite_variant"
-    tools:context=".view.ui.activity.WelcomeActivity">
+    tools:context=".view.ui.activity.auth.WelcomeActivity">
 
     <Button
         android:id="@+id/btn_register"
@@ -15,6 +15,7 @@
         android:layout_height="60dp"
         android:layout_marginStart="24dp"
         android:layout_marginEnd="24dp"
+        android:layout_marginBottom="8dp"
         android:backgroundTint="@color/white"
         android:text="REGISTER"
         android:textColor="#1E88E5"

@@ -2,6 +2,7 @@ package com.project.suitcase.view.ui.activity.item
 
 import android.Manifest
 import android.content.Intent
+import android.content.pm.ActivityInfo
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
@@ -50,7 +51,7 @@ class ItemEditActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         _binding = ActivityItemEditBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
         registerActivityForResult()
 
         binding.btnBack.setOnClickListener {

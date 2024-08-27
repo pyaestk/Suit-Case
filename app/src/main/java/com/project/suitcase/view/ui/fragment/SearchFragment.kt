@@ -1,5 +1,6 @@
 package com.project.suitcase.view.ui.fragment
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -10,10 +11,10 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.project.suitcase.databinding.FragmentSearchBinding
 import com.project.suitcase.view.adapter.SearchResultAdapter
-import com.project.suitcase.view.viewmodel.ItemListViewModel
+import com.project.suitcase.view.ui.activity.item.ItemDetailActivity
+import com.project.suitcase.view.viewmodel.SearchListUiState
 import com.project.suitcase.view.viewmodel.SearchListViewModelEvent
 import com.project.suitcase.view.viewmodel.SearchViewModel
-import com.project.suitcase.view.viewmodel.UpdateItemCheckedStatusViewModelEvent
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
@@ -21,7 +22,6 @@ class SearchFragment : Fragment() {
 
     private var binding: FragmentSearchBinding? = null
     private val searchViewModel: SearchViewModel by viewModel()
-    private val itemListViewModel: ItemListViewModel by viewModel()
     private var searchResultAdapter: SearchResultAdapter? = null
 
     override fun onCreateView(
@@ -44,12 +44,20 @@ class SearchFragment : Fragment() {
 
         searchResultAdapter?.onCheckBoxClick = { itemId, tripId, isChecked ->
 
-            itemListViewModel.updateItemCheckedStatus(
+            searchViewModel.updateItemCheckedStatus(
                 finished = isChecked,
                 tripId = tripId,
                 itemId = itemId
             )
-
+        }
+        searchResultAdapter?.onItemClick = {
+            val intent = Intent(requireContext(), ItemDetailActivity::class.java).apply {
+                putExtra("itemID", it.itemId)
+                putExtra("tripID", it.tripId)
+                putExtra("itemImage", it.itemImage)
+                putExtra("tripName", it.tripName)
+            }
+            startActivity(intent)
         }
 
         binding?.searchbar?.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
@@ -58,29 +66,32 @@ class SearchFragment : Fragment() {
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
-                searchResultAdapter?.filter?.filter(newText)
+                if (!newText.isNullOrBlank()) {
+                    searchResultAdapter?.filter?.filter(newText)
+                }
                 return true
             }
 
         })
 
-        searchViewModel.itemListUiEvent.observe(viewLifecycleOwner) { event ->
-            when(event) {
-                is SearchListViewModelEvent.Error -> {
-                    Toast.makeText(requireContext(), event.error, Toast.LENGTH_SHORT).show()
+        searchViewModel.uiState.observe(viewLifecycleOwner) {
+            when(it) {
+                SearchListUiState.Loading -> {
+
                 }
-                is SearchListViewModelEvent.Success -> {
-                    searchResultAdapter?.setItemList(event.itemList)
+                is SearchListUiState.Success -> {
+                    searchResultAdapter?.setItemList(it.itemList)
+                }
+                SearchListUiState.UpdateSuccess -> {
+
                 }
             }
         }
-        itemListViewModel.updateItemCheckedStatusUiEvent.observe(viewLifecycleOwner) { event ->
-            when(event){
-                is UpdateItemCheckedStatusViewModelEvent.Error -> {
+
+        searchViewModel.uiEvent.observe(viewLifecycleOwner) { event ->
+            when(event) {
+                is SearchListViewModelEvent.Error -> {
                     Toast.makeText(requireContext(), event.error, Toast.LENGTH_SHORT).show()
-                }
-                UpdateItemCheckedStatusViewModelEvent.Success -> {
-                    Toast.makeText(requireContext(), "Item has been marked as finished", Toast.LENGTH_SHORT).show()
                 }
             }
         }

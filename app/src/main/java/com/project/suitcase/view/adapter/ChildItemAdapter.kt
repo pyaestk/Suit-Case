@@ -15,8 +15,6 @@ class ChildItemAdapter: RecyclerView.Adapter<ChildItemAdapter.ItemListViewHolder
 
     lateinit var onItemClick: ((ItemDetailModel) -> Unit)
 
-
-
     @SuppressLint("NotifyDataSetChanged")
     fun setItemList(itemList: List<ItemDetailModel>){
         this.itemList = itemList

@@ -3,4 +3,28 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="tv_item_count">%d items</string>
+
+    <string name="log_in_welcome_text">Welcome back? You’re just a tap away from something delicious.</string>
+    <string name="log_in_title">Log In</string>
+    <string name="start_cooking">START COOKING!</string>
+    <string name="password_hint_text">Password</string>
+    <string name="email_text_hint">Email</string>
+    <string name="privacy_notice_terms_of_use_string">By using SideChef, you agree to our Privacy Notice and\nTerms of Use</string>
+    <string name="already_have_an_account">Already have an account? Log in</string>
+    <string name="log_in_string">Log In</string>
+    <string name="sign_up_with_email">SIGN UP WITH EMAIL</string>
+    <string name="cook_with_confidence">Cook with Confidence</string>
+    <string name="check_box_string">I would like to receive recipe inspiration, meal plans, updates, and more!</string>
+    <string name="next">NEXT</string>
+    <string name="app_name_title">S I D E C H E F</string>
+    <string name="registration_successful">Registration Successful!</string>
+    <string name="the_passwords_doesn_t_match">The passwords doesn\'t match</string>
+    <string name="confirm_password_can_t_be_empty">Confirm Password can\'t be empty</string>
+    <string name="password_must_contain_at_least_1_letter">Password must contain at least 1 letter</string>
+    <string name="password_must_contain_at_least_1_special_character">Password must contain at least 1 special character</string>
+    <string name="password_must_contain_at_least_2_numbers">Password must contain at least 2 numbers</string>
+    <string name="nine_characters_minimum_and_remaining">9 characters minimum including at least 1 letter, 2 digits and 1 special characters</string>
+    <string name="this_password_can_t_be_blank">This password can\'t be blank</string>
+    <string name="the_email_can_t_be_blank">The email can\'t be blank</string>
+    <string name="that_s_not_a_valid_email">That\'s not a valid email</string>
 </resources>

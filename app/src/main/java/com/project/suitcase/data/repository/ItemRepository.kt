@@ -11,6 +11,7 @@ class ItemRepository(
 
     suspend fun addItem(
         tripId: String,
+        tripName: String,
         itemName: String,
         itemDescription: String,
         itemLocation: String,
@@ -20,6 +21,7 @@ class ItemRepository(
     ): Result<String> {
         val result = itemRemoteDatasource.addItem(
             tripId = tripId,
+            tripName = tripName,
             itemPrice = itemPrice,
             itemDescription = itemDescription,
             itemLocation = itemLocation,
@@ -73,6 +75,10 @@ class ItemRepository(
             finished = finished,
             tripId = tripId
         )
+    }
+
+    suspend fun markAllItemsAsFinished(tripId: String): Result<Unit> {
+        return itemRemoteDatasource.markAllItemsAsFinished(tripId)
     }
 
     suspend fun deleteAllItems(tripId: String): Result<Unit> {

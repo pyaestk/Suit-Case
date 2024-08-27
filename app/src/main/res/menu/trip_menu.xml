@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/editTrip"
+        android:icon="@drawable/baseline_edit_blue"
+        android:title="Edit Trip"
+        app:showAsAction="always|withText" />
+    <item
+        android:id="@+id/deleteTrip"
+        android:icon="@drawable/baseline_delete_blue"
+        android:title="Delete Trip"
+        app:showAsAction="always|withText" />
+</menu>

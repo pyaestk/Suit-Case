@@ -1,6 +1,6 @@
 package com.project.suitcase.view.ui.activity.trip
 
-import android.icu.util.Calendar
+import android.content.pm.ActivityInfo
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -19,35 +19,18 @@ import java.util.Locale
 class AddTripActivity : AppCompatActivity() {
 
     private var binding: ActivityAddTripBinding? = null
-    private val calendar = Calendar.getInstance()
 
     private val addTripViewModel: AddTripViewModel by viewModel()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityAddTripBinding.inflate(layoutInflater)
         setContentView(binding?.root)
-
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
 
         binding?.edtTripDate?.setOnClickListener {
-//            val datePickerDialog = DatePickerDialog(
-//                this, { DatePicker, year: Int, monthOfYear:Int, dayOfMonth: Int ->
-//                    val selectedDate = Calendar.getInstance()
-//                    selectedDate.set(year, monthOfYear, dayOfMonth)
-//                    val dateFormat = SimpleDateFormat("dd/MM/yyyy",
-//                        Locale.getDefault())
-//                    val formattedDate = dateFormat.format(selectedDate.time)
-//                    binding?.edtTripDate?.setText(formattedDate)
-//                },
-//                calendar.get(Calendar.YEAR),
-//                calendar.get(Calendar.MONTH),
-//                calendar.get(Calendar.DATE)
-//            )
-//            datePickerDialog.show()
-
-            //Material design
-            // Set constraints for the date picker (optional)
+            // Set constraints for the date picker
             val constraintsBuilder = CalendarConstraints.Builder()
-                // Ensures that only future dates are selectable
                 .setValidator(DateValidatorPointForward.now())
 
             val datePicker = MaterialDatePicker.Builder.datePicker()
@@ -100,6 +83,7 @@ class AddTripActivity : AppCompatActivity() {
                     Toast.makeText(
                         this, "Trip Added Successfully", Toast.LENGTH_SHORT
                     ).show()
+
                     finish()
                 }
             }

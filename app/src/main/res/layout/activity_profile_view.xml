@@ -92,9 +92,9 @@
                 android:id="@+id/textInputLayoutItemName"
                 android:layout_width="0dp"
                 android:layout_height="60dp"
-                android:layout_marginStart="16dp"
+                android:layout_marginStart="24dp"
                 android:layout_marginTop="16dp"
-                android:layout_marginEnd="16dp"
+                android:layout_marginEnd="24dp"
                 app:boxBackgroundColor="@color/white"
                 app:boxCornerRadiusBottomEnd="20dp"
                 app:boxCornerRadiusBottomStart="20dp"
@@ -118,9 +118,9 @@
                 android:id="@+id/textInputLayoutItemDes"
                 android:layout_width="0dp"
                 android:layout_height="60dp"
-                android:layout_marginStart="16dp"
+                android:layout_marginStart="24dp"
                 android:layout_marginTop="16dp"
-                android:layout_marginEnd="16dp"
+                android:layout_marginEnd="24dp"
                 app:boxBackgroundColor="@color/white"
                 app:boxCornerRadiusBottomEnd="20dp"
                 app:boxCornerRadiusBottomStart="20dp"
@@ -163,22 +163,6 @@
                     android:hint="Phone number"
                     android:inputType="number|numberDecimal" />
             </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btn_save_profile"
-                android:layout_width="match_parent"
-                android:layout_height="60dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="24dp"
-                android:layout_marginEnd="16dp"
-                android:backgroundTint="#1E88E5"
-                android:text="SAVE"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                app:cornerRadius="20dp"
-                app:layout_constraintEnd_toEndOf="@+id/textInputLayoutItemDes"
-                app:layout_constraintStart_toStartOf="@+id/textInputLayoutItemDes"
-                app:layout_constraintTop_toBottomOf="@+id/textInputLayout7" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
