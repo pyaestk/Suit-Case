@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" >
+    xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
@@ -20,33 +20,37 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.SuitCase"
-        tools:targetApi="31" >
+        tools:targetApi="31">
         <activity
-            android:name=".view.ui.activity.profile.ProfileEditActivity"
+            android:name=".ui.views.activity.auth.MainActivity"
+            android:exported="false"
+            android:theme="@style/Theme.SuitCase" />
+        <activity
+            android:name=".ui.views.activity.profile.ProfileEditActivity"
             android:exported="false" />
         <activity
-            android:name=".view.ui.activity.profile.ProfileViewActivity"
+            android:name=".ui.views.activity.profile.ProfileViewActivity"
             android:exported="false" />
         <activity
-            android:name=".view.ui.activity.item.ItemDetailActivity"
+            android:name=".ui.views.activity.item.ItemDetailActivity"
             android:exported="false" />
         <activity
-            android:name=".view.ui.activity.item.AddNewItemUnderTripActivity"
+            android:name=".ui.views.activity.item.AddNewItemUnderTripActivity"
             android:exported="false" />
         <activity
-            android:name=".view.ui.activity.item.ItemEditActivity"
+            android:name=".ui.views.activity.item.ItemEditActivity"
             android:exported="false" />
         <activity
-            android:name=".view.ui.activity.item.ItemListActivity"
+            android:name=".ui.views.activity.item.ItemListActivity"
             android:exported="false" />
         <activity
-            android:name=".view.ui.activity.item.AddItemActivity"
+            android:name=".ui.views.activity.item.AddItemActivity"
             android:exported="false" />
         <activity
-            android:name=".view.ui.activity.trip.AddTripActivity"
+            android:name=".ui.views.activity.trip.AddTripActivity"
             android:exported="false" />
         <activity
-            android:name=".view.ui.activity.auth.WelcomeActivity"
+            android:name=".ui.views.activity.auth.WelcomeActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -55,17 +59,15 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".view.ui.activity.auth.LoginActivity"
-            android:exported="false" >
-        </activity>
+            android:name=".ui.views.activity.auth.LoginActivity"
+            android:exported="false"></activity>
         <activity
-            android:name=".view.ui.activity.auth.RegisterActivity"
-            android:exported="false">
-        </activity>
+            android:name=".ui.views.activity.auth.RegisterActivity"
+            android:exported="false"></activity>
         <activity
-            android:name=".view.ui.activity.MainActivity"
+            android:name=".ui.views.activity.MainActivity"
             android:exported="true"
-            android:windowSoftInputMode="adjustPan" >
+            android:windowSoftInputMode="adjustPan">
             <intent-filter>
                 <action android:name="android.intent.action.SEND" />
 

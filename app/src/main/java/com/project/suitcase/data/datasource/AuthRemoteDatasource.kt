@@ -17,7 +17,9 @@ class AuthRemoteDatasource(
         phoneNumber: String
     ): Result<String> {
         return try {
-            val authResult = firebaseAuth.createUserWithEmailAndPassword(email, password).await()
+            val authResult = firebaseAuth
+                .createUserWithEmailAndPassword(email, password)
+                .await()
             val user = authResult.user
             if (user != null) {
                 val userInfo = UserDetailResponse(
@@ -27,7 +29,9 @@ class AuthRemoteDatasource(
                     name = userName,
                     userImage = null
                 )
-                firestore.collection("users").document(user.uid).set(userInfo).await()
+                firestore.collection("users")
+                    .document(user.uid)
+                    .set(userInfo).await()
 
                 Result.success(user.uid)
             } else {
@@ -38,10 +42,7 @@ class AuthRemoteDatasource(
         }
     }
 
-    suspend fun loginAccount(
-        email: String,
-        password: String
-    ): Result<String> {
+    suspend fun loginAccount(email: String, password: String): Result<String> {
         return try {
             val authResult = firebaseAuth.signInWithEmailAndPassword(email, password).await()
             val user = authResult.user ?: throw Exception("Login failed")
@@ -67,6 +68,5 @@ class AuthRemoteDatasource(
             Result.failure(e)
         }
     }
-
 
 }

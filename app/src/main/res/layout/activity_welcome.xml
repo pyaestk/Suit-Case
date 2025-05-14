@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/bluewhite_variant"
-    tools:context=".view.ui.activity.auth.WelcomeActivity">
+    tools:context=".ui.views.activity.auth.WelcomeActivity">
 
     <Button
         android:id="@+id/btn_register"

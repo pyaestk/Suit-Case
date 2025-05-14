@@ -21,19 +21,15 @@ class TripRemoteDataSource(
 
             val user = firebaseAuth.currentUser
             if (user != null) {
-
                 val docRef = fireStore.collection("users").document(user.uid)
                     .collection("trip").document()
                 val tripId = docRef.id
-
                 val tripInfo = TripResponse(
                     tripId = tripId,
                     tripName = tripName,
                     date = date,
                 )
-
                 docRef.set(tripInfo).await()
-
                 Result.success(tripId)
             } else {
                 Result.failure(Exception("User not authenticated"))

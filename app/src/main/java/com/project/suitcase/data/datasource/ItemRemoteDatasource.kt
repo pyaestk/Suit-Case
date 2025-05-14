@@ -48,7 +48,7 @@ class ItemRemoteDatasource(
                 } else {
                     null
                 }
-
+                
                 val itemInfo = ItemResponse(
                     itemId = itemId,
                     itemPrice = itemPrice,
@@ -235,7 +235,7 @@ class ItemRemoteDatasource(
         }
     }
 
-    //delete all finished items under every trip
+    //get all finished items under every trip
     suspend fun getAllFinishedItems(): Result<List<ItemResponse>> {
         return try {
             val user = firebaseAuth.currentUser

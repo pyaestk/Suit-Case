@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/bluewhite_variant"
-    tools:context=".view.ui.activity.auth.LoginActivity">
+    tools:context=".ui.views.activity.auth.LoginActivity">
 
     <TextView
         android:id="@+id/btn_tv_register"
@@ -47,6 +47,7 @@
         app:boxCornerRadiusTopStart="20dp"
         app:boxStrokeColor="#1E88E5"
         app:hintEnabled="false"
+        app:endIconMode="clear_text"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView5">
@@ -55,6 +56,7 @@
             android:id="@+id/edt_email"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:inputType="textEmailAddress"
             android:hint="Email" />
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -70,6 +72,7 @@
         app:boxCornerRadiusTopStart="20dp"
         app:boxStrokeColor="#1E88E5"
         app:hintEnabled="false"
+        app:endIconMode="password_toggle"
         app:layout_constraintEnd_toEndOf="@+id/textInputLayoutEmail"
         app:layout_constraintStart_toStartOf="@+id/textInputLayoutEmail"
         app:layout_constraintTop_toBottomOf="@+id/textInputLayoutEmail">
@@ -78,6 +81,7 @@
             android:id="@+id/edt_password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:inputType="textPassword"
             android:hint="Password" />
     </com.google.android.material.textfield.TextInputLayout>
 

@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/bluewhite_variant"
-    tools:context=".view.ui.activity.item.AddItemActivity">
+    tools:context=".ui.views.activity.item.AddItemActivity">
 
     <ProgressBar
         android:id="@+id/progressBar"
@@ -102,7 +102,7 @@
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/textInputLayoutItemName"
                 android:layout_width="0dp"
-                android:layout_height="60dp"
+                android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="24dp"
                 android:layout_marginEnd="16dp"
@@ -121,15 +121,15 @@
                     android:id="@+id/edt_item_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Item Name"
                     android:focusable="false"
+                    android:hint="Item Name"
                     android:inputType="none" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/textInputLayoutItemDes"
                 android:layout_width="0dp"
-                android:layout_height="60dp"
+                android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="16dp"
@@ -148,15 +148,15 @@
                     android:id="@+id/edt_item_description"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Item Description"
                     android:focusable="false"
+                    android:hint="Item Description"
                     android:inputType="none" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/textInputLayout7"
                 android:layout_width="0dp"
-                android:layout_height="60dp"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 app:boxBackgroundColor="@color/white"
                 app:boxCornerRadiusBottomEnd="20dp"
@@ -173,15 +173,15 @@
                     android:id="@+id/edt_price"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Item Price"
                     android:focusable="false"
-                    android:inputType="none"  />
+                    android:hint="Item Price"
+                    android:inputType="none" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/textInputLayout8"
                 android:layout_width="0dp"
-                android:layout_height="60dp"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 app:boxBackgroundColor="@color/white"
                 app:boxCornerRadiusBottomEnd="20dp"
@@ -199,8 +199,8 @@
                     android:id="@+id/edt_location"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Location"
                     android:focusable="false"
+                    android:hint="Location"
                     android:inputType="none" />
             </com.google.android.material.textfield.TextInputLayout>
 

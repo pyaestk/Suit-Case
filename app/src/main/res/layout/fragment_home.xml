@@ -6,9 +6,10 @@
     android:layout_height="match_parent"
     android:background="@color/bluewhite_variant"
     android:fitsSystemWindows="true"
-    tools:context=".view.ui.fragment.HomeFragment">
+    tools:context=".ui.views.fragment.HomeFragment">
 
     <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/app_bar_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -16,15 +17,14 @@
             android:id="@+id/materialCardView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:cardBackgroundColor="#1E88E5"
-            app:layout_scrollFlags="scroll|enterAlways">
+            app:cardBackgroundColor="#1E88E5">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="90dp">
 
                 <TextView
-                    android:id="@+id/textView2"
+                    android:id="@+id/app_bar_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="24dp"
@@ -43,10 +43,10 @@
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="24dp"
                     android:src="@drawable/baseline_delete"
-                    app:tint="@color/bluewhite_variant"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:tint="@color/bluewhite_variant" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.cardview.widget.CardView>
@@ -60,8 +60,8 @@
         android:paddingHorizontal="2dp"
         android:paddingVertical="8dp"
         android:paddingStart="5dp"
-        android:paddingEnd="5dp"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+        app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
+        android:paddingEnd="5dp" />
 
     <ProgressBar
         android:id="@+id/progressBar"

@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/bluewhite_variant"
-    tools:context=".view.ui.activity.auth.RegisterActivity">
+    tools:context=".ui.views.activity.auth.RegisterActivity">
 
     <ImageView
         android:id="@+id/btn_back"
@@ -25,7 +25,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
         android:layout_marginTop="32dp"
-        android:text="SIGN IN NOW"
+        android:text="REGISTER NOW"
         android:textColor="#1E88E5"
         android:textSize="34sp"
         android:textStyle="bold"
@@ -59,6 +59,7 @@
         app:boxCornerRadiusTopEnd="20dp"
         app:boxCornerRadiusTopStart="20dp"
         app:boxStrokeColor="#1E88E5"
+        app:endIconMode="clear_text"
         app:hintEnabled="false"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -68,6 +69,7 @@
             android:id="@+id/edt_user_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:inputType="text"
             android:hint="User Name" />
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -83,6 +85,7 @@
         app:boxCornerRadiusTopStart="20dp"
         app:boxStrokeColor="#1E88E5"
         app:hintEnabled="false"
+        app:endIconMode="clear_text"
         app:layout_constraintEnd_toEndOf="@+id/textInputLayoutName"
         app:layout_constraintStart_toStartOf="@+id/textInputLayoutName"
         app:layout_constraintTop_toBottomOf="@+id/textInputLayoutName">
@@ -91,6 +94,7 @@
             android:id="@+id/edt_email"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:inputType="textEmailAddress"
             android:hint="Email" />
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -106,6 +110,7 @@
         app:boxCornerRadiusTopStart="20dp"
         app:boxStrokeColor="#1E88E5"
         app:hintEnabled="false"
+        app:endIconMode="clear_text"
         app:layout_constraintEnd_toEndOf="@+id/textInputLayoutName"
         app:layout_constraintStart_toStartOf="@+id/textInputLayoutName"
         app:layout_constraintTop_toBottomOf="@+id/textInputLayoutPasswordRepeat">
@@ -114,6 +119,7 @@
             android:id="@+id/edt_phone_num"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:inputType="number"
             android:hint="Phone number (optional)" />
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -129,6 +135,7 @@
         app:boxCornerRadiusTopStart="20dp"
         app:boxStrokeColor="#1E88E5"
         app:hintEnabled="false"
+        app:endIconMode="password_toggle"
         app:layout_constraintEnd_toEndOf="@+id/textInputLayoutEmail"
         app:layout_constraintStart_toStartOf="@+id/textInputLayoutEmail"
         app:layout_constraintTop_toBottomOf="@+id/textInputLayoutEmail">
@@ -137,6 +144,7 @@
             android:id="@+id/edt_password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:inputType="textPassword"
             android:hint="Password" />
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -152,6 +160,7 @@
         app:boxCornerRadiusTopStart="20dp"
         app:boxStrokeColor="#1E88E5"
         app:hintEnabled="false"
+        app:endIconMode="password_toggle"
         app:layout_constraintEnd_toEndOf="@+id/textInputLayoutName"
         app:layout_constraintStart_toStartOf="@+id/textInputLayoutName"
         app:layout_constraintTop_toBottomOf="@+id/textInputLayoutPassword">
@@ -160,6 +169,7 @@
             android:id="@+id/edt_password_repeat"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:inputType="textPassword"
             android:hint="Password" />
     </com.google.android.material.textfield.TextInputLayout>
 

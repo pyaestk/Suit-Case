@@ -20,10 +20,7 @@ class AuthRepository(
             email = email,
             password = password,
             phoneNumber = phoneNumber
-        ).map {
-
-        }
-        
+        ).map { }
         return result
     }
 

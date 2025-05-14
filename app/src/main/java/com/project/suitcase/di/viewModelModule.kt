@@ -1,14 +1,14 @@
 package com.project.suitcase.di
 
-import com.project.suitcase.view.viewmodel.AddItemViewModel
-import com.project.suitcase.view.viewmodel.AddTripViewModel
-import com.project.suitcase.view.viewmodel.FinishedListViewModel
-import com.project.suitcase.view.viewmodel.HomeFragmentViewModel
-import com.project.suitcase.view.viewmodel.ItemDetailViewModel
-import com.project.suitcase.view.viewmodel.ItemListViewModel
-import com.project.suitcase.view.viewmodel.SearchViewModel
-import com.project.suitcase.view.viewmodel.UserProfileViewModel
-import com.project.suitcase.view.viewmodel.WelcomeScreenViewModel
+import com.project.suitcase.ui.viewmodel.AddItemViewModel
+import com.project.suitcase.ui.viewmodel.AddTripViewModel
+import com.project.suitcase.ui.viewmodel.FinishedListViewModel
+import com.project.suitcase.ui.viewmodel.HomeFragmentViewModel
+import com.project.suitcase.ui.viewmodel.ItemDetailViewModel
+import com.project.suitcase.ui.viewmodel.ItemListViewModel
+import com.project.suitcase.ui.viewmodel.SearchViewModel
+import com.project.suitcase.ui.viewmodel.UserProfileViewModel
+import com.project.suitcase.ui.viewmodel.WelcomeScreenViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
