@@ -32,7 +32,8 @@ import java.util.Locale
 
 class HomeFragment : Fragment(), ParentTripAdapter.OnTripMenuClickListener {
 
-    private var binding: FragmentHomeBinding? = null
+    private var _binding: FragmentHomeBinding? = null
+    private val binding get() = _binding!!
     var parentTripAdapter: ParentTripAdapter? = null
 
     private val homeFragmentViewModel: HomeFragmentViewModel by viewModel()
@@ -40,8 +41,8 @@ class HomeFragment : Fragment(), ParentTripAdapter.OnTripMenuClickListener {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentHomeBinding.inflate(inflater, container, false)
-        return binding?.root
+        _binding = FragmentHomeBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onResume() {
@@ -53,18 +54,18 @@ class HomeFragment : Fragment(), ParentTripAdapter.OnTripMenuClickListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        appBarSetUp()
 
         parentTripAdapter = ParentTripAdapter().apply {
             setOnTripMenuClickListener(this@HomeFragment)
         }
 
-        binding?.rvTrip?.apply {
+        binding.rvTrip.apply {
             layoutManager = LinearLayoutManager(requireContext(),
                 LinearLayoutManager.VERTICAL, false)
             adapter = parentTripAdapter
         }
-        binding?.btnDeleteAllTrips?.setOnClickListener {
+
+        binding.btnDeleteAllTrips?.setOnClickListener {
 
             MaterialAlertDialogBuilder(requireContext(),
                 R.style.ThemeOverlay_App_MaterialAlertDialog)
@@ -78,6 +79,7 @@ class HomeFragment : Fragment(), ParentTripAdapter.OnTripMenuClickListener {
                 }
                 .show()
         }
+
 
         parentTripAdapter?.onItemClick = {
             val intent = Intent(requireContext(), ItemListActivity::class.java).apply {
@@ -96,20 +98,19 @@ class HomeFragment : Fragment(), ParentTripAdapter.OnTripMenuClickListener {
             startActivity(intent)
         }
 
+
         viewModelSetUp()
 
     }
 
     private fun appBarSetUp() {
-        binding?.rvTrip?.addOnScrollListener(object : RecyclerView.OnScrollListener(){
+        binding.rvTrip.addOnScrollListener(object : RecyclerView.OnScrollListener(){
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
                 if (recyclerView.canScrollVertically(-1)){
-                    binding?.appBarTitle?.text = "All List"
-                    binding?.btnDeleteAllTrips?.visibility = View.GONE
+                    binding.appBarTitle.text = "Destinations"
                 } else {
-                    binding?.appBarTitle?.text = "HOME"
-                    binding?.btnDeleteAllTrips?.visibility = View.VISIBLE
+                    binding.appBarTitle.text = "HOME"
                 }
             }
         })
@@ -119,30 +120,24 @@ class HomeFragment : Fragment(), ParentTripAdapter.OnTripMenuClickListener {
         homeFragmentViewModel.uiState.observe(viewLifecycleOwner) { state ->
             when(state) {
                 HomeFragmentUiState.Loading -> {
-                    binding?.rvTrip?.visibility = View.INVISIBLE
-                    binding?.progressBar?.visibility = View.VISIBLE
+                    binding.rvTrip.visibility = View.INVISIBLE
+                    binding.progressBar.visibility = View.VISIBLE
                 }
                 HomeFragmentUiState.AllTripDeleteSuccess -> {
-                    binding?.rvTrip?.visibility = View.VISIBLE
-                    binding?.progressBar?.visibility = View.INVISIBLE
                     Toast.makeText(requireContext(), "All items has been deleted",
                         Toast.LENGTH_SHORT).show()
                 }
                 is HomeFragmentUiState.TripListSuccess -> {
-                    binding?.rvTrip?.visibility = View.VISIBLE
-                    binding?.progressBar?.visibility = View.INVISIBLE
+                    binding.rvTrip.visibility = View.VISIBLE
+                    binding.progressBar.visibility = View.INVISIBLE
                     parentTripAdapter?.setTripList(state.trips)
                 }
 
                 HomeFragmentUiState.TripListDeleteSuccess -> {
-                    binding?.rvTrip?.visibility = View.VISIBLE
-                    binding?.progressBar?.visibility = View.INVISIBLE
                     homeFragmentViewModel.getTripsAndItems()
                 }
 
                 HomeFragmentUiState.TripEditSuccess -> {
-                    binding?.rvTrip?.visibility = View.VISIBLE
-                    binding?.progressBar?.visibility = View.INVISIBLE
                     homeFragmentViewModel.getTripsAndItems()
                 }
             }
@@ -246,6 +241,4 @@ class HomeFragment : Fragment(), ParentTripAdapter.OnTripMenuClickListener {
             popupMenu.show()
         } ?: Log.e("TripMenu", "Unable to find view for position $position")
     }
-
-
 }

@@ -4,8 +4,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.project.suitcase.data.repository.ItemRepository
-import com.project.suitcase.data.repository.TripRepository
+import com.project.suitcase.domain.repository.ItemRepository
+import com.project.suitcase.domain.repository.TripRepository
 import com.project.suitcase.domain.model.TripDetailModel
 import kotlinx.coroutines.launch
 
@@ -21,7 +21,6 @@ class HomeFragmentViewModel(
     val uiEvent: LiveData<HomeFragmentViewModelEvent> = _uiEvent
 
     fun getTripsAndItems() {
-        _uiState.value = HomeFragmentUiState.Loading
         viewModelScope.launch {
             tripRepository.getTripsIncludingItems().fold(
                 onSuccess = {
@@ -37,6 +36,7 @@ class HomeFragmentViewModel(
 
     fun deleteAllTrip() {
         viewModelScope.launch {
+            _uiState.value = HomeFragmentUiState.Loading
             tripRepository.deleteAllTrip().fold(
                 onFailure = {
                     _uiEvent.value = HomeFragmentViewModelEvent.Error(

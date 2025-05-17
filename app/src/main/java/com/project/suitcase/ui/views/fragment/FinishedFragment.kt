@@ -12,10 +12,10 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.project.suitcase.R
 import com.project.suitcase.databinding.FragmentFinishedBinding
 import com.project.suitcase.ui.adapter.ItemsListAdapter
-import com.project.suitcase.ui.views.activity.item.ItemDetailActivity
 import com.project.suitcase.ui.viewmodel.FinishedListUiState
 import com.project.suitcase.ui.viewmodel.FinishedListViewModel
 import com.project.suitcase.ui.viewmodel.FinishedListViewModelEvent
+import com.project.suitcase.ui.views.activity.item.ItemDetailActivity
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class FinishedFragment : Fragment() {
@@ -95,7 +95,7 @@ class FinishedFragment : Fragment() {
                 is FinishedListUiState.Success -> {
                     binding?.rvFinishedList?.visibility = View.VISIBLE
                     binding?.progressBarFinished?.visibility = View.INVISIBLE
-                    finishedListAdapter?.setItemList(state.itemList)
+                    finishedListAdapter?.updateItemList(state.itemList)
                     if (state.itemList.size < 1) {
                         binding?.emptyLayout?.visibility = View.VISIBLE
                     } else {
@@ -104,7 +104,7 @@ class FinishedFragment : Fragment() {
                 }
 
                 FinishedListUiState.UpdateSuccess -> {
-                    Toast.makeText(requireContext(), "Item has been removed from Finished", Toast.LENGTH_SHORT).show()
+
                 }
             }
         }

@@ -8,7 +8,7 @@ import android.view.View
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import androidx.appcompat.app.AppCompatActivity
-import androidx.navigation.Navigation
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.NavigationUI
 import com.google.firebase.auth.FirebaseAuth
 import com.project.suitcase.R
@@ -44,8 +44,17 @@ class MainActivity : AppCompatActivity() {
 
         fAuth = FirebaseAuth.getInstance()
 
-        val navController = Navigation.findNavController(this, R.id.host_fragment)
-        NavigationUI.setupWithNavController(binding!!.bottomNavigationView, navController)
+//        val navController = Navigation.findNavController(this, R.id.host_fragment)
+//        NavigationUI.setupWithNavController(binding!!.bottomNavigationView, navController)
+//        binding?.bottomNavigationView?.menu?.getItem(2)?.isEnabled = false
+
+        val navController = supportFragmentManager.findFragmentById(R.id.host_fragment)
+            ?.findNavController()
+
+        navController?.let {
+            NavigationUI.setupWithNavController(binding!!.bottomNavigationView, it)
+        }
+
         binding?.bottomNavigationView?.menu?.getItem(2)?.isEnabled = false
 
         binding?.fabAdd?.setOnClickListener{
@@ -67,6 +76,7 @@ class MainActivity : AppCompatActivity() {
                 handleSendText(intent) // Handle text being sent
             } 
         }
+
 
     }
 

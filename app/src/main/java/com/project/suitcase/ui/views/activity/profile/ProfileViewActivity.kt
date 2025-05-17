@@ -38,6 +38,22 @@ class ProfileViewActivity : AppCompatActivity() {
                     binding?.layoutContent?.visibility = View.INVISIBLE
                     binding?.progressBar?.visibility = View.VISIBLE
                 }
+
+                is UserProfileUiState.Success -> {
+                    binding?.layoutContent?.visibility = View.VISIBLE
+                    binding?.progressBar?.visibility = View.INVISIBLE
+
+                    binding?.edtUserEmail?.setText(state.userDetail.email)
+                    binding?.edtUserName?.setText(state.userDetail.name)
+                    binding?.edtUserPhoneNumber?.setText(state.userDetail.phoneNumber)
+                    if (!state.userDetail.userImage.isNullOrEmpty()){
+                        Glide.with(this)
+                            .load(state.userDetail.userImage)
+                            .into(binding?.ivUserImage!!)
+                    } else {
+                        binding?.ivUserImage?.setImageResource(R.drawable.user_profile_image)
+                    }
+                }
             }
         }
 
@@ -45,21 +61,6 @@ class ProfileViewActivity : AppCompatActivity() {
             when(event) {
                 is UserProfileViewModelEvent.Error -> {
                     Log.e("Setting Fragment", event.error)
-                }
-                is UserProfileViewModelEvent.Success -> {
-                    binding?.layoutContent?.visibility = View.VISIBLE
-                    binding?.progressBar?.visibility = View.INVISIBLE
-
-                    binding?.edtUserEmail?.setText(event.userDetail.email)
-                    binding?.edtUserName?.setText(event.userDetail.name)
-                    binding?.edtUserPhoneNumber?.setText(event.userDetail.phoneNumber)
-                    if (!event.userDetail.userImage.isNullOrEmpty()){
-                        Glide.with(this)
-                            .load(event.userDetail.userImage)
-                            .into(binding?.ivUserImage!!)
-                    } else {
-                        binding?.ivUserImage?.setImageResource(R.drawable.user_profile_image)
-                    }
                 }
             }
         }

@@ -90,6 +90,8 @@ class AddNewItemUnderTripActivity : AppCompatActivity() {
                     ).show()
                     binding?.progressBar?.visibility = View.INVISIBLE
                     binding?.layoutContent?.visibility = View.VISIBLE
+//                    val resultIntent = Intent()
+//                    setResult(RESULT_OK, resultIntent)
                     finish()
                 }
             }

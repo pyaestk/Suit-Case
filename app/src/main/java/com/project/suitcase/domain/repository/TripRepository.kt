@@ -1,4 +1,4 @@
-package com.project.suitcase.data.repository
+package com.project.suitcase.domain.repository
 
 import android.util.Log
 import com.project.suitcase.data.datasource.TripRemoteDataSource

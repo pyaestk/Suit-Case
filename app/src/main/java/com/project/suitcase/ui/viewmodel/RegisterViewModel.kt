@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.project.suitcase.data.repository.AuthRepository
+import com.project.suitcase.domain.repository.AuthRepository
 import com.project.suitcase.ui.viewmodel.util.SingleLiveEvent
 import com.project.suitcase.ui.viewmodel.util.ValidationResult
 import com.project.suitcase.ui.viewmodel.util.Validator

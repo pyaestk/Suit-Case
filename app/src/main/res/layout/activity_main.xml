@@ -8,18 +8,26 @@
     android:background="@color/bluewhite_variant"
     tools:context=".ui.views.activity.MainActivity">
 
-    <fragment
+    <androidx.fragment.app.FragmentContainerView
         android:id="@+id/host_fragment"
         android:name="androidx.navigation.fragment.NavHostFragment"
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:defaultNavHost="true"
-        app:layout_constraintBottom_toTopOf="@+id/divider"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/divider"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:navGraph="@navigation/nav_graph" />
 
+    <View
+        android:id="@+id/divider"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:background="@color/white_variant"
+        app:layout_constraintBottom_toTopOf="@+id/bottomNavigationView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottomNavigationView"
@@ -33,7 +41,6 @@
         app:itemTextAppearanceActiveBoldEnabled="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:menu="@menu/menu" />
-
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab_add"
@@ -86,15 +93,5 @@
         app:srcCompat="@drawable/shopping_bag"
         app:tint="@color/white"
         tools:visibility="visible" />
-
-    <View
-        android:id="@+id/divider"
-        android:layout_width="0dp"
-        android:layout_height="1dp"
-        android:background="@color/white_variant"
-        app:layout_constraintBottom_toTopOf="@+id/bottomNavigationView"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

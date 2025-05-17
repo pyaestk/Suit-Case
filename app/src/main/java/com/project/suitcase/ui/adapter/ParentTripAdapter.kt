@@ -1,9 +1,9 @@
 package com.project.suitcase.ui.adapter
 
-import android.annotation.SuppressLint
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.project.suitcase.R
@@ -15,11 +15,13 @@ class ParentTripAdapter: RecyclerView.Adapter<ParentTripAdapter.TripListViewHold
 
     private var tripList: List<TripDetailModel> = listOf()
     private var onTripMenuClickListener: OnTripMenuClickListener? = null
-            
-    @SuppressLint("NotifyDataSetChanged")
-    fun setTripList(tripList: List<TripDetailModel>){
-        this.tripList = tripList
-        notifyDataSetChanged()
+
+    fun setTripList(newTripList: List<TripDetailModel>) {
+        val diffCallback = TripDiffCallback(this.tripList, newTripList)
+        val diffResult = DiffUtil.calculateDiff(diffCallback)
+
+        this.tripList = newTripList
+        diffResult.dispatchUpdatesTo(this)
     }
 
     interface OnTripMenuClickListener {
@@ -73,5 +75,22 @@ class ParentTripAdapter: RecyclerView.Adapter<ParentTripAdapter.TripListViewHold
             Log.d("ParentTripAdapter", "Menu button clicked at position: $position")
             onTripMenuClickListener?.onTripMenuClick(currentTrip, position)
         }
+    }
+}
+
+class TripDiffCallback(
+    private val oldList: List<TripDetailModel>,
+    private val newList: List<TripDetailModel>
+) : DiffUtil.Callback() {
+
+    override fun getOldListSize() = oldList.size
+    override fun getNewListSize() = newList.size
+
+    override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+        return oldList[oldItemPosition].tripId == newList[newItemPosition].tripId
+    }
+
+    override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+        return oldList[oldItemPosition] == newList[newItemPosition]
     }
 }

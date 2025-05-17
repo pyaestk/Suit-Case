@@ -105,7 +105,7 @@
                     android:drawablePadding="15dp"
                     android:drawableTint="@color/black"
                     android:ellipsize="end"
-                    android:hint="Choose Trip"
+                    android:hint="Choose Destination"
                     android:inputType="none"
                     android:lines="1"
                     android:textColor="@color/black"

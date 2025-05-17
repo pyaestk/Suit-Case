@@ -86,10 +86,6 @@ class AddTripActivity : AppCompatActivity() {
                     ).show()
                 }
                 is AddTripViewModelEvent.Success -> {
-                    Toast.makeText(
-                        this, "Trip Added Successfully", Toast.LENGTH_SHORT
-                    ).show()
-
                     finish()
                 }
             }

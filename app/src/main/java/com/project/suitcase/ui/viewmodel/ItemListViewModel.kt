@@ -4,8 +4,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.project.suitcase.data.repository.ItemRepository
-import com.project.suitcase.data.repository.TripRepository
+import com.project.suitcase.domain.repository.ItemRepository
+import com.project.suitcase.domain.repository.TripRepository
 import com.project.suitcase.domain.model.ItemDetailModel
 import kotlinx.coroutines.launch
 

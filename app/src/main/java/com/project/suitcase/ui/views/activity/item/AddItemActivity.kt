@@ -42,13 +42,14 @@ class AddItemActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         addItemVieModel.getTrips()
-
     }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityAddItemBinding.inflate(layoutInflater)
         setContentView(binding?.root)
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
+
         registerActivityForResult()
 
         intent.getStringExtra("sharedText")?.let { sharedText ->
@@ -148,15 +149,13 @@ class AddItemActivity : AppCompatActivity() {
                     ).show()
                 }
                 is AddItemViewModelEvent.Success -> {
-                    Toast.makeText(
-                        this, "Item added Successfully", Toast.LENGTH_SHORT
-                    ).show()
                     binding?.progressBar?.visibility = View.INVISIBLE
                     binding?.layoutContent?.visibility = View.VISIBLE
                     finish()
                 }
             }
         }
+
         addItemVieModel.uiState.observe(this) { state ->
             when(state) {
                 AddItemUiState.Loading -> {
@@ -165,8 +164,6 @@ class AddItemActivity : AppCompatActivity() {
                 }
             }
         }
-
-
     }
 
     private fun isFromGoogleMaps(sharedText: String): Boolean {
@@ -209,5 +206,4 @@ class AddItemActivity : AppCompatActivity() {
             }
         )
     }
-
 }

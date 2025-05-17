@@ -1,36 +1,22 @@
 package com.project.suitcase.ui.adapter
 
-import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.project.suitcase.R
 import com.project.suitcase.databinding.ItemItemDetailed2Binding
 import com.project.suitcase.domain.model.ItemDetailModel
 
-class ItemsListAdapter: RecyclerView.Adapter<ItemsListAdapter.ItemsListViewHolder>(){
+class ItemsListAdapter : androidx.recyclerview.widget.ListAdapter<ItemDetailModel, ItemsListAdapter.ItemsListViewHolder>(ItemDiffCallback()) {
 
-    private var itemList: MutableList<ItemDetailModel> = mutableListOf()
     lateinit var onCheckBoxClick: ((String, String, Boolean) -> Unit)
     lateinit var onItemClick: ((ItemDetailModel) -> Unit)
     lateinit var onItemDelete: ((ItemDetailModel) -> Unit)
 
-    @SuppressLint("NotifyDataSetChanged")
-    fun setItemList(itemList: List<ItemDetailModel>){
-        this.itemList = itemList.toMutableList()
-        notifyDataSetChanged()
-    }
-    @SuppressLint("NotifyDataSetChanged")
-    fun removeItem(position: Int) {
-        val item = itemList[position]
-        onItemDelete(item)
-        itemList.removeAt(position)
-        notifyItemRemoved(position)
-    }
-
-    inner class ItemsListViewHolder(val binding: ItemItemDetailed2Binding):
+    inner class ItemsListViewHolder(val binding: ItemItemDetailed2Binding) :
         RecyclerView.ViewHolder(binding.root)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemsListViewHolder {
@@ -39,12 +25,13 @@ class ItemsListAdapter: RecyclerView.Adapter<ItemsListAdapter.ItemsListViewHolde
         return ItemsListViewHolder(binding)
     }
 
-    override fun getItemCount(): Int {
-        return itemList.size
+    fun updateItemList(newList: List<ItemDetailModel>) {
+        submitList(newList)
     }
 
+
     override fun onBindViewHolder(holder: ItemsListViewHolder, position: Int) {
-        val currentItem = itemList[position]
+        val currentItem = getItem(position)
         holder.binding.apply {
             if (currentItem.itemImage.isNullOrEmpty()) {
                 ivItem.setImageResource(R.drawable.photo)
@@ -61,28 +48,59 @@ class ItemsListAdapter: RecyclerView.Adapter<ItemsListAdapter.ItemsListViewHolde
             } else {
                 "Price: $${currentItem.itemPrice}"
             }
-            
-            if (currentItem.itemDescription.isBlank()){
-                tvDescription.visibility = View.GONE
-            } else {
-                tvDescription.text = "Description: ${currentItem.itemDescription}"
+
+            tvDescription.apply {
+                visibility = if (currentItem.itemDescription.isBlank()) View.GONE else View.VISIBLE
+                text = "Description: ${currentItem.itemDescription}"
             }
-            if (currentItem.itemLocation.isBlank()){
-                tvLocation.visibility = View.GONE
-            } else {
-                tvLocation.text = "Location: ${currentItem.itemLocation}"
+
+            tvLocation.apply {
+                visibility = if (currentItem.itemLocation.isBlank()) View.GONE else View.VISIBLE
+                text = "Location: ${currentItem.itemLocation}"
             }
 
             checkBoxItem.isChecked = currentItem.finished == true
-        }
-        holder.binding.checkBoxItem.setOnCheckedChangeListener { _, isChecked ->
-            onCheckBoxClick(currentItem.itemId, currentItem.tripId, isChecked)
-        }
-        holder.itemView.setOnClickListener {
-            onItemClick.invoke(currentItem)
+
+            tvItemName.setStrikeThrough(currentItem.finished == true)
+            tvItemPrice.setStrikeThrough(currentItem.finished == true)
+            tvLocation.setStrikeThrough(currentItem.finished == true)
+            tvDescription.setStrikeThrough(currentItem.finished == true)
+
+            checkBoxItem.setOnCheckedChangeListener { _, isChecked ->
+                tvItemName.setStrikeThrough(isChecked)
+                tvItemPrice.setStrikeThrough(isChecked)
+                tvLocation.setStrikeThrough(isChecked)
+                tvDescription.setStrikeThrough(isChecked)
+
+                onCheckBoxClick(currentItem.itemId, currentItem.tripId, isChecked)
+            }
+
         }
 
+
+        holder.itemView.setOnClickListener {
+            onItemClick(currentItem)
+        }
+    }
+}
+
+
+class ItemDiffCallback : androidx.recyclerview.widget.DiffUtil.ItemCallback<ItemDetailModel>() {
+    override fun areItemsTheSame(oldItem: ItemDetailModel, newItem: ItemDetailModel): Boolean {
+        // Check unique ID
+        return oldItem.itemId == newItem.itemId
     }
 
+    override fun areContentsTheSame(oldItem: ItemDetailModel, newItem: ItemDetailModel): Boolean {
+        // Compare contents
+        return oldItem == newItem
+    }
+}
 
+fun TextView.setStrikeThrough(enabled: Boolean) {
+    paintFlags = if (enabled) {
+        paintFlags or android.graphics.Paint.STRIKE_THRU_TEXT_FLAG
+    } else {
+        paintFlags and android.graphics.Paint.STRIKE_THRU_TEXT_FLAG.inv()
+    }
 }

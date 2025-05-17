@@ -46,11 +46,6 @@ class ChildItemAdapter: RecyclerView.Adapter<ChildItemAdapter.ItemListViewHolder
                     .into(ivItem)
             }
             tvItemName.text = currentItem.itemName
-            tvItemPrice.text = if (currentItem.itemPrice.isBlank()) {
-                "Price: Unknown"
-            } else {
-                "Price: $${currentItem.itemPrice}"
-            }
 
         }
         holder.itemView.setOnClickListener {

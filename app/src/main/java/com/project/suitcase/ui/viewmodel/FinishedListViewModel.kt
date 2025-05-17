@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.project.suitcase.data.repository.ItemRepository
+import com.project.suitcase.domain.repository.ItemRepository
 import com.project.suitcase.domain.model.ItemDetailModel
 import com.project.suitcase.ui.viewmodel.util.SingleLiveEvent
 import kotlinx.coroutines.launch
@@ -20,7 +20,6 @@ class FinishedListViewModel(
     val finishedItemListUiEvent: LiveData<FinishedListViewModelEvent> = _finishedItemListUiEvent
 
     fun getAllFinishedItemList(){
-        _uiState.value = FinishedListUiState.Loading
         viewModelScope.launch {
             itemRepository.getAllFinishedItems().fold(
                 onSuccess = {
@@ -37,8 +36,8 @@ class FinishedListViewModel(
     }
 
     fun deleteAllFinishedItemList(){
-        _uiState.value = FinishedListUiState.Loading
         viewModelScope.launch {
+            _uiState.value = FinishedListUiState.Loading
             itemRepository.deleteAllFinishedItems().fold(
                 onSuccess = {
                     _uiState.value = FinishedListUiState.DeleteAllSuccess

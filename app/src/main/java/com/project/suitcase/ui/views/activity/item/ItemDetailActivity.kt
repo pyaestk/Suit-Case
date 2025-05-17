@@ -51,9 +51,6 @@ class ItemDetailActivity : AppCompatActivity() {
         tripId = intent.getStringExtra("tripID")
         itemId = intent.getStringExtra("itemID")
 
-
-
-
         itemDetailViewModel()
 
         binding?.btnShare?.setOnClickListener {
@@ -62,6 +59,9 @@ class ItemDetailActivity : AppCompatActivity() {
         binding?.switchFinish?.setOnCheckedChangeListener { _, isChecked ->
             itemListViewModel.updateItemCheckedStatus(
                 itemId = itemId!!, finished = isChecked, tripId = tripId!!)
+            val resultIntent = Intent()
+            setResult(RESULT_OK, resultIntent)
+
         }
         binding?.btnItemEdit?.setOnClickListener {
             val intentNavigate = Intent(this@ItemDetailActivity,
@@ -94,11 +94,6 @@ class ItemDetailActivity : AppCompatActivity() {
             putExtra(Intent.EXTRA_TEXT, message)
             type = "text/plain"
         }
-
-//        val smsIntent = Intent(Intent.ACTION_VIEW).apply {
-//            data = Uri.parse("sms:")
-//            putExtra("sms_body", message)
-//        }
 
         val shareIntent = Intent.createChooser(sendIntent, null)
         startActivity(shareIntent)

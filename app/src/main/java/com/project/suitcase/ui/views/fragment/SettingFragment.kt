@@ -12,11 +12,11 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.firebase.auth.FirebaseAuth
 import com.project.suitcase.R
 import com.project.suitcase.databinding.FragmentSettingBinding
-import com.project.suitcase.ui.views.activity.auth.WelcomeActivity
-import com.project.suitcase.ui.views.activity.profile.ProfileViewActivity
 import com.project.suitcase.ui.viewmodel.UserProfileUiState
 import com.project.suitcase.ui.viewmodel.UserProfileViewModel
 import com.project.suitcase.ui.viewmodel.UserProfileViewModelEvent
+import com.project.suitcase.ui.views.activity.auth.WelcomeActivity
+import com.project.suitcase.ui.views.activity.profile.ProfileViewActivity
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
@@ -52,6 +52,20 @@ class SettingFragment : Fragment() {
                     binding?.layoutProfile?.visibility = View.INVISIBLE
                     binding?.progressBarProfile?.visibility = View.VISIBLE
                 }
+
+                is UserProfileUiState.Success -> {
+                    binding?.layoutProfile?.visibility = View.VISIBLE
+                    binding?.progressBarProfile?.visibility = View.INVISIBLE
+
+                    binding?.tvUserName?.text = state.userDetail.name
+                    if (!state.userDetail.userImage.isNullOrEmpty()){
+                        Glide.with(this)
+                            .load(state.userDetail.userImage)
+                            .into(binding?.ivUser!!)
+                    } else {
+                        binding?.ivUser?.setImageResource(R.drawable.user_profile_image)
+                    }
+                }
             }
         }
 
@@ -59,19 +73,6 @@ class SettingFragment : Fragment() {
             when(event) {
                 is UserProfileViewModelEvent.Error -> {
                     Log.e("Setting Fragment", event.error)
-                }
-                is UserProfileViewModelEvent.Success -> {
-                    binding?.layoutProfile?.visibility = View.VISIBLE
-                    binding?.progressBarProfile?.visibility = View.INVISIBLE
-
-                    binding?.tvUserName?.text = event.userDetail.name
-                    if (!event.userDetail.userImage.isNullOrEmpty()){
-                        Glide.with(this)
-                            .load(event.userDetail.userImage)
-                            .into(binding?.ivUser!!)
-                    } else {
-                        binding?.ivUser?.setImageResource(R.drawable.user_profile_image)
-                    }
                 }
             }
         }

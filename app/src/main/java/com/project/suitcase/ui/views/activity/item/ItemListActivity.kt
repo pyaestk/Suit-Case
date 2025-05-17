@@ -12,6 +12,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Toast
+import androidx.activity.result.ActivityResultLauncher
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -38,12 +39,14 @@ class ItemListActivity : AppCompatActivity(), SensorEventListener{
     private lateinit var sensorManager: SensorManager
     private var accelerometer: Sensor? = null
 
+    private lateinit var addItemLauncher: ActivityResultLauncher<Intent>
+
     private var lastX: Float = 0.0f
     private var lastY: Float = 0.0f
     private var lastZ: Float = 0.0f
 
     private var shakeThreshold: Float = 2.0f
-    // Add a flag to prevent multiple dialogs
+    //flag to prevent multiple dialogs
     private var isDialogShowing = false
     private var isInitialized = false
 
@@ -102,7 +105,7 @@ class ItemListActivity : AppCompatActivity(), SensorEventListener{
 
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                 val position = viewHolder.adapterPosition
-                val currentItem = itemAdapter?.differ?.currentList?.get(position)
+                val currentItem = itemAdapter?.getItemList()?.getOrNull(position)
                 itemListViewModel.deleteItem(
                     tripId = currentItem!!.tripId,
                     itemId = currentItem.itemId
@@ -125,7 +128,7 @@ class ItemListActivity : AppCompatActivity(), SensorEventListener{
 
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                 val position = viewHolder.adapterPosition
-                val currentItem = itemAdapter?.differ?.currentList?.get(position)
+                val currentItem = itemAdapter?.getItemList()?.getOrNull(position)
                 val message = """
                     Check out this item!
                     Name: ${currentItem?.itemName}
@@ -169,8 +172,9 @@ class ItemListActivity : AppCompatActivity(), SensorEventListener{
                 putExtra("tripId", tripId)
                 putExtra("tripName", tripName)
             }
-            startActivity(intentNavigate)
+            addItemLauncher.launch(intentNavigate)
         }
+
         binding?.btnDeleteAll?.setOnClickListener {
             MaterialAlertDialogBuilder(this@ItemListActivity,
                 R.style.ThemeOverlay_App_MaterialAlertDialog)
@@ -212,12 +216,9 @@ class ItemListActivity : AppCompatActivity(), SensorEventListener{
     private fun itemListViewModelSetup() {
         itemListViewModel.uiState.observe(this) {state ->
             when(state){
-                is ItemListUiState.Loading -> {
-
-                }
                 is ItemListUiState.Success -> {
-                    itemAdapter?.differ?.submitList(state.itemList)
-                    if (state.itemList.size < 1) {
+                    itemAdapter?.setItemList(state.itemList)
+                    if (state.itemList.isEmpty()) {
                         binding?.emptyLayout?.visibility = View.VISIBLE
                     } else {
                         binding?.emptyLayout?.visibility = View.INVISIBLE
@@ -237,6 +238,9 @@ class ItemListActivity : AppCompatActivity(), SensorEventListener{
                     }
                 }
 
+                ItemListUiState.Loading -> {
+
+                }
                 ItemListUiState.UpdateSUccess -> {
 
                 }

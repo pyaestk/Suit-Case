@@ -1,4 +1,4 @@
-package com.project.suitcase.data.repository
+package com.project.suitcase.domain.repository
 
 import android.net.Uri
 import com.project.suitcase.data.datasource.ItemRemoteDatasource

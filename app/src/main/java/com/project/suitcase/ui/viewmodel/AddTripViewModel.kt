@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.project.suitcase.data.repository.TripRepository
+import com.project.suitcase.domain.repository.TripRepository
 import com.project.suitcase.ui.viewmodel.util.SingleLiveEvent
 import kotlinx.coroutines.launch
 
@@ -36,8 +36,6 @@ class AddTripViewModel(
             )
         }
     }
-
-
 
 }
 sealed class AddTripUiState {

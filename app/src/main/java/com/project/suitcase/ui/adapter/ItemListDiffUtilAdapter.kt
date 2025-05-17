@@ -1,10 +1,9 @@
 package com.project.suitcase.ui.adapter
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.recyclerview.widget.AsyncListDiffer
+import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -16,23 +15,23 @@ class ItemListDiffUtilAdapter: RecyclerView.Adapter<ItemListDiffUtilAdapter.Item
 
     lateinit var onCheckBoxClick: ((String, String, Boolean) -> Unit)
     lateinit var onItemClick: ((ItemDetailModel) -> Unit)
+
     inner class ItemListDIffUtilViewHolder(val binding: ItemItemDetailed2Binding):
             RecyclerView.ViewHolder(binding.root)
 
-    private val diffUtil = object : DiffUtil.ItemCallback<ItemDetailModel>() {
-        override fun areItemsTheSame(oldItem: ItemDetailModel, newItem: ItemDetailModel): Boolean {
-            return oldItem.itemId == newItem.itemImage
-        }
+    private var itemList: List<ItemDetailModel> = listOf()
 
-        override fun areContentsTheSame(
-            oldItem: ItemDetailModel,
-            newItem: ItemDetailModel
-        ): Boolean {
-            return oldItem == newItem
-        }
+    fun getItemList(): List<ItemDetailModel> {
+        return itemList
     }
 
-    val differ = AsyncListDiffer(this, diffUtil)
+    fun setItemList(newItemList: List<ItemDetailModel>){
+        val diffCallback = itemDetailListDiffCallback(this.itemList, newItemList)
+        val diffResult = DiffUtil.calculateDiff(diffCallback)
+
+        this.itemList = newItemList
+        diffResult.dispatchUpdatesTo(this)
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemListDIffUtilViewHolder {
         val inflater = LayoutInflater.from(parent.context)
@@ -41,12 +40,12 @@ class ItemListDiffUtilAdapter: RecyclerView.Adapter<ItemListDiffUtilAdapter.Item
     }
 
     override fun getItemCount(): Int {
-        return differ.currentList.size
+        return itemList.size
     }
 
     override fun onBindViewHolder(holder: ItemListDIffUtilViewHolder, position: Int) {
-        val currentItem = differ.currentList[position]
-        Log.e("ItemListAdapter", currentItem.itemImage!!)
+        val currentItem = itemList[position]
+
         holder.binding.apply {
             if (currentItem.itemImage.isNullOrEmpty()) {
                 ivItem.setImageResource(R.drawable.photo)
@@ -76,14 +75,58 @@ class ItemListDiffUtilAdapter: RecyclerView.Adapter<ItemListDiffUtilAdapter.Item
             }
 
             checkBoxItem.isChecked = currentItem.finished == true
+
+            tvItemName.setStrikeThrough(currentItem.finished == true)
+            tvItemPrice.setStrikeThrough(currentItem.finished == true)
+            tvLocation.setStrikeThrough(currentItem.finished == true)
+            tvDescription.setStrikeThrough(currentItem.finished == true)
+
+            checkBoxItem.setOnCheckedChangeListener { _, isChecked ->
+                tvItemName.setStrikeThrough(isChecked)
+                tvItemPrice.setStrikeThrough(isChecked)
+                tvLocation.setStrikeThrough(isChecked)
+                tvDescription.setStrikeThrough(isChecked)
+
+                onCheckBoxClick(currentItem.itemId, currentItem.tripId, isChecked)
+            }
+
+
         }
-        holder.binding.checkBoxItem.setOnCheckedChangeListener { _, isChecked ->
-            onCheckBoxClick(currentItem.itemId, currentItem.tripId, isChecked)
-        }
+
         holder.itemView.setOnClickListener {
             onItemClick.invoke(currentItem)
         }
 
     }
-    
+
+    fun TextView.setStrikeThrough(enabled: Boolean) {
+        paintFlags = if (enabled) {
+            paintFlags or android.graphics.Paint.STRIKE_THRU_TEXT_FLAG
+        } else {
+            paintFlags and android.graphics.Paint.STRIKE_THRU_TEXT_FLAG.inv()
+        }
+    }
+
+}
+
+class itemDetailListDiffCallback(
+    private val oldList: List<ItemDetailModel>,
+    private val newList: List<ItemDetailModel>
+): DiffUtil.Callback() {
+    override fun getOldListSize(): Int {
+        return oldList.size
+    }
+
+    override fun getNewListSize(): Int {
+        return newList.size
+    }
+
+    override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+        return oldList[oldItemPosition].itemId == newList[newItemPosition].itemId
+    }
+
+    override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+        return oldList[oldItemPosition] == newList[newItemPosition]
+    }
+
 }
