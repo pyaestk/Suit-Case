@@ -44,4 +44,16 @@ class AuthRepository(
         }
     }
 
+    suspend fun updateUserInfo(
+        name: String,
+        phoneNumber: String,
+        userImage: String
+    ): Result<Unit> {
+        return authRemoteDatasource.updateUserDetail(
+            userImage = userImage,
+            name = name,
+            phoneNumber = phoneNumber
+        )
+    }
+
 }

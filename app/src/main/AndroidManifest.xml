@@ -22,35 +22,35 @@
         android:theme="@style/Theme.SuitCase"
         tools:targetApi="31">
         <activity
-            android:name=".ui.views.activity.auth.MainActivity"
+            android:name=".views.ui.activity.auth.MainActivity"
             android:exported="false"
             android:theme="@style/Theme.SuitCase" />
         <activity
-            android:name=".ui.views.activity.profile.ProfileEditActivity"
+            android:name=".views.ui.activity.profile.ProfileEditActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.views.activity.profile.ProfileViewActivity"
+            android:name=".views.ui.activity.profile.ProfileViewActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.views.activity.item.ItemDetailActivity"
+            android:name=".views.ui.activity.item.ItemDetailActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.views.activity.item.AddNewItemUnderTripActivity"
+            android:name=".views.ui.activity.item.AddNewItemUnderTripActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.views.activity.item.ItemEditActivity"
+            android:name=".views.ui.activity.item.ItemEditActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.views.activity.item.ItemListActivity"
+            android:name=".views.ui.activity.item.ItemListActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.views.activity.item.AddItemActivity"
+            android:name=".views.ui.activity.item.AddItemActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.views.activity.trip.AddTripActivity"
+            android:name=".views.ui.activity.trip.AddTripActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.views.activity.auth.WelcomeActivity"
+            android:name=".views.ui.activity.auth.WelcomeActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -59,13 +59,13 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ui.views.activity.auth.LoginActivity"
+            android:name=".views.ui.activity.auth.LoginActivity"
             android:exported="false"></activity>
         <activity
-            android:name=".ui.views.activity.auth.RegisterActivity"
+            android:name=".views.ui.activity.auth.RegisterActivity"
             android:exported="false"></activity>
         <activity
-            android:name=".ui.views.activity.MainActivity"
+            android:name=".views.ui.activity.MainActivity"
             android:exported="true"
             android:windowSoftInputMode="adjustPan">
             <intent-filter>

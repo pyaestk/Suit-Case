@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/bluewhite_variant"
-    tools:context=".ui.views.activity.trip.AddTripActivity">
+    tools:context=".views.ui.activity.trip.AddTripActivity">
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cardView3"
@@ -104,6 +104,7 @@
         app:boxCornerRadiusTopEnd="20dp"
         app:boxCornerRadiusTopStart="20dp"
         app:boxStrokeColor="#1E88E5"
+        app:hintEnabled="false"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textInputLayout5">
@@ -115,7 +116,7 @@
             android:drawableEnd="@drawable/baseline_calendar"
             android:focusable="false"
             android:inputType="none"
-            android:text="DD/MM/YYYY" />
+            android:hint="DD/MM/YYYY"/>
     </com.google.android.material.textfield.TextInputLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

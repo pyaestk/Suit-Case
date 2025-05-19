@@ -1,12 +1,15 @@
 package com.project.suitcase.data.datasource
 
 import android.util.Log
+import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.toObject
 import com.project.suitcase.data.model.ItemResponse
 import com.project.suitcase.data.model.TripResponse
 import kotlinx.coroutines.tasks.await
+import java.text.SimpleDateFormat
+import java.util.Locale
 
 class TripRemoteDataSource(
     private val firebaseAuth: FirebaseAuth,
@@ -24,10 +27,14 @@ class TripRemoteDataSource(
                 val docRef = fireStore.collection("users").document(user.uid)
                     .collection("trip").document()
                 val tripId = docRef.id
+                val parsedDate = if (date.isNotBlank()) {
+                    SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).parse(date)
+                } else null
+
                 val tripInfo = TripResponse(
                     tripId = tripId,
                     tripName = tripName,
-                    date = date,
+                    date = parsedDate?.let { Timestamp(it) }
                 )
                 docRef.set(tripInfo).await()
                 Result.success(tripId)
@@ -154,7 +161,10 @@ class TripRemoteDataSource(
 
                 val updates = mutableMapOf<String, Any>()
                 tripName?.let { updates["tripName"] = it }
-                date?.let { updates["date"] = it }
+                date?.let {
+                    val parsedDate = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).parse(it)
+                    parsedDate?.let { dateObj -> updates["date"] = Timestamp(dateObj) }
+                }
 
                 if (updates.isNotEmpty()) {
                     tripRef.update(updates).await()

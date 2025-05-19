@@ -69,4 +69,31 @@ class AuthRemoteDatasource(
         }
     }
 
+    suspend fun updateUserDetail(
+        name: String,
+        phoneNumber: String,
+        userImage: String
+    ): Result<Unit> {
+        return try {
+            val uid = firebaseAuth.currentUser?.uid
+                ?: return Result.failure(Exception("User not authenticated"))
+
+            val updates = mapOf(
+                "name" to name,
+                "phoneNumber" to phoneNumber,
+                "userImage" to userImage
+            )
+
+            firestore.collection("users")
+                .document(uid)
+                .update(updates)
+                .await()
+
+            Result.success(Unit)
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
+
 }

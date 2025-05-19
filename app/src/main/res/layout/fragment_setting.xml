@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/bluewhite_variant"
-    tools:context=".ui.views.fragment.SettingFragment">
+    tools:context=".views.ui.fragment.SettingFragment">
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appBarLayout2"
@@ -45,7 +45,8 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:padding="20dp"
-            android:visibility="invisible">
+            android:visibility="invisible"
+            tools:visibility="visible">
 
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/profile_card"
@@ -76,6 +77,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="17dp"
+                        android:layout_marginEnd="17dp"
                         android:layout_weight="1"
                         android:orientation="vertical">
 
@@ -83,8 +85,10 @@
                             android:id="@+id/tv_user_name"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:ellipsize="end"
+                            android:lines="1"
                             android:textColor="#1E88E5"
-                            android:textSize="20sp"
+                            android:textSize="18sp"
                             android:textStyle="bold"
                             tools:text="Name" />
 
@@ -102,7 +106,7 @@
                         android:layout_height="wrap_content"
                         android:tint="@color/grayText"
                         app:srcCompat="@drawable/forward_ic"
-                        app:tint="#1E88E5" />
+                        app:tint="@color/grayText" />
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
