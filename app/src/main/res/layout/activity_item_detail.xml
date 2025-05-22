@@ -212,7 +212,7 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="16dp"
-                android:text="Finished Item"
+                android:text="Packed item"
                 android:textColor="#1E88E5"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="@+id/textInputLayout8"

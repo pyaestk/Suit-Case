@@ -21,11 +21,11 @@ import androidx.core.content.ContextCompat
 import com.bumptech.glide.Glide
 import com.project.suitcase.R
 import com.project.suitcase.databinding.ActivityAddItemBinding
+import com.project.suitcase.views.ui.activity.trip.AddTripActivity
 import com.project.suitcase.views.viewmodel.AddItemGetTripsViewModelEvent
 import com.project.suitcase.views.viewmodel.AddItemUiState
 import com.project.suitcase.views.viewmodel.AddItemViewModel
 import com.project.suitcase.views.viewmodel.AddItemViewModelEvent
-import com.project.suitcase.views.ui.activity.trip.AddTripActivity
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class AddItemActivity : AppCompatActivity() {
@@ -62,7 +62,7 @@ class AddItemActivity : AppCompatActivity() {
         binding?.btnSaveItem?.setOnClickListener {
             val selectedTrip = binding?.edtTrip?.text.toString()
             val tripId = tripMap[selectedTrip]
-            val itemName = binding?.edtItemName?.text.toString().trim()
+            val itemName = binding?.edtItemName?.text.toString()
             val itemDescription = binding?.edtItemDescription?.text.toString()
             val itemPrice = binding?.edtPrice?.text.toString().trim()
             val itemLocation = binding?.edtLocation?.text.toString()
@@ -72,6 +72,7 @@ class AddItemActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
             if (itemName.isEmpty()) {
+                binding?.textInputLayoutItemName?.error = "Item name cannot be blank"
                 Toast.makeText(this, "Please enter an item name before saving", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }

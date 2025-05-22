@@ -20,6 +20,9 @@ class ProfileViewActivity : AppCompatActivity() {
 
     private var binding: ActivityProfileViewBinding ?= null
 
+    private var userImage: String? = null
+
+
     override fun onResume() {
         super.onResume()
         viewModel.getUserDetail()
@@ -37,6 +40,7 @@ class ProfileViewActivity : AppCompatActivity() {
 
         binding?.btnItemEdit2?.setOnClickListener{
             val intent = Intent(this, ProfileEditActivity::class.java)
+            intent.putExtra("userImage", userImage)
             startActivity(intent)
         }
 
@@ -54,6 +58,8 @@ class ProfileViewActivity : AppCompatActivity() {
                     binding?.edtUserEmail?.setText(state.userDetail.email)
                     binding?.edtUserName?.setText(state.userDetail.name)
                     binding?.edtUserPhoneNumber?.setText(state.userDetail.phoneNumber)
+
+                    userImage = state.userDetail.userImage
                     if (!state.userDetail.userImage.isNullOrEmpty()){
                         Glide.with(this)
                             .load(state.userDetail.userImage)

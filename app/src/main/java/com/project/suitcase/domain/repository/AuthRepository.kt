@@ -1,5 +1,6 @@
 package com.project.suitcase.domain.repository
 
+import android.net.Uri
 import com.project.suitcase.data.datasource.AuthRemoteDatasource
 import com.project.suitcase.data.utils.toModels
 import com.project.suitcase.domain.model.UserDetailModel
@@ -47,7 +48,7 @@ class AuthRepository(
     suspend fun updateUserInfo(
         name: String,
         phoneNumber: String,
-        userImage: String
+        userImage: Uri?
     ): Result<Unit> {
         return authRemoteDatasource.updateUserDetail(
             userImage = userImage,

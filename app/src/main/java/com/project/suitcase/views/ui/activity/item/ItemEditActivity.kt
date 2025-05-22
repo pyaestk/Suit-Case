@@ -52,6 +52,7 @@ class ItemEditActivity : AppCompatActivity() {
         _binding = ActivityItemEditBinding.inflate(layoutInflater)
         setContentView(binding.root)
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
+
         registerActivityForResult()
 
         binding.btnBack.setOnClickListener {
@@ -62,6 +63,7 @@ class ItemEditActivity : AppCompatActivity() {
         tripId = intent.getStringExtra("tripID")
         itemId = intent.getStringExtra("itemID")
         itemImage = intent.getStringExtra("itemImage")
+
         if (itemImage.isNullOrEmpty()) {
             binding.ivItemImage.setImageResource(R.drawable.photo)
         } else {
@@ -72,18 +74,24 @@ class ItemEditActivity : AppCompatActivity() {
         }
 
         binding.btnUpdateItem.setOnClickListener{
-            detailViewModel.editItemDetail(
-                tripId = tripId!!,
-                itemId = itemId!!,
-                itemName = binding.edtItemName.text.toString(),
-                itemDescription = binding.edtItemDescription.text.toString(),
-                itemLocation = binding.edtLocation.text.toString(),
-                itemImage = imageUri,
-                itemPrice = binding.edtPrice.text.toString(),
-            )
+
+            if (binding.edtItemName.text.toString().isBlank()){
+                binding.textInputLayoutItemName.error = "Item name cannot be blank"
+            } else {
+                detailViewModel.editItemDetail(
+                    tripId = tripId!!,
+                    itemId = itemId!!,
+                    itemName = binding.edtItemName.text.toString(),
+                    itemDescription = binding.edtItemDescription.text.toString(),
+                    itemLocation = binding.edtLocation.text.toString(),
+                    itemImage = imageUri,
+                    itemPrice = binding.edtPrice.text.toString(),
+                )
+            }
+
         }
 
-        binding.ivItemImage.setOnClickListener {
+        binding.fabItemImage.setOnClickListener {
             chooseImage()
         }
 

@@ -1,5 +1,6 @@
 package com.project.suitcase.views.viewmodel
 
+import android.net.Uri
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -37,8 +38,9 @@ class UserProfileViewModel(
     fun updateUserInfo(
         name: String,
         phoneNumber: String,
-        userImage: String
+        userImage: Uri?
     ){
+        _uiState.value = UserProfileUiState.Loading
         viewModelScope.launch {
             authRepository.updateUserInfo(
                 userImage = userImage,

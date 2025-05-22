@@ -1,14 +1,18 @@
 package com.project.suitcase.data.datasource
 
+import android.net.Uri
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.toObject
+import com.google.firebase.storage.FirebaseStorage
 import com.project.suitcase.data.model.UserDetailResponse
 import kotlinx.coroutines.tasks.await
+import java.util.UUID
 
 class AuthRemoteDatasource(
     private val firebaseAuth: FirebaseAuth,
-    private val firestore: FirebaseFirestore
+    private val firestore: FirebaseFirestore,
+    private val fStorage: FirebaseStorage
 ) {
     suspend fun registerAccount(
         userName: String,
@@ -72,17 +76,40 @@ class AuthRemoteDatasource(
     suspend fun updateUserDetail(
         name: String,
         phoneNumber: String,
-        userImage: String
+        userImage: Uri?
     ): Result<Unit> {
         return try {
             val uid = firebaseAuth.currentUser?.uid
                 ?: return Result.failure(Exception("User not authenticated"))
 
-            val updates = mapOf(
+            val updates = mutableMapOf<String, Any?>(
                 "name" to name,
-                "phoneNumber" to phoneNumber,
-                "userImage" to userImage
+                "phoneNumber" to phoneNumber
             )
+
+            if (userImage != null) {
+                val userDoc = firestore.collection("users").document(uid).get().await()
+                val previousImageUrl = userDoc.getString("userImage")
+
+                previousImageUrl?.let { url ->
+                    try {
+                        val ref = fStorage.getReferenceFromUrl(url)
+                        ref.delete().await()
+                    } catch (_: Exception) {
+
+                    }
+                }
+
+                val imageId = UUID.randomUUID().toString()
+                val imageRef = fStorage.reference.child("profiles/$imageId")
+                val uploadTask = imageRef.putFile(userImage).await()
+                if (uploadTask.task.isSuccessful) {
+                    val newImageUrl = imageRef.downloadUrl.await().toString()
+                    updates["userImage"] = newImageUrl
+                } else {
+                    return Result.failure(Exception("Failed to upload image"))
+                }
+            }
 
             firestore.collection("users")
                 .document(uid)

@@ -72,7 +72,8 @@ class ItemListActivity : AppCompatActivity(), SensorEventListener{
         tripId = intent.getStringExtra("tripId")
         tripName = intent.getStringExtra("tripName")
         binding?.tvTripName?.text = tripName
-        binding?.tvTripDate?.text = intent.getStringExtra("tripDate")
+        binding?.tvTripDate?.text = if (intent.getStringExtra("tripDate").isNullOrEmpty())
+            "Date Not Set" else intent.getStringExtra("tripDate")
 
         adapterSetup()
         itemListViewModelSetup()

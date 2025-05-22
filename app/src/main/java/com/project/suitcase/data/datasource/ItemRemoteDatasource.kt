@@ -99,6 +99,18 @@ class ItemRemoteDatasource(
 
                 // Update item image if provided
                 if (itemImage != null) {
+                    val itemDoc = itemRef.get().await()
+                    val previousImageUrl = itemDoc.getString("itemImage")
+
+                    previousImageUrl?.let { url ->
+                        try {
+                            val ref = fStorage.getReferenceFromUrl(url)
+                            ref.delete().await()
+                        } catch (_: Exception) {
+
+                        }
+                    }
+
                     val imageId = UUID.randomUUID().toString()
                     val imageRef = fStorage.reference.child("items/$imageId")
                     val uploadTask = imageRef.putFile(itemImage).await()

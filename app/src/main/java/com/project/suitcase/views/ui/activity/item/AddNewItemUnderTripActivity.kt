@@ -49,21 +49,25 @@ class AddNewItemUnderTripActivity : AppCompatActivity() {
             chooseImage()
         }
         binding?.btnSaveItem?.setOnClickListener {
-            val itemName = binding?.edtItemName?.text.toString()
-            val itemDescription = binding?.edtItemDescription?.text.toString()
-            val itemPrice = binding?.edtPrice?.text.toString()
-            val itemLocation = binding?.edtLocation?.text.toString()
+            if (binding?.edtItemName?.text.toString().isEmpty()){
+                binding?.textInputLayoutItemName?.error = "Item name cannot be blank"
+            } else {
+                val itemName = binding?.edtItemName?.text.toString()
+                val itemDescription = binding?.edtItemDescription?.text.toString()
+                val itemPrice = binding?.edtPrice?.text.toString()
+                val itemLocation = binding?.edtLocation?.text.toString()
 
-            tripId?.let {
-                addItemVieModel.addItem(
-                    tripId = tripId!!,
-                    itemPrice = itemPrice,
-                    itemDescription = itemDescription,
-                    itemLocation = itemLocation,
-                    itemImage = imageUri,
-                    itemName = itemName,
-                    tripName = tripName!!
-                )
+                tripId?.let {
+                    addItemVieModel.addItem(
+                        tripId = tripId!!,
+                        itemPrice = itemPrice,
+                        itemDescription = itemDescription,
+                        itemLocation = itemLocation,
+                        itemImage = imageUri,
+                        itemName = itemName,
+                        tripName = tripName!!
+                    )
+                }
             }
         }
 

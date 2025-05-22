@@ -95,9 +95,9 @@
 
             <com.google.android.material.imageview.ShapeableImageView
                 android:id="@+id/iv_item_image"
-                android:layout_width="250dp"
-                android:layout_height="250dp"
-                android:layout_marginTop="24dp"
+                android:layout_width="200dp"
+                android:layout_height="200dp"
+                android:layout_marginTop="32dp"
                 android:scaleType="fitCenter"
                 android:src="@drawable/photo"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -108,9 +108,9 @@
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/textInputLayoutItemName"
                 android:layout_width="0dp"
-                android:layout_height="60dp"
+                android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
-                android:layout_marginTop="24dp"
+                android:layout_marginTop="32dp"
                 android:layout_marginEnd="16dp"
                 app:boxBackgroundColor="@color/white"
                 app:boxCornerRadiusBottomEnd="20dp"
@@ -203,6 +203,20 @@
                     android:layout_height="wrap_content"
                     android:hint="Location" />
             </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/fab_item_image"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="-10dp"
+                android:layout_marginBottom="-10dp"
+                android:clickable="true"
+                android:tint="@color/bluewhite"
+                app:backgroundTint="@color/blue"
+                app:layout_constraintBottom_toBottomOf="@+id/iv_item_image"
+                app:layout_constraintEnd_toEndOf="@+id/iv_item_image"
+                app:srcCompat="@drawable/baseline_add"
+                app:tint="@color/white" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
