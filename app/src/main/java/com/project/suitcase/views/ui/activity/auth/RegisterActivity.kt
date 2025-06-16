@@ -4,9 +4,11 @@ import android.content.pm.ActivityInfo
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.widget.addTextChangedListener
+import com.project.suitcase.R
 import com.project.suitcase.databinding.ActivityRegisterBinding
 import com.project.suitcase.views.viewmodel.RegisterUiState
 import com.project.suitcase.views.viewmodel.RegisterViewModel
@@ -25,6 +27,7 @@ class RegisterActivity : AppCompatActivity() {
         binding = ActivityRegisterBinding.inflate(layoutInflater)
         setContentView(binding?.root)
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
+        window.statusBarColor = ContextCompat.getColor(this, R.color.bluewhite_variant)
         ViewCompat.setOnApplyWindowInsetsListener(binding!!.root) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)

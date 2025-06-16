@@ -27,14 +27,11 @@ class TripRemoteDataSource(
                 val docRef = fireStore.collection("users").document(user.uid)
                     .collection("trip").document()
                 val tripId = docRef.id
-                val parsedDate = if (date.isNotBlank()) {
-                    SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).parse(date)
-                } else null
 
                 val tripInfo = TripResponse(
                     tripId = tripId,
                     tripName = tripName,
-                    date = parsedDate?.let { Timestamp(it) }
+                    date = parseDateStringToTimestamp(date)
                 )
                 docRef.set(tripInfo).await()
                 Result.success(tripId)
@@ -43,6 +40,17 @@ class TripRemoteDataSource(
             }
         } catch (e: Exception) {
             Result.failure(e)
+        }
+    }
+
+    private fun parseDateStringToTimestamp(dateString: String): Timestamp? {
+        return try {
+            val sdf = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+            val date = sdf.parse(dateString)
+            date?.let { Timestamp(it) }
+        } catch (e: Exception) {
+            Log.e("DateParse", "Failed to parse date string: $dateString", e)
+            null
         }
     }
 

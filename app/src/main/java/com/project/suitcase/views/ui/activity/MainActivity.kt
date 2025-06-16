@@ -8,6 +8,9 @@ import android.view.View
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.NavigationUI
 import com.google.firebase.auth.FirebaseAuth
@@ -70,6 +73,24 @@ class MainActivity : AppCompatActivity() {
             onAddButtonClicked()
             startActivity(Intent(this@MainActivity, AddItemActivity::class.java))
         }
+
+
+//        navController?.addOnDestinationChangedListener { _, destination, _ ->
+//            when (destination.id) {
+//                R.id.homeFragment -> {
+//                    window.statusBarColor = ContextCompat.getColor(this, R.color.blue)
+//                }
+//                R.id.settingFragment -> {
+//                    window.statusBarColor = ContextCompat.getColor(this, R.color.blue)
+//                }
+//                R.id.searchFragment -> {
+//                    window.statusBarColor = ContextCompat.getColor(this, R.color.blue)
+//                }
+//                R.id.finishedFragment -> {
+//                    window.statusBarColor = ContextCompat.getColor(this, R.color.blue)
+//                }
+//            }
+//        }
 
         if (intent?.action == Intent.ACTION_SEND) {
             if (intent.type == "text/plain" || fAuth?.currentUser != null) {

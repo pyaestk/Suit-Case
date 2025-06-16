@@ -22,6 +22,9 @@
         android:theme="@style/Theme.SuitCase"
         tools:targetApi="31">
         <activity
+            android:name=".views.ui.activity.MainActivity2"
+            android:exported="false" />
+        <activity
             android:name=".views.ui.activity.auth.MainActivity"
             android:exported="false"
             android:theme="@style/Theme.SuitCase" />
@@ -60,10 +63,10 @@
         </activity>
         <activity
             android:name=".views.ui.activity.auth.LoginActivity"
-            android:exported="false"></activity>
+            android:exported="false" />
         <activity
             android:name=".views.ui.activity.auth.RegisterActivity"
-            android:exported="false"></activity>
+            android:exported="false" />
         <activity
             android:name=".views.ui.activity.MainActivity"
             android:exported="true"

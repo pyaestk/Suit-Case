@@ -7,11 +7,12 @@
         <item name="colorOnSurface">@color/black</item>
         <item name="colorOnSurfaceVariant">@color/gray_white</item>
 
-        <item name="android:statusBarColor">#1E88E5</item>
-        <item name="android:windowLightStatusBar">false</item>
+        <item name="android:statusBarColor">@color/blue</item>
+        <item name="android:windowLightStatusBar">true</item>
 
         <item name="fontFamily">@font/poppins_regular</item>
         <item name="android:includeFontPadding">false</item>
+
     </style>
 
     <style name="Theme.SuitCase" parent="Base.Theme.SuitCase" />

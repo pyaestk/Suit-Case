@@ -2,12 +2,16 @@ package com.project.suitcase.views.ui.activity.auth
 
 import android.content.Intent
 import android.content.pm.ActivityInfo
+import android.os.Build
 import android.os.Bundle
+import android.view.WindowManager
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.widget.addTextChangedListener
+import com.project.suitcase.R
 import com.project.suitcase.databinding.ActivityLoginBinding
 import com.project.suitcase.views.viewmodel.LoginFormEvent
 import com.project.suitcase.views.viewmodel.LoginUiState
@@ -23,13 +27,9 @@ class LoginActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding?.root)
-        ViewCompat.setOnApplyWindowInsetsListener(binding!!.root) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
-        }
 
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
+        window.statusBarColor = ContextCompat.getColor(this, R.color.bluewhite_variant)
 
         binding?.btnLogin?.setOnClickListener {
             viewModel.onEvent(LoginFormEvent.Submit)

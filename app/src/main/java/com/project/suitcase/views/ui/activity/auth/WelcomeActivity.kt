@@ -5,8 +5,10 @@ import android.content.pm.ActivityInfo
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import com.project.suitcase.R
 import com.project.suitcase.databinding.ActivityWelcomeBinding
 import com.project.suitcase.views.viewmodel.WelcomeScreenUiState
 import com.project.suitcase.views.viewmodel.WelcomeScreenViewModel
@@ -27,6 +29,7 @@ class WelcomeActivity : AppCompatActivity() {
         binding = ActivityWelcomeBinding.inflate(layoutInflater)
         setContentView(binding?.root)
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
+        window.statusBarColor = ContextCompat.getColor(this, R.color.bluewhite_variant)
         ViewCompat.setOnApplyWindowInsetsListener(binding!!.root) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
