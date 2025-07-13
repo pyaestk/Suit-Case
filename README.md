@@ -42,24 +42,9 @@
 
 ## 📸 Screenshots
 
-<img src="https://github.com/user-attachments/assets/b065fcd1-6f08-49fc-9b5f-3ad3a7a204bb" width="200" />
-<img src="https://github.com/user-attachments/assets/76696f3e-8ef1-4b0b-8683-234286cae451" width="200" />
-<img src="https://github.com/user-attachments/assets/7c903afa-f908-4602-9ec5-2e3865b9769a" width="200" />
-<img src="https://github.com/user-attachments/assets/269714f3-2a76-43c7-89de-2dd5aabebeb5" width="200" />
-<img src="https://github.com/user-attachments/assets/07795340-e695-40a1-b4f9-a743800da8cb" width="200" />
-<img src="https://github.com/user-attachments/assets/847451ab-78dd-49da-826b-65336446d9df" width="200" />
-<img src="https://github.com/user-attachments/assets/632bc00d-53f4-4f79-a7f2-9f7d86b978ab" width="200" />
-<img src="https://github.com/user-attachments/assets/bffb916b-006e-475a-bb77-e1f91654b878" width="200" />
-<img src="https://github.com/user-attachments/assets/5613d699-0907-4da3-8e43-9f189de22c0b" width="200" />
-<img src="https://github.com/user-attachments/assets/071ae5ab-611a-4e73-aedd-c6c457a9a2f5" width="200" />
-<img src="https://github.com/user-attachments/assets/b745cb49-089a-43f7-a723-9a45767af1c5" width="200" />
-<img src="https://github.com/user-attachments/assets/86d5d835-0da5-4020-86fb-667650977dda" width="200" />
-<img src="https://github.com/user-attachments/assets/009093e3-5990-47b5-936f-04130a459762" width="200" />
-<img src="https://github.com/user-attachments/assets/84a4185e-6aae-4681-a1b0-2bc54cc23530" width="200" />
-<img src="https://github.com/user-attachments/assets/4a8bef50-5d87-44e0-82b3-8c8c0c7898b5" width="200" />
-<img src="https://github.com/user-attachments/assets/83321257-1030-462e-95d1-f6b67d3a4b13" width="200" />
-<img src="https://github.com/user-attachments/assets/ab740918-cc33-423f-b130-832328756fde" width="200"/>
-<img src="https://github.com/user-attachments/assets/7d63ef50-a69c-44e9-8243-c4172d972ac6" width="200"/>
+
+<img width="1512" height="982" alt="Suitcase 1" src="https://github.com/user-attachments/assets/d9d2d335-21fe-4b06-ba04-0e405f2588c4" />
+<img width="1512" height="982" alt="Suitcase 2" src="https://github.com/user-attachments/assets/83a09576-8ed3-4e19-94a0-f6defc264a25" />
 
 
 ## 🚀 Getting Started
