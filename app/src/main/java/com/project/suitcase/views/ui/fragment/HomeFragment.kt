@@ -64,7 +64,7 @@ class HomeFragment : Fragment(), ParentTripAdapter.OnTripMenuClickListener {
             adapter = parentTripAdapter
         }
 
-        binding.btnDeleteAllTrips?.setOnClickListener {
+        binding.btnDeleteAllTrips.setOnClickListener {
 
             MaterialAlertDialogBuilder(requireContext(),
                 R.style.ThemeOverlay_App_MaterialAlertDialog)
@@ -102,19 +102,6 @@ class HomeFragment : Fragment(), ParentTripAdapter.OnTripMenuClickListener {
 
     }
 
-//    private fun appBarSetUp() {
-//        binding.rvTrip.addOnScrollListener(object : RecyclerView.OnScrollListener(){
-//            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-//                super.onScrolled(recyclerView, dx, dy)
-//                if (recyclerView.canScrollVertically(-1)){
-//                    binding.appBarTitle.text = "Destinations"
-//                } else {
-//                    binding.appBarTitle.text = "HOME"
-//                }
-//            }
-//        })
-//    }
-
     private fun viewModelSetUp() {
         homeFragmentViewModel.uiState.observe(viewLifecycleOwner) { state ->
             when(state) {
@@ -130,6 +117,11 @@ class HomeFragment : Fragment(), ParentTripAdapter.OnTripMenuClickListener {
                     binding.rvTrip.visibility = View.VISIBLE
                     binding.progressBar.visibility = View.INVISIBLE
                     parentTripAdapter?.setTripList(state.trips)
+                    if (state.trips.size < 1) {
+                        binding.emptyLayout.visibility = View.VISIBLE
+                    } else {
+                        binding.emptyLayout.visibility = View.INVISIBLE
+                    }
                 }
 
                 HomeFragmentUiState.TripListDeleteSuccess -> {

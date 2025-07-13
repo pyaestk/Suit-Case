@@ -65,6 +65,7 @@
         android:id="@+id/layout_content"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:layout_marginTop="16dp"
         android:fillViewport="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -80,15 +81,15 @@
                 android:id="@+id/btn_updpate_profile"
                 android:layout_width="0dp"
                 android:layout_height="60dp"
-                android:layout_marginBottom="8dp"
+                android:layout_marginTop="32dp"
                 android:backgroundTint="#1E88E5"
                 android:text="UPDATE"
                 android:textSize="16sp"
                 android:textStyle="bold"
                 app:cornerRadius="20dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="@+id/textInputLayoutUserName"
-                app:layout_constraintStart_toStartOf="@+id/textInputLayoutUserName" />
+                app:layout_constraintEnd_toEndOf="@+id/textInputLayout7"
+                app:layout_constraintStart_toStartOf="@+id/textInputLayout7"
+                app:layout_constraintTop_toBottomOf="@+id/textInputLayout7" />
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/fab_profile_image"
@@ -97,16 +98,17 @@
                 android:clickable="true"
                 android:tint="@color/bluewhite"
                 app:backgroundTint="@color/blue"
-                app:tint="@color/white"
                 app:layout_constraintBottom_toBottomOf="@+id/iv_user_image"
                 app:layout_constraintEnd_toEndOf="@+id/iv_user_image"
-                app:srcCompat="@drawable/baseline_add" />
+                app:srcCompat="@drawable/baseline_add"
+                app:tint="@color/white" />
 
             <com.google.android.material.imageview.ShapeableImageView
                 android:id="@+id/iv_user_image"
                 android:layout_width="180dp"
                 android:layout_height="180dp"
                 android:layout_marginTop="32dp"
+                android:background="@color/white"
                 android:elevation="5dp"
                 android:padding="1dp"
                 android:scaleType="centerCrop"
@@ -116,7 +118,6 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:shapeAppearance="@style/ShapeAppearance.Material3.Corner.Full"
                 app:strokeColor="@color/bluewhite"
-                android:background="@color/white"
                 app:strokeWidth="1dp" />
 
             <TextView
@@ -135,15 +136,15 @@
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/textInputLayoutUserName"
                 android:layout_width="0dp"
-                android:layout_height="60dp"
+                android:layout_height="wrap_content"
                 android:layout_marginStart="24dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="24dp"
                 app:boxBackgroundColor="@color/white"
-                app:boxCornerRadiusBottomEnd="10dp"
-                app:boxCornerRadiusBottomStart="10dp"
-                app:boxCornerRadiusTopEnd="10dp"
-                app:boxCornerRadiusTopStart="10dp"
+                app:boxCornerRadiusBottomEnd="20dp"
+                app:boxCornerRadiusBottomStart="20dp"
+                app:boxCornerRadiusTopEnd="20dp"
+                app:boxCornerRadiusTopStart="20dp"
                 app:boxStrokeColor="#1E88E5"
                 app:hintEnabled="false"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -154,7 +155,32 @@
                     android:id="@+id/edt_user_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="text" />
+                    android:inputType="text"
+                    android:singleLine="true" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/textInputLayout7"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                app:boxBackgroundColor="@color/white"
+                app:boxCornerRadiusBottomEnd="20dp"
+                app:boxCornerRadiusBottomStart="20dp"
+                app:boxCornerRadiusTopEnd="20dp"
+                app:boxCornerRadiusTopStart="20dp"
+                app:boxStrokeColor="#1E88E5"
+                app:hintEnabled="false"
+                app:layout_constraintEnd_toEndOf="@+id/textInputLayoutUserName"
+                app:layout_constraintStart_toStartOf="@+id/textInputLayoutUserName"
+                app:layout_constraintTop_toBottomOf="@+id/textView10">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/edt_user_phone_number"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="phone"
+                    android:singleLine="true" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <TextView
@@ -170,28 +196,6 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textInputLayoutUserName" />
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/textInputLayout7"
-                android:layout_width="0dp"
-                android:layout_height="60dp"
-                android:layout_marginTop="8dp"
-                app:boxBackgroundColor="@color/white"
-                app:boxCornerRadiusBottomEnd="10dp"
-                app:boxCornerRadiusBottomStart="10dp"
-                app:boxCornerRadiusTopEnd="10dp"
-                app:boxCornerRadiusTopStart="10dp"
-                app:boxStrokeColor="#1E88E5"
-                app:hintEnabled="false"
-                app:layout_constraintEnd_toEndOf="@+id/textInputLayoutUserName"
-                app:layout_constraintStart_toStartOf="@+id/textInputLayoutUserName"
-                app:layout_constraintTop_toBottomOf="@+id/textView10">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/edt_user_phone_number"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="phone" />
-            </com.google.android.material.textfield.TextInputLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>

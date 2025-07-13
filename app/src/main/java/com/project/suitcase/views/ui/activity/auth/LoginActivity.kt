@@ -30,6 +30,7 @@ class LoginActivity : AppCompatActivity() {
 
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
         window.statusBarColor = ContextCompat.getColor(this, R.color.bluewhite_variant)
+        window.navigationBarColor = ContextCompat.getColor(this, R.color.bluewhite_variant)
 
         binding?.btnLogin?.setOnClickListener {
             viewModel.onEvent(LoginFormEvent.Submit)

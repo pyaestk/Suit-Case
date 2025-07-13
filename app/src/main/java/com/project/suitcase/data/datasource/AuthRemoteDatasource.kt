@@ -28,7 +28,6 @@ class AuthRemoteDatasource(
             if (user != null) {
                 val userInfo = UserDetailResponse(
                     email = email,
-                    password = password,
                     phoneNumber = phoneNumber,
                     name = userName,
                     userImage = null

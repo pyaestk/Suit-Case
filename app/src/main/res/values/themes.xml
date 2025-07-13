@@ -9,9 +9,13 @@
 
         <item name="android:statusBarColor">@color/blue</item>
         <item name="android:windowLightStatusBar">true</item>
+        <item name="android:navigationBarColor">@color/bluewhite_variant</item>
 
         <item name="fontFamily">@font/poppins_regular</item>
         <item name="android:includeFontPadding">false</item>
+
+        <item name="android:windowBackground">@color/bluewhite_variant</item>
+
 
     </style>
 

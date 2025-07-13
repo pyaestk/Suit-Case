@@ -6,6 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/bluewhite_variant"
+    android:fitsSystemWindows="true"
     tools:context=".views.ui.activity.item.AddItemActivity">
 
     <ProgressBar
@@ -66,6 +67,7 @@
         android:id="@+id/layout_content"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:background="@color/bluewhite_variant"
         android:fillViewport="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -74,7 +76,8 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/bluewhite_variant"
             android:paddingBottom="45dp">
 
             <com.google.android.material.textfield.TextInputLayout

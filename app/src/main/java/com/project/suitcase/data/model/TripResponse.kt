@@ -10,4 +10,4 @@ data class TripResponse(
 ) {
     // No-argument constructor for Firestore
     constructor() : this(null, null, null, emptyList())
-}
+} 

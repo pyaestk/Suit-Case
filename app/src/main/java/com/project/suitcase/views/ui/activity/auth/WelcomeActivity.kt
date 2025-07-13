@@ -30,6 +30,8 @@ class WelcomeActivity : AppCompatActivity() {
         setContentView(binding?.root)
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
         window.statusBarColor = ContextCompat.getColor(this, R.color.bluewhite_variant)
+        window.navigationBarColor = ContextCompat.getColor(this, R.color.bluewhite_variant)
+
         ViewCompat.setOnApplyWindowInsetsListener(binding!!.root) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)

@@ -2,6 +2,8 @@ package com.project.suitcase.views.ui.activity
 
 import android.content.Intent
 import android.content.pm.ActivityInfo
+import android.content.res.Configuration
+import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -9,8 +11,6 @@ import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.NavigationUI
 import com.google.firebase.auth.FirebaseAuth
@@ -43,13 +43,10 @@ class MainActivity : AppCompatActivity() {
 
         binding  = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding?.root)
-        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
+
+        activityDecoration()
 
         fAuth = FirebaseAuth.getInstance()
-
-//        val navController = Navigation.findNavController(this, R.id.host_fragment)
-//        NavigationUI.setupWithNavController(binding!!.bottomNavigationView, navController)
-//        binding?.bottomNavigationView?.menu?.getItem(2)?.isEnabled = false
 
         val navController = supportFragmentManager.findFragmentById(R.id.host_fragment)
             ?.findNavController()
@@ -75,23 +72,6 @@ class MainActivity : AppCompatActivity() {
         }
 
 
-//        navController?.addOnDestinationChangedListener { _, destination, _ ->
-//            when (destination.id) {
-//                R.id.homeFragment -> {
-//                    window.statusBarColor = ContextCompat.getColor(this, R.color.blue)
-//                }
-//                R.id.settingFragment -> {
-//                    window.statusBarColor = ContextCompat.getColor(this, R.color.blue)
-//                }
-//                R.id.searchFragment -> {
-//                    window.statusBarColor = ContextCompat.getColor(this, R.color.blue)
-//                }
-//                R.id.finishedFragment -> {
-//                    window.statusBarColor = ContextCompat.getColor(this, R.color.blue)
-//                }
-//            }
-//        }
-
         if (intent?.action == Intent.ACTION_SEND) {
             if (intent.type == "text/plain" || fAuth?.currentUser != null) {
                 handleSendText(intent) // Handle text being sent
@@ -99,6 +79,11 @@ class MainActivity : AppCompatActivity() {
         }
 
 
+    }
+
+    private fun activityDecoration() {
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
+        window.navigationBarColor = ContextCompat.getColor(this, R.color.white)
     }
 
     private fun onAddButtonClicked() {
