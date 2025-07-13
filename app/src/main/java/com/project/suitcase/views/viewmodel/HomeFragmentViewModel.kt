@@ -85,6 +85,16 @@ class HomeFragmentViewModel(
         }
     }
 
+    fun updateItemCheckedStatus(itemId: String, finished: Boolean, tripId: String) {
+        viewModelScope.launch {
+            itemRepository.updateCheckedItemStatus(
+                itemId = itemId,
+                finished = finished,
+                tripId = tripId
+            )
+        }
+    }
+
 }
 
 sealed class HomeFragmentUiState {

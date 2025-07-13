@@ -72,6 +72,13 @@ class FinishedListViewModel(
         }
     }
 
+    fun deleteItem(tripId: String, itemId: String) {
+        _uiState.value = FinishedListUiState.Loading
+        viewModelScope.launch {
+            itemRepository.deleteItem(tripId = tripId, itemId = itemId)
+        }
+    }
+
 
 }
 sealed class FinishedListUiState {

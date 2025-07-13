@@ -61,11 +61,13 @@
             app:layout_constraintStart_toStartOf="@+id/tv_item_name"
             app:layout_constraintTop_toBottomOf="@+id/tv_item_name" />
 
-        <CheckBox
+        <com.google.android.material.checkbox.MaterialCheckBox
             android:id="@+id/checkBoxItem"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:checked="true"
+            app:buttonIconTint="@color/white"
+            app:buttonTint="@color/blue"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 

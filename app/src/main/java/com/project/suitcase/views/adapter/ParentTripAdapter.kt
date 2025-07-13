@@ -17,6 +17,8 @@ class ParentTripAdapter: RecyclerView.Adapter<ParentTripAdapter.TripListViewHold
     private var tripList: List<TripDetailModel> = listOf()
     private var onTripMenuClickListener: OnTripMenuClickListener? = null
 
+    lateinit var onCheckBoxClick: ((String, String, Boolean) -> Unit)
+
     fun setTripList(newTripList: List<TripDetailModel>) {
         val diffCallback = TripDiffCallback(this.tripList, newTripList)
         val diffResult = DiffUtil.calculateDiff(diffCallback)
@@ -65,10 +67,11 @@ class ParentTripAdapter: RecyclerView.Adapter<ParentTripAdapter.TripListViewHold
                 onChildItemClick.invoke(it)
             }
         }
-        holder.binding.rvItemList.layoutManager = LinearLayoutManager(holder.itemView.context, LinearLayoutManager.HORIZONTAL, false)
+        holder.binding.rvItemList.layoutManager = LinearLayoutManager(holder.itemView.context, LinearLayoutManager.VERTICAL, false)
         holder.binding.rvItemList.adapter = childItemAdapter
 
         childItemAdapter.setItemList(currentTrip.items)
+        childItemAdapter.onCheckBoxClick = onCheckBoxClick
 
         holder.itemView.setOnClickListener {
             onItemClick.invoke(currentTrip)

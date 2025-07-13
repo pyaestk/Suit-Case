@@ -97,6 +97,14 @@ class HomeFragment : Fragment(), ParentTripAdapter.OnTripMenuClickListener {
             startActivity(intent)
         }
 
+        parentTripAdapter?.onCheckBoxClick = { tripId, itemId, isChecked ->
+            homeFragmentViewModel.updateItemCheckedStatus(
+                finished = isChecked,
+                tripId = tripId,
+                itemId = itemId
+            )
+        }
+
 
         viewModelSetUp()
 

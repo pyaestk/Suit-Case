@@ -42,7 +42,10 @@ class ItemListActivity : AppCompatActivity(), SensorEventListener{
     private var lastY: Float = 0.0f
     private var lastZ: Float = 0.0f
 
-    private var shakeThreshold: Float = 2.0f
+    private var shakeThreshold: Float = 8.0f
+    private var lastShakeTime: Long = 0
+    private val shakeCooldown = 1500 // milliseconds (1.5 seconds)
+
     //flag to prevent multiple dialogs
     private var isDialogShowing = false
     private var isInitialized = false
@@ -198,7 +201,7 @@ class ItemListActivity : AppCompatActivity(), SensorEventListener{
             }
             startActivity(intent)
         }
-        //Item left and right swipe
+
 
     }
 
@@ -275,9 +278,14 @@ class ItemListActivity : AppCompatActivity(), SensorEventListener{
             lastY = y
             lastZ = z
 
+
             val shake = Math.sqrt((deltaX * deltaX + deltaY * deltaY + deltaZ * deltaZ).toDouble())
-            if (shake > shakeThreshold && !isDialogShowing) {
-                Log.d("ShakeDetector", "Shake detected")
+            val currentTime = System.currentTimeMillis()
+
+            if (shake > shakeThreshold && !isDialogShowing && currentTime - lastShakeTime > shakeCooldown) {
+                lastShakeTime = currentTime
+                isDialogShowing = true
+
                 isDialogShowing = true
                 MaterialAlertDialogBuilder(this@ItemListActivity,
                     R.style.ThemeOverlay_App_MaterialAlertDialog)
