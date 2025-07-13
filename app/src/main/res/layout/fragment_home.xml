@@ -70,6 +70,7 @@
             app:cardCornerRadius="15dp"
             app:cardUseCompatPadding="true"
             app:strokeColor="@color/bluewhite"
+            app:cardElevation="5dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
