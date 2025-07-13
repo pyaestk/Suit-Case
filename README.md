@@ -40,13 +40,6 @@
 - **Kotlin Coroutines** – For smooth background task handling
 - **Jetpack libraries** – ViewModel, LiveData, Navigation, etc.
 
-## 📸 Screenshots
-
-
-<img width="1512" height="982" alt="Suitcase 1" src="https://github.com/user-attachments/assets/d9d2d335-21fe-4b06-ba04-0e405f2588c4" />
-<img width="1512" height="982" alt="Suitcase 2" src="https://github.com/user-attachments/assets/83a09576-8ed3-4e19-94a0-f6defc264a25" />
-
-
 ## 🚀 Getting Started
 
 ### Prerequisites
