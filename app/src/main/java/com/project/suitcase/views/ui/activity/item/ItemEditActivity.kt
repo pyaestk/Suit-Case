@@ -19,7 +19,7 @@ import com.bumptech.glide.Glide
 import com.project.suitcase.R
 import com.project.suitcase.databinding.ActivityItemEditBinding
 import com.project.suitcase.domain.model.ItemDetailModel
-import com.project.suitcase.views.viewmodel.EditItemDetailViewModelEvent
+
 import com.project.suitcase.views.viewmodel.ItemDetailUiState
 import com.project.suitcase.views.viewmodel.ItemDetailViewModel
 import com.project.suitcase.views.viewmodel.ItemDetailViewModelEvent
@@ -116,24 +116,18 @@ class ItemEditActivity : AppCompatActivity() {
                 is ItemDetailViewModelEvent.Success -> {
                     updateUI(it.itemDetailModel)
                 }
-            }
-        }
 
-        detailViewModel.editItemDetailUiEvent.observe(this) {
-            when (it) {
-                is EditItemDetailViewModelEvent.Error -> {
-                    Toast.makeText(this, it.error, Toast.LENGTH_SHORT).show()
+                ItemDetailViewModelEvent.EditSuccess -> {
+                    finish()
                 }
-                EditItemDetailViewModelEvent.Success -> {
-                    Toast.makeText(this, "Item has been updated", Toast.LENGTH_SHORT).show()
-                    detailViewModel.getItemDetails(
-                        itemId = itemId!!,
-                        tripId = tripId!!
-                    )
+
+                ItemDetailViewModelEvent.DeleteSuccess -> {
                     finish()
                 }
             }
         }
+
+
     }
     private fun chooseImage() {
         val permission = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {

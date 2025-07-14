@@ -91,12 +91,8 @@ class AuthRemoteDatasource(
                 val previousImageUrl = userDoc.getString("userImage")
 
                 previousImageUrl?.let { url ->
-                    try {
-                        val ref = fStorage.getReferenceFromUrl(url)
-                        ref.delete().await()
-                    } catch (_: Exception) {
-
-                    }
+                    val ref = fStorage.getReferenceFromUrl(url)
+                    ref.delete().await()
                 }
 
                 val imageId = UUID.randomUUID().toString()

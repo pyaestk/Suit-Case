@@ -10,7 +10,7 @@ import com.project.suitcase.domain.repository.TripRepository
 import kotlinx.coroutines.launch
 
 class ItemListViewModel(
-    private val tripRepository: TripRepository,
+
     private val itemRepository: ItemRepository
 ): ViewModel() {
 

@@ -12,7 +12,7 @@ import com.project.suitcase.views.viewmodel.util.SingleLiveEvent
 import kotlinx.coroutines.launch
 
 class ItemDetailViewModel(
-    private val tripRepository: TripRepository,
+
     private val itemRepository: ItemRepository
 ): ViewModel() {
 
@@ -21,9 +21,6 @@ class ItemDetailViewModel(
 
     private val _itemDetailUiEvent = SingleLiveEvent<ItemDetailViewModelEvent>()
     val itemDetailUiEvent: LiveData<ItemDetailViewModelEvent> = _itemDetailUiEvent
-
-    private val _editItemDetailUiEvent = SingleLiveEvent<EditItemDetailViewModelEvent>()
-    val editItemDetailUiEvent: LiveData<EditItemDetailViewModelEvent> = _editItemDetailUiEvent
 
     fun getItemDetails(
         tripId: String,
@@ -43,6 +40,16 @@ class ItemDetailViewModel(
                         it.message ?: "Something went wrong"
                     )
                 }
+            )
+        }
+    }
+
+    fun updateItemCheckedStatus(itemId: String, finished: Boolean, tripId: String) {
+        viewModelScope.launch {
+            itemRepository.updateCheckedItemStatus(
+                itemId = itemId,
+                finished = finished,
+                tripId = tripId
             )
         }
     }
@@ -68,14 +75,30 @@ class ItemDetailViewModel(
                 itemName = itemName,
             ).fold(
                 onSuccess = {
-                    _editItemDetailUiEvent.value = EditItemDetailViewModelEvent.Success
+                    _itemDetailUiEvent.value = ItemDetailViewModelEvent.EditSuccess
                 },
                 onFailure = {
-                    _editItemDetailUiEvent.value = EditItemDetailViewModelEvent.Error(
+                    _itemDetailUiEvent.value = ItemDetailViewModelEvent.Error(
                         it.message ?: "Something went wrong"
                     )
                 }
 
+            )
+        }
+    }
+
+
+    fun deleteItem(tripId: String, itemId: String) {
+        viewModelScope.launch {
+            itemRepository.deleteItem(tripId = tripId, itemId = itemId).fold(
+                onSuccess = {
+                    _itemDetailUiEvent.value = ItemDetailViewModelEvent.DeleteSuccess
+                },
+                onFailure = {
+                    _itemDetailUiEvent.value = ItemDetailViewModelEvent.Error(
+                        it.message ?: "Something went wrong"
+                    )
+                }
             )
         }
     }
@@ -93,9 +116,7 @@ sealed class ItemDetailUiState(){
 sealed class ItemDetailViewModelEvent() {
     data class Success(val itemDetailModel: ItemDetailModel) : ItemDetailViewModelEvent()
     data class Error(val error: String) : ItemDetailViewModelEvent()
-}
+    data object EditSuccess: ItemDetailViewModelEvent()
+    data object DeleteSuccess: ItemDetailViewModelEvent()
 
-sealed class EditItemDetailViewModelEvent() {
-    data object Success :EditItemDetailViewModelEvent()
-    data class Error(val error: String) :EditItemDetailViewModelEvent()
 }

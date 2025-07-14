@@ -16,8 +16,7 @@ val viewModelModule = module {
 
     viewModel {
         ItemListViewModel(
-            itemRepository = get(),
-            tripRepository = get()
+            itemRepository = get()
         )
     }
     viewModel{
@@ -51,7 +50,6 @@ val viewModelModule = module {
     viewModel {
         ItemDetailViewModel(
             itemRepository = get(),
-            tripRepository = get()
         )
     }
     viewModel {

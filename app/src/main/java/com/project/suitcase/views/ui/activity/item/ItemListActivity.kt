@@ -23,6 +23,7 @@ import com.project.suitcase.views.adapter.ItemListDiffUtilAdapter
 import com.project.suitcase.views.viewmodel.ItemListUiState
 import com.project.suitcase.views.viewmodel.ItemListViewModel
 import com.project.suitcase.views.viewmodel.ItemListViewModelEvent
+import com.project.suitcase.views.viewmodel.util.shareItemDetails
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class ItemListActivity : AppCompatActivity(), SensorEventListener{
@@ -130,20 +131,14 @@ class ItemListActivity : AppCompatActivity(), SensorEventListener{
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                 val position = viewHolder.adapterPosition
                 val currentItem = itemAdapter?.getItemList()?.getOrNull(position)
-                val message = """
-                    Check out this item!
-                    Name: ${currentItem?.itemName}
-                    Price: ${currentItem?.itemPrice}
-                    Location: ${currentItem?.itemLocation}
-                    Description: ${currentItem?.itemDescription}
-                """.trimIndent()
+                val sendIntent = shareItemDetails(
+                    itemName = currentItem!!.itemName,
+                    itemPrice = currentItem.itemPrice,
+                    itemLocation = currentItem.itemLocation,
+                    itemDescription = currentItem.itemDescription
+                )
 
-                val smsIntent = Intent(Intent.ACTION_VIEW).apply {
-                    data = Uri.parse("sms:")
-                    putExtra("sms_body", message)
-                }
-
-                val shareIntent = Intent.createChooser(smsIntent, null)
+                val shareIntent = Intent.createChooser(sendIntent, null)
                 startActivity(shareIntent)
 
                 itemAdapter?.notifyItemChanged(position)

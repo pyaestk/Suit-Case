@@ -67,10 +67,18 @@ class ParentTripAdapter: RecyclerView.Adapter<ParentTripAdapter.TripListViewHold
                 onChildItemClick.invoke(it)
             }
         }
+
         holder.binding.rvItemList.layoutManager = LinearLayoutManager(holder.itemView.context, LinearLayoutManager.VERTICAL, false)
         holder.binding.rvItemList.adapter = childItemAdapter
 
         childItemAdapter.setItemList(currentTrip.items)
+
+        if (childItemAdapter.itemCount < 1 ) {
+            holder.binding.rvItemList.visibility = View.GONE
+        } else {
+            holder.binding.rvItemList.visibility = View.VISIBLE
+        }
+
         childItemAdapter.onCheckBoxClick = onCheckBoxClick
 
         holder.itemView.setOnClickListener {

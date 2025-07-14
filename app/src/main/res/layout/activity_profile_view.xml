@@ -30,7 +30,7 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="90dp">
 
             <ImageView
                 android:id="@+id/btn_item_edit2"
@@ -77,6 +77,7 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:fillViewport="true"
+        android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -92,6 +93,7 @@
                 android:layout_width="180dp"
                 android:layout_height="180dp"
                 android:layout_marginTop="32dp"
+                android:background="@color/white"
                 android:elevation="5dp"
                 android:padding="1dp"
                 android:scaleType="centerCrop"
@@ -101,7 +103,6 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:shapeAppearance="@style/ShapeAppearance.Material3.Corner.Full"
                 app:strokeColor="@color/bluewhite"
-                android:background="@color/white"
                 app:strokeWidth="1dp" />
 
             <TextView
@@ -140,10 +141,10 @@
                     android:id="@+id/edt_user_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:focusable="false"
                     android:clickable="false"
+                    android:focusable="false"
                     android:inputType="none"
-                    android:singleLine="true"/>
+                    android:singleLine="true" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <TextView
@@ -222,11 +223,11 @@
                     android:id="@+id/edt_user_phone_number"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Not Set"
-                    android:focusable="false"
                     android:clickable="false"
+                    android:focusable="false"
+                    android:hint="Not Set"
                     android:inputType="none"
-                    android:singleLine="true"/>
+                    android:singleLine="true" />
             </com.google.android.material.textfield.TextInputLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>

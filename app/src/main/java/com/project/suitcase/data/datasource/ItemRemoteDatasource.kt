@@ -103,12 +103,8 @@ class ItemRemoteDatasource(
                     val previousImageUrl = itemDoc.getString("itemImage")
 
                     previousImageUrl?.let { url ->
-                        try {
-                            val ref = fStorage.getReferenceFromUrl(url)
-                            ref.delete().await()
-                        } catch (_: Exception) {
-
-                        }
+                        val ref = fStorage.getReferenceFromUrl(url)
+                        ref.delete().await()
                     }
 
                     val imageId = UUID.randomUUID().toString()
@@ -287,6 +283,15 @@ class ItemRemoteDatasource(
                 val itemRef = userRef
                     .collection("trip").document(tripId)
                     .collection("items").document(itemId)
+
+                // Update item image if provided
+                val itemDoc = itemRef.get().await()
+                val previousImageUrl = itemDoc.getString("itemImage")
+
+                previousImageUrl?.let { url ->
+                    val ref = fStorage.getReferenceFromUrl(url)
+                    ref.delete().await()
+                }
 
                 itemRef.delete().await()
 

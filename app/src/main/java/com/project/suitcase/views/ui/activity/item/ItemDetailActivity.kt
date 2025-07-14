@@ -7,6 +7,7 @@ import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.project.suitcase.R
 import com.project.suitcase.databinding.ActivityItemDetailBinding
 import com.project.suitcase.domain.model.ItemDetailModel
@@ -14,6 +15,7 @@ import com.project.suitcase.views.viewmodel.ItemDetailUiState
 import com.project.suitcase.views.viewmodel.ItemDetailViewModel
 import com.project.suitcase.views.viewmodel.ItemDetailViewModelEvent
 import com.project.suitcase.views.viewmodel.ItemListViewModel
+import com.project.suitcase.views.viewmodel.util.shareItemDetails
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class ItemDetailActivity : AppCompatActivity() {
@@ -24,7 +26,6 @@ class ItemDetailActivity : AppCompatActivity() {
     private var itemImage: String? = null
 
     private val detailViewModel: ItemDetailViewModel by viewModel()
-    private val itemListViewModel: ItemListViewModel by viewModel()
 
     override fun onResume() {
         super.onResume()
@@ -54,15 +55,26 @@ class ItemDetailActivity : AppCompatActivity() {
         itemDetailViewModel()
 
         binding?.btnShare?.setOnClickListener {
-            shareItemDetails()
+            val itemName = binding?.edtItemName?.text.toString()
+            val itemPrice = binding?.edtPrice?.text.toString()
+            val itemLocation = binding?.edtLocation?.text.toString()
+            val itemDescription = binding?.edtItemDescription?.text.toString()
+            val sendIntent = shareItemDetails(
+                itemName = itemName,
+                itemPrice = itemPrice,
+                itemLocation = itemLocation,
+                itemDescription = itemDescription
+            )
+            val shareIntent = Intent.createChooser(sendIntent, null)
+            startActivity(shareIntent)
         }
+
         binding?.switchFinish?.setOnCheckedChangeListener { _, isChecked ->
-            itemListViewModel.updateItemCheckedStatus(
+            detailViewModel.updateItemCheckedStatus(
                 itemId = itemId!!, finished = isChecked, tripId = tripId!!)
-            val resultIntent = Intent()
-            setResult(RESULT_OK, resultIntent)
 
         }
+
         binding?.btnItemEdit?.setOnClickListener {
             val intentNavigate = Intent(this@ItemDetailActivity,
                 ItemEditActivity::class.java).apply { putExtra("tripID", tripId)
@@ -71,32 +83,25 @@ class ItemDetailActivity : AppCompatActivity() {
             }
             startActivity(intentNavigate)
         }
-
-    }
-
-    private fun shareItemDetails() {
-
-        val itemName = binding?.edtItemName?.text.toString()
-        val itemPrice = binding?.edtPrice?.text.toString()
-        val itemLocation = binding?.edtLocation?.text.toString()
-        val itemDescription = binding?.edtItemDescription?.text.toString()
-        // Prepare the message content
-        val message = """
-            Check out this item!
-            Name: $itemName
-            Price: $itemPrice
-            Location: $itemLocation
-            Description: $itemDescription
-        """.trimIndent()
-
-        val sendIntent: Intent = Intent().apply {
-            action = Intent.ACTION_SEND
-            putExtra(Intent.EXTRA_TEXT, message)
-            type = "text/plain"
+        binding?.ivDelete?.setOnClickListener {
+            MaterialAlertDialogBuilder(this@ItemDetailActivity,
+                R.style.ThemeOverlay_App_MaterialAlertDialog)
+                .setTitle("Do you want to delete this item?")
+                .setMessage("The item will be removed permanently from device.")
+                .setNegativeButton("NO") { dialog, which ->
+                    //nothing
+                }
+                .setPositiveButton("YES") { dialog, which ->
+                    tripId?.let {
+                        detailViewModel.deleteItem(
+                            itemId = itemId!!,
+                            tripId = tripId!!
+                        )
+                    }
+                }
+                .show()
         }
 
-        val shareIntent = Intent.createChooser(sendIntent, null)
-        startActivity(shareIntent)
     }
 
     private fun itemDetailViewModel() {
@@ -116,6 +121,14 @@ class ItemDetailActivity : AppCompatActivity() {
                 }
                 is ItemDetailViewModelEvent.Success -> {
                     updateUI(it.itemDetailModel)
+                }
+
+                ItemDetailViewModelEvent.EditSuccess -> {
+                    finish()
+                }
+
+                ItemDetailViewModelEvent.DeleteSuccess -> {
+                    finish()
                 }
             }
         }

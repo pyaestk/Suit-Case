@@ -84,14 +84,13 @@ class SearchResultAdapter:
     override fun getFilter(): Filter {
         return object : Filter(){
             override fun performFiltering(constraint: CharSequence?): FilterResults {
-                val searchText = constraint.toString().toLowerCase(Locale.getDefault())
+                val searchText = constraint.toString().lowercase(Locale.getDefault())
                 filteredItemList = if (searchText.isEmpty()) {
                     itemList
                 } else {
                     val filteredList = ArrayList<ItemDetailModel>()
                     for (item in itemList) {
-                        if (item.itemName.toLowerCase().contains(searchText) ||
-                            item.tripName.toLowerCase().contains(searchText)) {
+                        if (item.itemName.lowercase().contains(searchText)) {
                             filteredList.add(item)
                         }
                     }

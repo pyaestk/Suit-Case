@@ -31,7 +31,7 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="90dp">
 
             <ImageView
                 android:id="@+id/btn_back"
@@ -52,9 +52,9 @@
                 android:layout_width="25dp"
                 android:layout_height="25dp"
                 android:layout_marginEnd="24dp"
-                app:layout_constraintBottom_toBottomOf="@+id/btn_back"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/btn_back"
+                app:layout_constraintTop_toTopOf="parent"
                 app:srcCompat="@drawable/baseline_share_24"
                 app:tint="@color/bluewhite_variant" />
 
@@ -63,11 +63,24 @@
                 android:layout_width="25dp"
                 android:layout_height="25dp"
                 android:layout_marginEnd="32dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/btn_share"
-                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="@+id/iv_delete"
+                app:layout_constraintEnd_toStartOf="@+id/iv_delete"
+                app:layout_constraintTop_toTopOf="@+id/iv_delete"
+                app:layout_constraintVertical_bias="0.432"
                 app:srcCompat="@drawable/baseline_edit_blue"
                 app:tint="@color/bluewhite_variant" />
+
+            <ImageView
+                android:id="@+id/iv_delete"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_marginEnd="32dp"
+                android:tint="@color/bluewhite_variant"
+                app:layout_constraintBottom_toBottomOf="@+id/btn_share"
+                app:layout_constraintEnd_toStartOf="@+id/btn_share"
+                app:layout_constraintTop_toTopOf="@+id/btn_share"
+                app:layout_constraintVertical_bias="0.578"
+                app:srcCompat="@drawable/baseline_delete_bluewhite" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
