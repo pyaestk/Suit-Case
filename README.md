@@ -2,6 +2,8 @@
 
 **Suit-Case** is a modern Android application that helps you plan and manage your travel packing with ease. Whether you're going on a business trip, vacation, or weekend getaway, Suit-Case ensures you never forget your essentials.
 
+<img width="1512" height="982" alt="Suitcase 1" src="https://github.com/user-attachments/assets/00f24489-2780-4891-9d26-22171be278ff" />
+<img width="1512" height="982" alt="Suitcase 2" src="https://github.com/user-attachments/assets/2f84b6e0-c13e-438e-bc97-564fce96f9b6" />
 
 ## ✨ Features
 
