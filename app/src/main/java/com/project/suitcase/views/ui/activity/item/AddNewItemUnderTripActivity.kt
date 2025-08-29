@@ -94,8 +94,7 @@ class AddNewItemUnderTripActivity : AppCompatActivity() {
                     ).show()
                     binding?.progressBar?.visibility = View.INVISIBLE
                     binding?.layoutContent?.visibility = View.VISIBLE
-//                    val resultIntent = Intent()
-//                    setResult(RESULT_OK, resultIntent)
+                    binding?.btnSaveItem?.isEnabled = true  
                     finish()
                 }
             }
@@ -105,6 +104,7 @@ class AddNewItemUnderTripActivity : AppCompatActivity() {
                 AddItemUiState.Loading -> {
                     binding?.progressBar?.visibility = View.VISIBLE
                     binding?.layoutContent?.visibility = View.INVISIBLE
+                    binding?.btnSaveItem?.isEnabled = false
                 }
             }
         }

@@ -75,7 +75,7 @@ class AddTripActivity : AppCompatActivity() {
         addTripViewModel.uiState.observe(this) {
             when(it) {
                 AddTripUiState.Loading -> {
-
+                    binding?.btnSaveTrip?.isEnabled = false
                 }
             }
         }
@@ -87,6 +87,7 @@ class AddTripActivity : AppCompatActivity() {
                     ).show()
                 }
                 is AddTripViewModelEvent.Success -> {
+                    binding?.btnSaveTrip?.isEnabled = true
                     finish()
                 }
             }
